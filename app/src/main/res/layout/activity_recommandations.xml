@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="חוות דעת"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:textAlignment="viewEnd"/>
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="חזור לפרטי הגן"
+            android:textColor="#0000FF"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="שיר אביטל:"
+        android:textColor="#000000"
+        android:textAlignment="viewEnd"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="גן מעולה"
+        android:textColor="#000000"
+        android:textAlignment="viewEnd"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ליאם פרץ:"
+        android:textColor="#000000"
+        android:textAlignment="viewEnd"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="כל הילדים שלי היו פה מאוד מרוצים"
+        android:textColor="#000000"
+        android:textAlignment="viewEnd"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="מיכל כהן:"
+        android:textColor="#000000"
+        android:textAlignment="viewEnd"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="גננות מקסימות, מאוד מומלצות"
+        android:textColor="#000000"
+        android:textAlignment="viewEnd"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/addReviewButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הוספת חוות דעת"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_background"
+        android:padding="12dp"/>
+
+
+
+</LinearLayout>

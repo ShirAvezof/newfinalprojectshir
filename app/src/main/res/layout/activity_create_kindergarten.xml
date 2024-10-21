@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="טופס בקשת הצטרפות"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:layout_gravity="right"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="שם הגן:"
+            android:textColor="#000000"
+            android:layout_gravity="right"/>
+
+        <EditText
+            android:id="@+id/kindergartenNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="שם הבעלים:"
+            android:textColor="#000000"
+            android:layout_gravity="right"/>
+
+        <EditText
+            android:id="@+id/ownerNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="כתובת:"
+            android:textColor="#000000"
+            android:layout_gravity="right"/>
+
+        <EditText
+            android:id="@+id/addressEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="טלפון ליצירת קשר:"
+            android:textColor="#000000"
+            android:layout_gravity="right"/>
+
+        <EditText
+            android:id="@+id/phoneEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="אודות הגן:"
+            android:textColor="#000000"
+            android:layout_gravity="right"/>
+
+        <EditText
+            android:id="@+id/aboutEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="שעות פעילות הגן:"
+            android:textColor="#000000"
+            android:layout_gravity="right"/>
+
+        <EditText
+            android:id="@+id/hoursEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"/>
+
+        <CheckBox
+            android:id="@+id/onlineRegistrationCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layoutDirection="rtl"
+            android:text="מצלמות אונליין" />
+
+        <CheckBox
+            android:id="@+id/summerActivityCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="מצלמות מעגל סגור"
+            android:layoutDirection="rtl"
+            android:layout_gravity="right"/>
+
+        <CheckBox
+            android:id="@+id/augustActivityCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="גן פעיל ביום שישי"
+            android:layoutDirection="rtl"
+            android:layout_gravity="right"/>
+
+
+
+        <Button
+            android:id="@+id/uploadPhotosButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="העלאת תמונות של הגן"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_background"
+            android:padding="12dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="הגשת טופס"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_background"
+            android:padding="12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="שימו לב! הגשת הטופס אינה מבטיחה את בקשתך. יש להמתין לאישור הבקשה על ידי מנהל המערכת"
+            android:textColor="#000000"
+            android:layout_gravity="right"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
+</ScrollView>

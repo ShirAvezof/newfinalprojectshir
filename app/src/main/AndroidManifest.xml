@@ -13,6 +13,45 @@
         android:theme="@style/Theme.Finalprojectshir2"
         tools:targetApi="31">
         <activity
+            android:name=".ManagerProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecommandationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".KindergardenProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParentProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FavoriteKindergarndsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AllKindergardensActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateKindergartenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManagerHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManagerLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManagerRegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
