@@ -69,19 +69,23 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="132dp"
         android:text="כניסת הורים"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="370dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv3" />
 
     <Button
         android:id="@+id/btsigninm"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="33dp"
         android:text="כניסת מנהלי גן"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="451dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btsigninp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
