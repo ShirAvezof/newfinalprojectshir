@@ -3,6 +3,7 @@ package com.example.finalprojectshir2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -14,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView gotoSignUp;
+    Button buttonLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return insets;
         });
         gotoSignUp = findViewById(R.id.gotoSignUp);
+        buttonLogin = findViewById(R.id.loginButton);
+
+        buttonLogin.setOnClickListener(this);
         gotoSignUp.setOnClickListener(this);
     }
 
@@ -32,6 +37,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if(v == gotoSignUp) {
             Intent i = new Intent(this, RegisterActivity.class);
+            startActivity(i);
+        }
+        if(v == buttonLogin) {
+            Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
         }
     }
