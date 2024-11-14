@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "365376966362",
+    "project_id": "shirproject-6510b",
+    "storage_bucket": "shirproject-6510b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365376966362:android:d54bc595e4d50c0d1b1fe3",
+        "android_client_info": {
+          "package_name": "com.example.finalprojectshir2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUUuErI61lWWz8bq3Ls56LEV0C1Uc0IFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365376966362:android:9bb50c992f61b70c1b1fe3",
+        "android_client_info": {
+          "package_name": "com.example.shirprojectfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUUuErI61lWWz8bq3Ls56LEV0C1Uc0IFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
