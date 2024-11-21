@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.finalprojectshir2.Manager.ManagerLogin.ManagerLoginActivity;
+import com.example.finalprojectshir2.Parent.Login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
     Button btsigninp;
@@ -23,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         btsigninp=findViewById(R.id.btsigninp);
         btsigninp.setOnClickListener(V -> {
-             intent= new Intent(this,LoginActivity.class);
+             intent= new Intent(this, LoginActivity.class);
             startActivity(intent);
         });
 
