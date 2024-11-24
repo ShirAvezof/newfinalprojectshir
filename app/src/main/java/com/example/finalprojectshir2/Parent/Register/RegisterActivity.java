@@ -1,5 +1,6 @@
 package com.example.finalprojectshir2.Parent.Register;
 import com.example.finalprojectshir2.Home.HomeActivity;
+import com.example.finalprojectshir2.Parent.Login.LoginActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.User;
 
@@ -62,7 +63,10 @@ public class RegisterActivity extends AppCompatActivity {
                         .addOnCompleteListener(RegisterActivity.this, task -> {
                             if (task.isSuccessful()) {
                                 // Add user data to Firestore
-                                saveUserToFirestore(firstName, lastName, email);
+                               // saveUserToFirestore(firstName, lastName, email);
+                                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish(); // Finish the login activity so the
                             } else {
                                 Toast.makeText(RegisterActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -71,9 +75,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void saveUserToFirestore(String firstName, String lastName, String email) {
+   /* private void saveUserToFirestore(String firstName, String lastName, String email) {
         // Create a new user document in Firestore
-        CollectionReference usersCollection = firestore.collection("users");
+  /*      CollectionReference usersCollection = firestore.collection("users");
         DocumentReference newUserRef = usersCollection.document();
 
 
@@ -96,4 +100,5 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // Optional: Close the registration screen
     }
+    */
 }

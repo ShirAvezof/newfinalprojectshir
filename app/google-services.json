@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1086538785171",
-    "project_id": "shirandroid",
-    "storage_bucket": "shirandroid.firebasestorage.app"
+    "project_number": "65187078084",
+    "project_id": "shirfinalproject",
+    "storage_bucket": "shirfinalproject.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1086538785171:android:1543c9cc9415243b57c866",
+        "mobilesdk_app_id": "1:65187078084:android:0418e2c18dd352b944ce91",
         "android_client_info": {
           "package_name": "com.example.finalprojectshir2"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCUD_O1YY5YOzGo_ejKN5P6xn-OshfHLQs"
+          "current_key": "AIzaSyBUqBxPZPPoKjZlFFGuwDPoH5OrbpZeuiQ"
         }
       ],
       "services": {
