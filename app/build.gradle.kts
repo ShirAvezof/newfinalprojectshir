@@ -43,7 +43,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1") // Check your version
     implementation("com.google.android.material:material:1.9.0") // Check your version
     implementation("androidx.activity:activity-ktx:1.7.1") // Check your version
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4") // Check your version
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(libs.activity) // Check your version
 
     // Testing dependencies
     testImplementation("junit:junit:4.13.2") // Check your version

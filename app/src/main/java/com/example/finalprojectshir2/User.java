@@ -3,12 +3,12 @@ package com.example.finalprojectshir2;
 public class User {
     private String userName;
     private String userPass;
-    private String userPhone;
+    private String userEmail;
 
-    public User(String userName, String userPass, String userPhone) {
+    public User(String userName, String userPass, String userEmail) {
         this.userName = userName;
         this.userPass = userPass;
-        this.userPhone = userPhone;
+        this.userEmail = userEmail;
     }
 
     public String getUserName() {
@@ -27,12 +27,12 @@ public class User {
         this.userPass = userPass;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class User {
         return "User{" +
                 "userName='" + userName + '\'' +
                 ", userPass='" + userPass + '\'' +
-                ", userPhone='" + userPhone + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }

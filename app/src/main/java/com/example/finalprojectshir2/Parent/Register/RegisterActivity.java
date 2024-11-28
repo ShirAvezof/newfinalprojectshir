@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String firstName = firstNameEditText.getText().toString().trim();
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
-
+                User user = new User(firstName,password,email);
                 // Validate inputs
                 if (lastName.isEmpty() || firstName.isEmpty() || email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
@@ -62,8 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(RegisterActivity.this, task -> {
                             if (task.isSuccessful()) {
-                                // Add user data to Firestore
-                               // saveUserToFirestore(firstName, lastName, email);
+
                                 Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                                 startActivity(intent);
                                 finish(); // Finish the login activity so the
