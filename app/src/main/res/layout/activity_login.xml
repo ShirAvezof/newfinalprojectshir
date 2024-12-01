@@ -54,7 +54,6 @@
         android:layout_height="wrap_content"
         android:text="שכחת את הסיסמה?"
         android:textColor="#0000FF"
-        android:background=""
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"/>
 
