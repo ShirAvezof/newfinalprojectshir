@@ -1,5 +1,6 @@
 package com.example.finalprojectshir2.Parent.Login;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,8 +20,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText emailEditText, passwordEditText;
-    private TextView gotoSignUp, forgotPasswordTextView;
-    private Button buttonLogin;
+    private TextView gotoSignUp;
+    private Button buttonLogin,forgotPasswordTextView;
     private FirebaseAuth mAuth;
 
     @Override
@@ -60,6 +61,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // You can add functionality to reset the password here
             Toast.makeText(this, "Password reset functionality", Toast.LENGTH_SHORT).show();
         }
+            createCustomDialog();
+    }
+
+           private void createCustomDialog() {
+            Dialog dialog = new Dialog(this);
+            dialog.setTitle("your dialog title");
+            dialog.setContentView(R.layout.passdialog);
+            dialog.show();
     }
 
     private void loginUser() {
