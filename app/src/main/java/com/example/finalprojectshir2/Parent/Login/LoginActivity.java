@@ -1,5 +1,7 @@
 package com.example.finalprojectshir2.Parent.Login;
 
+import static java.security.AccessController.getContext;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +21,11 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText emailEditText, passwordEditText;
+    private EditText emailEditText, passwordEditText, etEmail, etSubj, etPass2;
     private TextView gotoSignUp;
-    private Button buttonLogin,forgotPasswordTextView;
+    private Button buttonLogin,forgotPasswordTextView, btnSend;
     private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +63,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // Handle Forgot Password (optional)
             // You can add functionality to reset the password here
             Toast.makeText(this, "Password reset functionality", Toast.LENGTH_SHORT).show();
-        }
             createCustomDialog();
+        }
+
     }
 
-           private void createCustomDialog() {
-            Dialog dialog = new Dialog(this);
-            dialog.setTitle("your dialog title");
-            dialog.setContentView(R.layout.passdialog);
-            dialog.show();
-    }
+//           private void createCustomDialog() {
+//            Dialog dialog = new Dialog(this);
+//            dialog.setTitle("your dialog title");
+//            dialog.setContentView(R.layout.passdialog);
+//            dialog.show();
+//    }
 
     private void loginUser() {
         String email = emailEditText.getText().toString().trim();
@@ -80,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
             return;
         }
+
 
         // Sign in the user using Firebase Authentication
         mAuth.signInWithEmailAndPassword(email, password)
@@ -96,4 +101,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
     }
+
+    private void createCustomDialog() {
+        Dialog dialog  = new Dialog (this);
+        dialog.setTitle("שחזור סיסמה");
+        dialog.setContentView(R.layout.passdialog);
+        btnSend = dialog.findViewById(R.id.btnSend);
+        etEmail = dialog.findViewById(R.id.etEmail);
+        etSubj = dialog.findViewById(R.id.etSubj);
+        etPass2 = dialog.findViewById(R.id.etPass2);
+        dialog.show();
+        btnSend.setOnClickListener(v -> {
+            String emailSend = etEmail.getText().toString();
+            String emailSubject = "שינוי סיסמה";
+            String newPassW = etSubj.getText().toString();
+            String emailBody ="\n"+"הסיסמה החדשה היא:"+"\n"+ newPassW;
+            if (!(etSubj.getText().toString().equals(etPass2.getText().toString()))){
+                Toast.makeText(LoginActivity.this,"הסיסמאות לא תואמות",Toast.LENGTH_LONG).show();
+            }
+else {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailSend});
+                intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+                intent.putExtra(Intent.EXTRA_TEXT, emailBody);
+                intent.setType("message/rfc822");
+
+                // Check if there's an activity to handle the intent
+
+                startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+
 }
