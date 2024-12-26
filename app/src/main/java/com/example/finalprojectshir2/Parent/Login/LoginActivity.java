@@ -86,20 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
 
-        // Sign in the user using Firebase Authentication
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Successfully logged in, navigate to the HomeActivity
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                        finish(); // Finish the login activity so the user can't go back to it
-                    } else {
-                        // Authentication failed, show a toast message
-                        Toast.makeText(LoginActivity.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+
     }
 
     private void createCustomDialog() {

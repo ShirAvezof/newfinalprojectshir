@@ -1,26 +1,46 @@
 package com.example.finalprojectshir2.models;
 
 public class User {
-    private String firstName;
-    private String lastName;
-    private String email;
+    private String userName;
+    private String userPass;
+    private String userEmail;
 
-    public User(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public User(String userName, String userPass, String userEmail) {
+        this.userName = userName;
+        this.userPass = userPass;
+        this.userEmail = userEmail;
     }
 
-    // Getters and setters
-    public String getFirstName() {
-        return firstName;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserPass() {
+        return userPass;
+    }
+
+    public void setUserPass(String userPass) {
+        this.userPass = userPass;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", userPass='" + userPass + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                '}';
     }
 }

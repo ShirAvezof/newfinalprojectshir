@@ -1,5 +1,6 @@
 package com.example.finalprojectshir2.Parent.Register;
 import com.example.finalprojectshir2.Home.HomeActivity;
+import com.example.finalprojectshir2.MainActivity;
 import com.example.finalprojectshir2.Parent.Login.LoginActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.User;
@@ -25,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button signUpButton;
     private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
+    private RegisterPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Initialize Firestore and FirebaseAuth
         firestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        presenter = new RegisterPresenter(this);
 
         // Initialize UI components
         lastNameEditText = findViewById(R.id.lastNameEditText);
@@ -51,27 +54,23 @@ public class RegisterActivity extends AppCompatActivity {
                 String firstName = firstNameEditText.getText().toString().trim();
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
-                User user = new User(firstName,password,email);
+                User user = new User(firstName + " " + lastName,password,email);
                 // Validate inputs
                 if (lastName.isEmpty() || firstName.isEmpty() || email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                // Register user with Firebase Authentication
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(RegisterActivity.this, task -> {
-                            if (task.isSuccessful()) {
-
-                                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish(); // Finish the login activity so the
-                            } else {
-                                Toast.makeText(RegisterActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                presenter.submitUser(user);
             }
         });
+    }
+    public void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    public void onUserSuccess(User user) {
+        Toast.makeText(this,"נרשמת בהצלחה", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
    /* private void saveUserToFirestore(String firstName, String lastName, String email) {
