@@ -30,12 +30,12 @@
                 android:id="@+id/lastNameEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
+                android:background="@drawable/edit_text_background"
                 android:hint="Last Name *"
                 android:inputType="textPersonName"
-                android:padding="12dp"
-                android:background="@drawable/edit_text_background"
-                android:layout_marginStart="8dp"/>
+                android:padding="12dp" />
 
             <EditText
                 android:id="@+id/firstNameEditText"
