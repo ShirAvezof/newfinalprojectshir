@@ -1,0 +1,89 @@
+package com.example.finalprojectshir2.models;
+
+
+public class KinderGarten {
+
+
+    private String id;
+    private String ganname, ownerName, address, aboutgan,hours;
+    private int phone;
+
+    public KinderGarten( String ganname, String ownerName,String address,String aboutgan,String hours,int phone, String id) {
+        this.id=id;
+        this.ganname = ganname;
+        this.ownerName = ownerName;
+        this.address = address;
+        this.aboutgan = aboutgan;
+        this.hours = hours;
+        this.phone = phone;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getGanname() {
+        return ganname;
+    }
+
+    public void setGanname(String ganname) {
+        this.ganname = ganname;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAboutgan() {
+        return aboutgan;
+    }
+
+    public void setAboutgan(String aboutgan) {
+        this.aboutgan = aboutgan;
+    }
+
+    public String getHours() {
+        return hours;
+    }
+
+    public void setHours(String hours) {
+        this.hours = hours;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "creategan{" +
+                "id='" + id + '\'' +
+                ", ganname='" + ganname + '\'' +
+                ", ownerName='" + ownerName + '\'' +
+                ", address='" + address + '\'' +
+                ", aboutgan='" + aboutgan + '\'' +
+                ", hours='" + hours + '\'' +
+                ", phone=" + phone +
+                '}';
+    }
+}
