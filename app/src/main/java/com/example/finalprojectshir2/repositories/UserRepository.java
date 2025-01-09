@@ -1,4 +1,4 @@
-package com.example.finalprojectshir2;
+package com.example.finalprojectshir2.repositories;
 
 import com.example.finalprojectshir2.callbacks.UserCallback;
 import com.example.finalprojectshir2.models.User;
@@ -25,14 +25,20 @@ public class UserRepository {
                         callback.onError(Objects.requireNonNull(task1.getException()).getMessage());
                     }
                 });
-
             } else {
                 callback.onError(Objects.requireNonNull(task.getException()).getMessage());
             }
         });
     }
 
-    public void getUser(User user) {
+    public void getUser(User user, UserCallback callback) {
+
+    }
+
+    public void deleteUser(User user, UserCallback callback) {
+
+    }
+    public void updateUser(User user, UserCallback callback) {
 
     }
 }

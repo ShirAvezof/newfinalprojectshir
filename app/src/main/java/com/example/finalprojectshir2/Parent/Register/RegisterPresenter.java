@@ -1,6 +1,6 @@
 package com.example.finalprojectshir2.Parent.Register;
 
-import com.example.finalprojectshir2.UserRepository;
+import com.example.finalprojectshir2.repositories.UserRepository;
 import com.example.finalprojectshir2.callbacks.UserCallback;
 import com.example.finalprojectshir2.models.User;
 
