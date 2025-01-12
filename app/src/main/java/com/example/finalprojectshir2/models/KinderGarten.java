@@ -6,9 +6,9 @@ public class KinderGarten {
 
     private String id;
     private String ganname, ownerName, address, aboutgan,hours;
-    private int phone;
+    private String phone;
 
-    public KinderGarten( String ganname, String ownerName,String address,String aboutgan,String hours,int phone, String id) {
+    public KinderGarten( String ganname, String ownerName,String address,String aboutgan,String hours,String phone, String id) {
         this.id=id;
         this.ganname = ganname;
         this.ownerName = ownerName;
@@ -17,7 +17,15 @@ public class KinderGarten {
         this.hours = hours;
         this.phone = phone;
     }
+    public KinderGarten() {
 
+    }
+    public KinderGarten(String ganname, String ownerName,String address, String phone) {
+        this.ganname = ganname;
+        this.ownerName = ownerName;
+        this.address = address;
+        this.phone = phone;
+    }
     public String getId() {
         return id;
     }
@@ -66,11 +74,11 @@ public class KinderGarten {
         this.hours = hours;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
