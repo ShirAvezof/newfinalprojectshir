@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.finalprojectshir2.CreateKindergardens.CreateKindergartenActivity;
 import com.example.finalprojectshir2.Manager.ManagerHome.ManagerHomeActivity;
 import com.example.finalprojectshir2.Manager.ManagerRegister.ManagerRegisterActivity;
 import com.example.finalprojectshir2.R;
@@ -41,7 +42,7 @@ public class ManagerLoginActivity extends AppCompatActivity implements View.OnCl
             startActivity(i);
         }
         if(v == loginButton) {
-            Intent i = new Intent(this, ManagerHomeActivity.class);
+            Intent i = new Intent(this, CreateKindergartenActivity.class);
             startActivity(i);
         }
     }

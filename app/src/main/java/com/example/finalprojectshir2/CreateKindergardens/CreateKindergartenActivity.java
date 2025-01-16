@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,13 +47,21 @@ public class CreateKindergartenActivity extends AppCompatActivity {
                 String address = addressEditText.getText().toString().trim();
                 String phone = phoneEditText.getText().toString().trim();
 
+
+
                 // create instance of kindergarten
                 KinderGarten gan = new KinderGarten(kindergartenName, ownerName, address, phone);
 
 
-                presenter.submitKinderGarten();
+                presenter.submitKinderGarten(gan);
             }
         });
 
+    }
+    public void showSuccess(KinderGarten garten) {
+        Toast.makeText(this, "kinderGarten added successfully", Toast.LENGTH_SHORT).show();
+    }
+    public void showError(String message) {
+        Toast.makeText(this, "kinderGarten did not add", Toast.LENGTH_SHORT).show();
     }
 }

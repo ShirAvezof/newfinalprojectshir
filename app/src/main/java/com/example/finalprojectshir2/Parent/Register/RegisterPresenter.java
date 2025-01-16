@@ -1,7 +1,7 @@
 package com.example.finalprojectshir2.Parent.Register;
 
+import com.example.finalprojectshir2.callbacks.FirebaseCallback;
 import com.example.finalprojectshir2.repositories.UserRepository;
-import com.example.finalprojectshir2.callbacks.UserCallback;
 import com.example.finalprojectshir2.models.User;
 
 public class RegisterPresenter {
@@ -12,7 +12,7 @@ public class RegisterPresenter {
         this.activity = activity;
     }
     public void submitUser(User user) {
-        userDb.addUser(user, new UserCallback() {
+        userDb.addUser(user, new FirebaseCallback<User>() {
             @Override
             public void onError(String message) {
                 activity.showError(message);

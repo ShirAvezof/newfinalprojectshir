@@ -1,6 +1,6 @@
 package com.example.finalprojectshir2.repositories;
 
-import com.example.finalprojectshir2.callbacks.UserCallback;
+import com.example.finalprojectshir2.callbacks.FirebaseCallback;
 import com.example.finalprojectshir2.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -15,7 +15,7 @@ public class UserRepository {
         this.auth = FirebaseAuth.getInstance();
         this.database = FirebaseFirestore.getInstance();
     }
-    public void addUser(User user, UserCallback callback) {
+    public void addUser(User user, FirebaseCallback<User> callback) {
         auth.createUserWithEmailAndPassword(user.getUserEmail(), user.getUserPass()).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 database.collection("users").add(user).addOnCompleteListener(task1  -> {
@@ -31,14 +31,14 @@ public class UserRepository {
         });
     }
 
-    public void getUser(User user, UserCallback callback) {
+    public void getUser(User user, FirebaseCallback<User> callback) {
 
     }
 
-    public void deleteUser(User user, UserCallback callback) {
+    public void deleteUser(User user, FirebaseCallback<User> callback) {
 
     }
-    public void updateUser(User user, UserCallback callback) {
+    public void updateUser(User user, FirebaseCallback<User> callback) {
 
     }
 }
