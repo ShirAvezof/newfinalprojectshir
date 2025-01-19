@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -114,43 +115,61 @@
             android:background="@drawable/edit_text_background"
             android:padding="8dp" />
 
-        <CheckBox
-            android:id="@+id/onlineRegistrationCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layoutDirection="rtl"
-            android:text="מצלמות אונליין" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/summerActivityCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="מצלמות מעגל סגור"
-            android:layoutDirection="rtl"
-            android:layout_gravity="right"/>
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                tools:srcCompat="@tools:sample/avatars" />
 
-        <CheckBox
-            android:id="@+id/augustActivityCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="גן פעיל ביום שישי"
-            android:layoutDirection="rtl"
-            android:layout_gravity="right"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
+                <CheckBox
+                    android:id="@+id/onlineRegistrationCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layoutDirection="rtl"
+                    android:text="מצלמות אונליין" />
+
+                <CheckBox
+                    android:id="@+id/summerActivityCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layoutDirection="rtl"
+                    android:text="מצלמות מעגל סגור" />
+
+                <CheckBox
+                    android:id="@+id/augustActivityCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layoutDirection="rtl"
+                    android:text="גן פעיל ביום שישי" />
+            </LinearLayout>
+
+        </LinearLayout>
 
 
         <Button
             android:id="@+id/uploadPhotosButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="העלאת תמונות של הגן"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/button_background"
-            android:padding="12dp"
             android:layout_gravity="right"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/button_background"
+            android:padding="12dp"
+            android:text="העלאת תמונות של הגן"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/submitButton"
@@ -164,10 +183,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="שימו לב! הגשת הטופס אינה מבטיחה את בקשתך. יש להמתין לאישור הבקשה על ידי מנהל המערכת"
-            android:textColor="#000000"
             android:layout_gravity="right"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:text="שימו לב! הגשת הטופס אינה מבטיחה את בקשתך. יש להמתין לאישור הבקשה על ידי מנהל המערכת"
+            android:textColor="#000000" />
 
     </LinearLayout>
 </ScrollView>
