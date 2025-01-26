@@ -169,6 +169,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
     }
 
 
+    int x;
 
 
     //Convert imageView to byte[]
