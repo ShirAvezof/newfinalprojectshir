@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="הכנס כתובת מייל"
+        android:textAlignment="textEnd"
         android:inputType="textEmailAddress"
         android:textDirection="ltr"
         android:padding="12dp"
@@ -31,12 +32,13 @@
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/edit_text_background"
+        android:textAlignment="textEnd"
         android:hint="הכנס סיסמה"
-        android:textDirection="rtl"
         android:inputType="textPassword"
         android:padding="12dp"
-        android:background="@drawable/edit_text_background"
-        android:layout_marginBottom="24dp"/>
+        android:textDirection="rtl" />
 
     <Button
         android:id="@+id/loginButton"

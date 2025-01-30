@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.Home.HomeActivity;
+import com.example.finalprojectshir2.InputValidator;
 import com.example.finalprojectshir2.Parent.Register.RegisterActivity;
 import com.example.finalprojectshir2.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,14 +77,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //    }
 
     private void loginUser() {
-        String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
 
-        // Validate the inputs
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
-            return;
+        String validPassword = InputValidator.validatePassword(password);
+        String validEmail = InputValidator.validateEmail(email);
+
+        if(!validEmail.isEmpty() || !validPassword.isEmpty()) {
+            if(!validPassword.isEmpty()) {
+                Toast.makeText(this, validPassword, Toast.LENGTH_SHORT).show();
+            }
+            if(!validEmail.isEmpty()) {
+                Toast.makeText(this, validEmail, Toast.LENGTH_SHORT).show();
+            }
         }
+        else {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+        }
+
 
 
 

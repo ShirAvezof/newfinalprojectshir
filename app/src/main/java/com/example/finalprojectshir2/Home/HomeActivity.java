@@ -1,5 +1,6 @@
 package com.example.finalprojectshir2.Home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -10,6 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.finalprojectshir2.FavoriteKindergarnds.FavoriteKindergarndsActivity;
+import com.example.finalprojectshir2.Parent.ParentProfile.ParentProfileActivity;
 import com.example.finalprojectshir2.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -28,11 +31,17 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()== 1) {
-
+        if(item.getItemId() == R.id.nav_profile) {
+            Intent i = new Intent(this, ParentProfileActivity.class);
+            startActivity(i);
         }
-
-
+        else if (item.getItemId() == R.id.nav_favorites){
+            Intent i = new Intent(this, FavoriteKindergarndsActivity.class);
+            startActivity(i);
+        }
+        else if (item.getItemId() == R.id.nav_home ){
+            return true;
+        }
         return false;
     }
 }
