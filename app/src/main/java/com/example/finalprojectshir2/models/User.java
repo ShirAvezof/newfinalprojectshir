@@ -5,6 +5,18 @@ public class User {
     private String userPass;
     private String userEmail;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String id;
+
+    public User() {}
+
     public User(String userName, String userPass, String userEmail) {
         this.userName = userName;
         this.userPass = userPass;

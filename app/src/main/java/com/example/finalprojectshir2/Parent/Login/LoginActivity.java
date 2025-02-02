@@ -17,6 +17,9 @@ import com.example.finalprojectshir2.Home.HomeActivity;
 import com.example.finalprojectshir2.InputValidator;
 import com.example.finalprojectshir2.Parent.Register.RegisterActivity;
 import com.example.finalprojectshir2.R;
+import com.example.finalprojectshir2.callbacks.FirebaseCallback;
+import com.example.finalprojectshir2.models.User;
+import com.example.finalprojectshir2.repositories.UserRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -77,29 +80,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //    }
 
     private void loginUser() {
-        String email = emailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
+        String email = emailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
 
         String validPassword = InputValidator.validatePassword(password);
         String validEmail = InputValidator.validateEmail(email);
 
-        if(!validEmail.isEmpty() || !validPassword.isEmpty()) {
-            if(!validPassword.isEmpty()) {
+        if (!validEmail.isEmpty() || !validPassword.isEmpty()) {
+            if (!validPassword.isEmpty()) {
                 Toast.makeText(this, validPassword, Toast.LENGTH_SHORT).show();
             }
-            if(!validEmail.isEmpty()) {
+            if (!validEmail.isEmpty()) {
                 Toast.makeText(this, validEmail, Toast.LENGTH_SHORT).show();
             }
-        }
-        else {
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
+            return;
         }
 
+        UserRepository userRepository = new UserRepository();
+        userRepository.loginUser(email, password, new FirebaseCallback<User>() {
+            @Override
+            public void onSuccess(User user) {
+                Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
-
-
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(LoginActivity.this, "Login Failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     private void createCustomDialog() {
         Dialog dialog  = new Dialog (this);

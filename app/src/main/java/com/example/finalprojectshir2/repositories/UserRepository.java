@@ -18,7 +18,10 @@ public class UserRepository {
     public void addUser(User user, FirebaseCallback<User> callback) {
         auth.createUserWithEmailAndPassword(user.getUserEmail(), user.getUserPass()).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
-                database.collection("users").add(user).addOnCompleteListener(task1  -> {
+                String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+                user.setId(userId);
+
+                database.collection("users").document(userId).set(user).addOnCompleteListener(task1  -> {
                     if(task1.isSuccessful()) {
                         callback.onSuccess(user);
                     } else {
@@ -30,6 +33,25 @@ public class UserRepository {
             }
         });
     }
+    public void loginUser(String email, String password, FirebaseCallback<User> callback) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+                database.collection("users").document(userId).get().addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful() && task1.getResult().exists()) {
+                        User user = task1.getResult().toObject(User.class);
+                        callback.onSuccess(user);
+                    } else {
+                        callback.onError("User not found in Firestore.");
+                    }
+                });
+            } else {
+                callback.onError(Objects.requireNonNull(task.getException()).getMessage());
+            }
+        });
+    }
+
+
 
     public void getUser(User user, FirebaseCallback<User> callback) {
 
