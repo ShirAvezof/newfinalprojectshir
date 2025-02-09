@@ -1,10 +1,15 @@
 package com.example.finalprojectshir2.repositories;
 
+
+import android.content.Context;
+import android.widget.Toast;
+
 import com.example.finalprojectshir2.callbacks.FirebaseCallback;
 import com.example.finalprojectshir2.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.security.AccessControlContext;
 import java.util.Objects;
 
 public class UserRepository {
@@ -33,10 +38,11 @@ public class UserRepository {
             }
         });
     }
-    public void loginUser(String email, String password, FirebaseCallback<User> callback) {
+    public void loginUser(String email, String password, FirebaseCallback<User> callback, Context context) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+                Toast.makeText(context, userId, Toast.LENGTH_SHORT).show();
                 database.collection("users").document(userId).get().addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful() && task1.getResult().exists()) {
                         User user = task1.getResult().toObject(User.class);

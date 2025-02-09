@@ -6,9 +6,10 @@ public class KinderGarten {
 
     private String id;
     private String ganname, ownerName, address, aboutgan,hours;
-    private String phone;
+    private String phone,imgg;
 
-    public KinderGarten( String ganname, String ownerName,String address,String aboutgan,String hours,String phone, String id) {
+
+    public KinderGarten( String ganname, String ownerName,String address,String aboutgan,String hours,String phone, String id,String imgg) {
         this.id=id;
         this.ganname = ganname;
         this.ownerName = ownerName;
@@ -16,11 +17,21 @@ public class KinderGarten {
         this.aboutgan = aboutgan;
         this.hours = hours;
         this.phone = phone;
+        this.imgg = imgg;
     }
     public KinderGarten() {
 
     }
-    public KinderGarten(String ganname, String ownerName,String address, String phone) {
+
+    public String getImgg() {
+        return imgg;
+    }
+
+    public void setImgg(String imgg) {
+        this.imgg = imgg;
+    }
+
+    public KinderGarten(String ganname, String ownerName, String address, String phone) {
         this.ganname = ganname;
         this.ownerName = ownerName;
         this.address = address;
@@ -84,14 +95,15 @@ public class KinderGarten {
 
     @Override
     public String toString() {
-        return "creategan{" +
+        return "KinderGarten{" +
                 "id='" + id + '\'' +
                 ", ganname='" + ganname + '\'' +
                 ", ownerName='" + ownerName + '\'' +
                 ", address='" + address + '\'' +
                 ", aboutgan='" + aboutgan + '\'' +
                 ", hours='" + hours + '\'' +
-                ", phone=" + phone +
+                ", phone='" + phone + '\'' +
+                ", imgg='" + imgg + '\'' +
                 '}';
     }
 }
