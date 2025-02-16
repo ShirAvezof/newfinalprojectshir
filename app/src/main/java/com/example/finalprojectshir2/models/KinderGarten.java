@@ -6,10 +6,10 @@ public class KinderGarten {
 
     private String id;
     private String ganname, ownerName, address, aboutgan,hours;
-    private String phone,imgg;
+    private String phone,image;
 
 
-    public KinderGarten( String ganname, String ownerName,String address,String aboutgan,String hours,String phone, String id,String imgg) {
+    public KinderGarten( String ganname, String ownerName,String address,String aboutgan,String hours,String phone, String id,String image) {
         this.id=id;
         this.ganname = ganname;
         this.ownerName = ownerName;
@@ -17,18 +17,18 @@ public class KinderGarten {
         this.aboutgan = aboutgan;
         this.hours = hours;
         this.phone = phone;
-        this.imgg = imgg;
+        this.image = image;
     }
     public KinderGarten() {
 
     }
 
-    public String getImgg() {
-        return imgg;
+    public String getImage() {
+        return image;
     }
 
-    public void setImgg(String imgg) {
-        this.imgg = imgg;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public KinderGarten(String ganname, String ownerName, String address, String phone) {
@@ -103,7 +103,7 @@ public class KinderGarten {
                 ", aboutgan='" + aboutgan + '\'' +
                 ", hours='" + hours + '\'' +
                 ", phone='" + phone + '\'' +
-                ", imgg='" + imgg + '\'' +
+                ", imgg='" + image + '\'' +
                 '}';
     }
 }

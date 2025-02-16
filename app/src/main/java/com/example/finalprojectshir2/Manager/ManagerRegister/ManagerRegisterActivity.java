@@ -9,24 +9,26 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.finalprojectshir2.InputValidator;
 import com.example.finalprojectshir2.Manager.ManagerHome.ManagerHomeActivity;
 import com.example.finalprojectshir2.R;
+import com.example.finalprojectshir2.callbacks.FirebaseCallback;
 import com.example.finalprojectshir2.models.Manager;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.finalprojectshir2.repositories.ManagerRepository;
 
 public class ManagerRegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button signUpButtonm;
     private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText;
-    private FirebaseFirestore db;
+    private ManagerRepository managerRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_register);
 
-        // Initialize Firestore
-        db = FirebaseFirestore.getInstance();
+        // Initialize Repository
+        managerRepository = new ManagerRepository();
 
         // Initialize UI elements
         signUpButtonm = findViewById(R.id.signUpButtonm);
@@ -51,47 +53,59 @@ public class ManagerRegisterActivity extends AppCompatActivity implements View.O
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        // Validate inputs
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
+        // Validate name fields
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            Toast.makeText(this, "Please fill in both name fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Validate email format
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+        // Validate email using InputValidator
+        String emailError = InputValidator.validateEmail(email);
+        if (!emailError.isEmpty()) {
+            emailEditText.setError(emailError);
             return;
         }
 
-        // Validate password length
-        if (password.length() < 6) {
-            Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+        // Validate password using InputValidator
+        String passwordError = InputValidator.validatePassword(password);
+        if (!passwordError.isEmpty()) {
+            passwordEditText.setError(passwordError);
             return;
         }
 
-        // Create Manager object with full name
+        // Create manager object
         Manager manager = new Manager(firstName + " " + lastName, password, email);
 
-        // Save to Firestore
-        db.collection("managers")
-                .document(email) // Using email as document ID
-                .set(manager)
-                .addOnSuccessListener(aVoid -> {
+        // Disable signup button to prevent multiple submissions
+        signUpButtonm.setEnabled(false);
+
+        // Use repository to add manager
+        managerRepository.addManager(manager, new FirebaseCallback<Manager>() {
+            @Override
+            public void onSuccess(Manager result) {
+                runOnUiThread(() -> {
+                    signUpButtonm.setEnabled(true);
                     Toast.makeText(ManagerRegisterActivity.this,
                             "Registration successful!", Toast.LENGTH_SHORT).show();
 
-                    // Pass manager data to home activity
                     Intent i = new Intent(ManagerRegisterActivity.this,
                             ManagerHomeActivity.class);
                     i.putExtra("MANAGER_EMAIL", email);
                     i.putExtra("MANAGER_NAME", firstName + " " + lastName);
                     startActivity(i);
-                    finish(); // Close registration activity
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(ManagerRegisterActivity.this,
-                            "Registration failed: " + e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
+                    finish();
                 });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    signUpButtonm.setEnabled(true);
+                    Toast.makeText(ManagerRegisterActivity.this,
+                            "Registration failed: " + error,
+                            Toast.LENGTH_LONG).show();
+                });
+            }
+        });
     }
 }

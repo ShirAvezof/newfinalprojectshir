@@ -2,10 +2,16 @@ package com.example.finalprojectshir2.repositories;
 
 import com.example.finalprojectshir2.callbacks.FirebaseCallback;
 import com.example.finalprojectshir2.models.KinderGarten;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class KinderGartenRepository {
     private FirebaseAuth auth;
@@ -75,6 +81,42 @@ public class KinderGartenRepository {
             });
         } else {
             callback.onError("id is not valid");
+        }
+    }
+    public void searchKinderGartensByCity(String city, FirebaseCallback<List<KinderGarten>> callback) {
+        // If city is empty or null, get all kindergartens
+        if (city == null || city.trim().isEmpty()) {
+            database.collection("kinderGartens")
+                    .get()
+                    .addOnCompleteListener(task -> handleQueryResult(task, callback));
+        } else {
+            // If city is specified, filter by city
+            database.collection("kinderGartens")
+                    .whereEqualTo("city", city.trim())
+                    .get()
+                    .addOnCompleteListener(task -> handleQueryResult(task, callback));
+        }
+    }
+
+    private void handleQueryResult(Task<QuerySnapshot> task, FirebaseCallback<List<KinderGarten>> callback) {
+        if (task.isSuccessful()) {
+            List<KinderGarten> kindergartens = new ArrayList<>();
+            QuerySnapshot querySnapshot = task.getResult();
+
+            if (querySnapshot != null) {
+                for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                    KinderGarten kg = doc.toObject(KinderGarten.class);
+                    if (kg != null) {
+                        kg.setId(doc.getId());
+                        kindergartens.add(kg);
+                    }
+                }
+            }
+            callback.onSuccess(kindergartens);
+        } else {
+            callback.onError(task.getException() != null ?
+                    task.getException().getMessage() :
+                    "Unknown error occurred");
         }
     }
 }

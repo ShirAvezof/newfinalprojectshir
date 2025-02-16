@@ -1,16 +1,54 @@
 package com.example.finalprojectshir2.models;
 
 public class Manager {
-    private String userName; // Will store full name (firstName + lastName)
-    private String userPass;
-    private String userEmail;
+    private String id;
+    private String managerName;
+    private String managerPass;
+    private String managerEmail;
     private String createdAt;
 
-    public Manager(String userName, String userPass, String userEmail) {
-        this.userName = userName;
-        this.userPass = userPass;
-        this.userEmail = userEmail;
+    // Default constructor for Firebase
+    public Manager() {
     }
+
+    public Manager(String managerName, String managerPass, String managerEmail) {
+        this.managerName = managerName;
+        this.managerPass = managerPass;
+        this.managerEmail = managerEmail;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+
+    public String getManagerPass() {
+        return managerPass;
+    }
+
+    public void setManagerPass(String managerPass) {
+        this.managerPass = managerPass;
+    }
+
+    public String getManagerEmail() {
+        return managerEmail;
+    }
+
+    public void setManagerEmail(String managerEmail) {
+        this.managerEmail = managerEmail;
+    }
+
     public String getCreatedAt() {
         return createdAt;
     }
@@ -19,36 +57,14 @@ public class Manager {
         this.createdAt = createdAt;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserPass() {
-        return userPass;
-    }
-
-    public void setUserPass(String userPass) {
-        this.userPass = userPass;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
     @Override
     public String toString() {
-        return "User{" +
-                "userName='" + userName + '\'' +
-                ", userPass='" + userPass + '\'' +
-                ", userEmail='" + userEmail + '\'' +
+        return "Manager{" +
+                "id='" + id + '\'' +
+                ", managerName='" + managerName + '\'' +
+                ", managerPass='" + managerPass + '\'' +
+                ", managerEmail='" + managerEmail + '\'' +
+                ", createdAt='" + createdAt + '\'' +
                 '}';
     }
 }

@@ -60,9 +60,9 @@ public class KinderGardenAdapter extends ArrayAdapter<KinderGarten> {
 
 
             // Load and set the image
-            if (kindergarden.getImgg() != null) {
+            if (kindergarden.getImage() != null) {
                 try {
-                    byte[] decodedString = Base64.decode(kindergarden.getImgg(), Base64.DEFAULT);
+                    byte[] decodedString = Base64.decode(kindergarden.getImage(), Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     holder.imgg.setImageBitmap(decodedByte);
                 } catch (Exception e) {

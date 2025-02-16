@@ -72,12 +72,16 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
                 String ownerName = ownerNameEditText.getText().toString().trim();
                 String address = addressEditText.getText().toString().trim();
                 String phone = phoneEditText.getText().toString().trim();
-
+                String aboutGan = aboutEditText.getText().toString().trim();
 
 
                 // create instance of kindergarten
                 KinderGarten gan = new KinderGarten(kindergartenName, ownerName, address, phone);
-
+                gan.setAboutgan(aboutGan);
+                String base64Image = imageViewToBase64(imageView);
+                if (base64Image != null) {
+                    gan.setImage(base64Image);
+                }
 
                 presenter.submitKinderGarten(gan);
             }
@@ -135,6 +139,19 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
 
 
 
+
+    private String imageViewToBase64(ImageView imageView) {
+        try {
+            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
     public String saveImage(Bitmap myBitmap) {
