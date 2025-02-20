@@ -5,6 +5,7 @@ import static java.security.AccessController.getContext;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -109,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onError(String errorMessage) {
                 Toast.makeText(LoginActivity.this, "Login Failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Log.d("LOGIN_TAG", errorMessage);
             }
         }, LoginActivity.this);
     }
