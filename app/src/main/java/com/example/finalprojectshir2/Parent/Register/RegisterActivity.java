@@ -69,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
     public void onUserSuccess(User user) {
         Toast.makeText(this,"נרשמת בהצלחה", Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
 
