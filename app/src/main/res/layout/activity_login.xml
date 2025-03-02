@@ -44,7 +44,7 @@
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="הכנס"
+        android:text="היכנס"
         android:textColor="#FFFFFF"
         android:background="@drawable/button_background"
         android:padding="12dp"/>
@@ -53,11 +53,12 @@
     <Button
         android:id="@+id/forgotPasswordTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="שכחת את הסיסמה?"
-        android:textColor="#0000FF"
+        android:layout_height="36dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/white"
+        android:text="שכחת את הסיסמה?"
+        android:textColor="#0000FF" />
 
 
     <TextView

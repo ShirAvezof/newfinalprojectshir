@@ -16,6 +16,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/ganNameTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -25,6 +26,7 @@
                 android:textAlignment="viewEnd"/>
 
             <Button
+                android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="חזור"
@@ -33,6 +35,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/ownerNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="שם הבעלים"
@@ -40,6 +43,7 @@
             android:textAlignment="viewEnd"/>
 
         <TextView
+            android:id="@+id/addressTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="כתובת:"
@@ -47,6 +51,7 @@
             android:textAlignment="viewEnd"/>
 
         <TextView
+            android:id="@+id/phoneTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="טלפון ליצירת קשר:"
@@ -54,6 +59,7 @@
             android:textAlignment="viewEnd"/>
 
         <TextView
+            android:id="@+id/aboutTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="אודות הגן:"
@@ -61,6 +67,7 @@
             android:textAlignment="viewEnd"/>
 
         <TextView
+            android:id="@+id/hoursTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="שעות פעילות הגן:"
@@ -68,6 +75,7 @@
             android:textAlignment="viewEnd"/>
 
         <CheckBox
+            android:id="@+id/onlineCamerasCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="מצלמות אונליין"
@@ -75,6 +83,7 @@
             android:layout_gravity="right"/>
 
         <CheckBox
+            android:id="@+id/closedCircuitCamerasCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="מצלמות מעגל סגור"
@@ -82,6 +91,7 @@
             android:layout_gravity="right"/>
 
         <CheckBox
+            android:id="@+id/activeFridaysCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" פעיל ביום שישי"
@@ -102,9 +112,9 @@
                 android:textColor="#000000" />
 
             <ImageView
+                android:id="@+id/businessLicenseImageView"
                 android:layout_width="24dp"
-                android:layout_height="24dp"
-                />
+                android:layout_height="24dp" />
         </LinearLayout>
 
         <TextView
@@ -121,34 +131,42 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/galleryImage1"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-
                 android:scaleType="centerCrop"
                 android:layout_margin="4dp"/>
 
             <ImageView
+                android:id="@+id/galleryImage2"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-
                 android:scaleType="centerCrop"
                 android:layout_margin="4dp"/>
 
             <ImageView
+                android:id="@+id/galleryImage3"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-
                 android:scaleType="centerCrop"
                 android:layout_margin="4dp"/>
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
         <Button
+            android:id="@+id/reviewsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="חזור לדף"
+            android:text="חוות דעת"
             android:textColor="#FFFFFF"
             android:background="@drawable/button_background"
             android:layout_marginTop="16dp"/>

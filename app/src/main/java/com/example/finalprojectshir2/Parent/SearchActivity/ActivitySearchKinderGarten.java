@@ -1,5 +1,6 @@
 package com.example.finalprojectshir2.Parent.SearchActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.KinderGartenAdapter;
+import com.example.finalprojectshir2.KindergardenProfile.KindergardenProfileActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
 
@@ -129,7 +131,9 @@ public class ActivitySearchKinderGarten extends AppCompatActivity {
     private void onKindergartenSelected(KinderGarten kindergarten) {
         Log.d(TAG, "Kindergarten selected: " + kindergarten.getGanname());
         Toast.makeText(this, "Selected: " + kindergarten.getGanname(), Toast.LENGTH_SHORT).show();
-        // TODO: Navigate to kindergarten details
+        Intent i = new Intent(this, KindergardenProfileActivity.class);
+        i.putExtra("kindergarten_id", kindergarten.getId());
+        startActivity(i);
     }
 
     @Override
