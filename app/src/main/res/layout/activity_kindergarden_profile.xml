@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#F5F5F5">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,10 +10,14 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Header section with back button -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="#FFFFFF"
+            android:padding="12dp"
+            android:elevation="4dp">
 
             <TextView
                 android:id="@+id/ganNameTextView"
@@ -21,8 +25,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="שם הגן"
-                android:textSize="18sp"
-                android:textColor="#000000"
+                android:textSize="22sp"
+                android:textColor="#4285F4"
+                android:textStyle="bold"
                 android:textAlignment="viewEnd"/>
 
             <Button
@@ -30,146 +35,265 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="חזור"
-                android:textColor="#0000FF"
+                android:textColor="#4285F4"
                 android:background="@android:color/transparent"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/ownerNameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="שם הבעלים"
-            android:textColor="#000000"
-            android:textAlignment="viewEnd"/>
-
-        <TextView
-            android:id="@+id/addressTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="כתובת:"
-            android:textColor="#000000"
-            android:textAlignment="viewEnd"/>
-
-        <TextView
-            android:id="@+id/phoneTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="טלפון ליצירת קשר:"
-            android:textColor="#000000"
-            android:textAlignment="viewEnd"/>
-
-        <TextView
-            android:id="@+id/aboutTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="אודות הגן:"
-            android:textColor="#000000"
-            android:textAlignment="viewEnd"/>
-
-        <TextView
-            android:id="@+id/hoursTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="שעות פעילות הגן:"
-            android:textColor="#000000"
-            android:textAlignment="viewEnd"/>
-
-        <CheckBox
-            android:id="@+id/onlineCamerasCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="מצלמות אונליין"
-            android:layoutDirection="rtl"
-            android:layout_gravity="right"/>
-
-        <CheckBox
-            android:id="@+id/closedCircuitCamerasCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="מצלמות מעגל סגור"
-            android:layoutDirection="rtl"
-            android:layout_gravity="right"/>
-
-        <CheckBox
-            android:id="@+id/activeFridaysCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" פעיל ביום שישי"
-            android:layoutDirection="rtl"
-            android:layout_gravity="right"/>
-
+        <!-- Basic info card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:elevation="2dp">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/ownerNameTextView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="רישיון עסק בתוקף"
+                android:text="מנהל/ת הגן"
+                android:textColor="#333333"
+                android:textSize="16sp"
                 android:textAlignment="viewEnd"
-                android:textColor="#000000" />
+                android:layout_marginBottom="8dp"/>
 
-            <ImageView
-                android:id="@+id/businessLicenseImageView"
-                android:layout_width="24dp"
-                android:layout_height="24dp" />
+            <TextView
+                android:id="@+id/addressTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="כתובת:"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textAlignment="viewEnd"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/phoneTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="טלפון ליצירת קשר:"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textAlignment="viewEnd"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="תמונות של הגן"
-            android:textAlignment="viewEnd"
-            android:textColor="#000000" />
-
+        <!-- About section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:elevation="2dp">
 
-            <ImageView
-                android:id="@+id/galleryImage1"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:layout_margin="4dp"/>
+            <TextView
+                android:id="@+id/aboutLabelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="אודות הגן"
+                android:textColor="#4285F4"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="viewEnd"
+                android:layout_marginBottom="8dp"/>
 
-            <ImageView
-                android:id="@+id/galleryImage2"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:layout_margin="4dp"/>
-
-            <ImageView
-                android:id="@+id/galleryImage3"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:layout_margin="4dp"/>
+            <TextView
+                android:id="@+id/aboutTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="אין מידע זמין"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:textAlignment="viewEnd"
+                android:layout_marginBottom="4dp"
+                android:lineSpacingExtra="4dp"/>
         </LinearLayout>
 
+        <!-- Hours section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/hoursLabelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="שעות פעילות"
+                android:textColor="#4285F4"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="viewEnd"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/hoursTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="שעות פעילות הגן:"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:textAlignment="viewEnd"/>
+        </LinearLayout>
+
+        <!-- Features section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/featuresLabelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="מאפייני הגן"
+                android:textColor="#4285F4"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="viewEnd"
+                android:layout_marginBottom="12dp"/>
+
+            <CheckBox
+                android:id="@+id/onlineCamerasCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="מצלמות אונליין"
+                android:textColor="#333333"
+                android:layoutDirection="rtl"
+                android:paddingRight="8dp"
+                android:layout_marginBottom="4dp"/>
+
+            <CheckBox
+                android:id="@+id/closedCircuitCamerasCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="מצלמות מעגל סגור"
+                android:textColor="#333333"
+                android:layoutDirection="rtl"
+                android:paddingRight="8dp"
+                android:layout_marginBottom="4dp"/>
+
+            <CheckBox
+                android:id="@+id/activeFridaysCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="פעיל ביום שישי"
+                android:textColor="#333333"
+                android:layoutDirection="rtl"
+                android:paddingRight="8dp"
+                android:layout_marginBottom="4dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="רישיון עסק בתוקף"
+                    android:textAlignment="viewEnd"
+                    android:textColor="#333333"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    android:id="@+id/businessLicenseImageView"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Gallery section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/galleryLabelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="תמונות של הגן"
+                android:textColor="#4285F4"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="viewEnd"
+                android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/galleryImage1"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:layout_margin="4dp"
+                    android:background="#EEEEEE"/>
+
+                <ImageView
+                    android:id="@+id/galleryImage2"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:layout_margin="4dp"
+                    android:background="#EEEEEE"/>
+
+                <ImageView
+                    android:id="@+id/galleryImage3"
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:layout_margin="4dp"
+                    android:background="#EEEEEE"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Loading indicator -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone" />
+            android:layout_marginTop="16dp"
+            android:visibility="visible" />
 
+        <!-- Reviews button -->
         <Button
             android:id="@+id/reviewsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="חוות דעת"
             android:textColor="#FFFFFF"
-            android:background="@drawable/button_background"
-            android:layout_marginTop="16dp"/>
-
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="#4285F4"
+            android:padding="12dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"/>
     </LinearLayout>
 </ScrollView>

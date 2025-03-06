@@ -13,15 +13,14 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.finalprojectshir2.MainActivity;
-import com.example.finalprojectshir2.Parent.Register.RegisterPresenter;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,16 +33,17 @@ import java.io.IOException;
 import java.util.Calendar;
 
 public class CreateKindergartenActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "CreateKindergartenActivity";
     private EditText kindergartenNameEditText, ownerNameEditText, addressEditText, phoneEditText, aboutEditText, hoursEditText;
-    private Button submitButton,uploadPhotosButton;
+    private CheckBox onlineRegistrationCheckBox, summerActivityCheckBox, augustActivityCheckBox;
+    private Button submitButton, uploadPhotosButton;
     private ImageView imageView;
     private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
     private CreateKindergartenPresenter presenter;
     private static final String IMAGE_DIRECTORY = "/demonuts";
     private int GALLERY = 1, CAMERA = 2;
-    //  UserCarOpenHelper ucoh;
-    final int REQUEST_CODE_GALLERY = 999;
+    private boolean hasImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,48 +54,129 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         mAuth = FirebaseAuth.getInstance();
         presenter = new CreateKindergartenPresenter(this);
 
+        initializeViews();
+        setupListeners();
+    }
+
+    private void initializeViews() {
+        // EditText fields
         kindergartenNameEditText = findViewById(R.id.kindergartenNameEditText);
         ownerNameEditText = findViewById(R.id.ownerNameEditText);
         addressEditText = findViewById(R.id.addressEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
         aboutEditText = findViewById(R.id.aboutEditText);
         hoursEditText = findViewById(R.id.hoursEditText);
+
+        // Checkboxes
+        onlineRegistrationCheckBox = findViewById(R.id.onlineRegistrationCheckBox);
+        summerActivityCheckBox = findViewById(R.id.summerActivityCheckBox);
+        augustActivityCheckBox = findViewById(R.id.augustActivityCheckBox);
+
+        // Buttons
         submitButton = findViewById(R.id.submitButton);
         uploadPhotosButton = findViewById(R.id.uploadPhotosButton);
-        imageView = findViewById(R.id.imageView2);
 
+        // ImageView
+        imageView = findViewById(R.id.imageView2);
+    }
+
+    private void setupListeners() {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String kindergartenName = kindergartenNameEditText.getText().toString().trim();
-                String ownerName = ownerNameEditText.getText().toString().trim();
-                String address = addressEditText.getText().toString().trim();
-                String phone = phoneEditText.getText().toString().trim();
-                String aboutGan = aboutEditText.getText().toString().trim();
-
-
-                // create instance of kindergarten
-                KinderGarten gan = new KinderGarten(kindergartenName, ownerName, address, phone);
-                gan.setAboutgan(aboutGan);
-                String base64Image = imageViewToBase64(imageView);
-                if (base64Image != null) {
-                    gan.setImage(base64Image);
+                if (validateInput()) {
+                    submitForm();
                 }
-
-                presenter.submitKinderGarten(gan);
             }
         });
 
-        uploadPhotosButton.setOnClickListener(this );
-
-
-
-
-
-
+        uploadPhotosButton.setOnClickListener(this);
     }
-    private void showPictureDialog(){
+
+    private boolean validateInput() {
+        boolean isValid = true;
+
+        // Check kindergarten name
+        if (kindergartenNameEditText.getText().toString().trim().isEmpty()) {
+            kindergartenNameEditText.setError("שם הגן נדרש");
+            isValid = false;
+        }
+
+        // Check owner name
+        if (ownerNameEditText.getText().toString().trim().isEmpty()) {
+            ownerNameEditText.setError("שם הבעלים נדרש");
+            isValid = false;
+        }
+
+        // Check address
+        if (addressEditText.getText().toString().trim().isEmpty()) {
+            addressEditText.setError("כתובת נדרשת");
+            isValid = false;
+        }
+
+        // Check phone number
+        String phone = phoneEditText.getText().toString().trim();
+        if (phone.isEmpty()) {
+            phoneEditText.setError("מספר טלפון נדרש");
+            isValid = false;
+        } else if (phone.length() != 10) {
+            phoneEditText.setError("מספר טלפון חייב להיות בן 10 ספרות");
+            isValid = false;
+        }
+
+        // Check if image is selected
+        if (!hasImage) {
+            Toast.makeText(this, "נא להעלות תמונה של הגן", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private void submitForm() {
+        // Get values from form fields
+        String kindergartenName = kindergartenNameEditText.getText().toString().trim();
+        String ownerName = ownerNameEditText.getText().toString().trim();
+        String address = addressEditText.getText().toString().trim();
+        String phone = phoneEditText.getText().toString().trim();
+        String aboutGan = aboutEditText.getText().toString().trim();
+        String hours = hoursEditText.getText().toString().trim();
+
+        // Get values from checkboxes
+        boolean hasOnlineCameras = onlineRegistrationCheckBox.isChecked();
+        boolean hasClosedCircuitCameras = summerActivityCheckBox.isChecked();
+        boolean isActiveOnFriday = augustActivityCheckBox.isChecked();
+
+        // Create enhanced KinderGarten object
+        KinderGarten gan = new KinderGarten();
+        gan.setGanname(kindergartenName);
+        gan.setOwnerName(ownerName);
+        gan.setAddress(address);
+        gan.setPhone(phone);
+        gan.setAboutgan(aboutGan);
+        gan.setHours(hours);
+
+
+        gan.setHasOnlineCameras(hasOnlineCameras);
+        gan.setHasClosedCircuitCameras(hasClosedCircuitCameras);
+        gan.setActiveOnFriday(isActiveOnFriday);
+
+        // Convert image to base64 and add to KinderGarten object
+        String base64Image = imageViewToBase64(imageView);
+        if (base64Image != null) {
+            gan.setImage(base64Image);
+        }
+
+        // Submit to Firestore through presenter
+        presenter.submitKinderGarten(gan);
+    }
+
+    @Override
+    public void onClick(View v) {
+        showPictureDialog();
+    }
+
+    private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("נא לבחור מאיפה להוסיף תמונה:");
         String[] pictureDialogItems = {
@@ -118,94 +199,89 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         pictureDialog.show();
     }
 
-
-
     public void choosePhotoFromGallary() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-
         startActivityForResult(galleryIntent, GALLERY);
     }
-
-
-    // ============================
-
 
     private void takePhotoFromCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
 
+        if (requestCode == GALLERY) {
+            if (data != null) {
+                Uri contentURI = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    processSelectedImage(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else if (requestCode == CAMERA) {
+            if (data != null && data.getExtras() != null) {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                processSelectedImage(bitmap);
+            }
+        }
+    }
+
+    private void processSelectedImage(Bitmap bitmap) {
+        // Compress the bitmap to reduce file size before encoding to base64
+        Bitmap compressedBitmap = getResizedBitmap(bitmap, 800); // Max 800px width/height
+        imageView.setImageBitmap(compressedBitmap);
+        hasImage = true;
+        Toast.makeText(this, "התמונה נטענה בהצלחה", Toast.LENGTH_SHORT).show();
+    }
+
+    // Method to resize bitmap to prevent large base64 strings
+    private Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float) width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
 
     private String imageViewToBase64(ImageView imageView) {
         try {
             Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // 70% quality compression
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e(TAG, "Error converting image to base64: " + e.getMessage());
             return null;
         }
     }
 
-
-    public String saveImage(Bitmap myBitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
-
-
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
-
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
-    }
-
-
-    int x;
-
-
-    //Convert imageView to byte[]
-    private byte[] imageViewToByte(ImageView image) {
-        Bitmap bitmap=((BitmapDrawable)image.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 0, stream);
-        byte[]byteArray=stream.toByteArray();
-        return byteArray;
-    }
     public void showSuccess(KinderGarten garten) {
-        Toast.makeText(this, "kinderGarten added successfully", Toast.LENGTH_SHORT).show();
-    }
-    public void showError(String message) {
-        Toast.makeText(this, "kinderGarten did not add", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "הגן נוסף בהצלחה", Toast.LENGTH_SHORT).show();
+        // Navigate back to previous screen or to a confirmation screen
+        finish();
     }
 
-    @Override
-    public void onClick(View v) {
-        showPictureDialog();
+    public void showError(String message) {
+        Toast.makeText(this, "שגיאה: " + message, Toast.LENGTH_LONG).show();
     }
 }

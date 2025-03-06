@@ -1,16 +1,50 @@
 package com.example.finalprojectshir2.models;
 
+import com.google.firebase.firestore.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class KinderGarten {
-
-
     private String id;
-    private String ganname, ownerName, address, aboutgan,hours;
-    private String phone,image;
+    private String ganname;
+    private String ownerName;
+    private String address;
+    private String aboutgan;
+    private String hours;
+    private String phone;
+    private String image;
+    private boolean hasOnlineCameras;
+    private boolean hasClosedCircuitCameras;
 
+    public boolean isHasBusinessLicense() {
+        return hasBusinessLicense;
+    }
 
-    public KinderGarten( String ganname, String ownerName,String address,String aboutgan,String hours,String phone, String id,String image) {
-        this.id=id;
+    public void setHasBusinessLicense(boolean hasBusinessLicense) {
+        this.hasBusinessLicense = hasBusinessLicense;
+    }
+
+    private boolean hasBusinessLicense;
+    private boolean isActiveOnFriday;
+
+    // Default constructor required for Firestore
+    public KinderGarten() {
+    }
+
+    // Constructor with base fields
+    public KinderGarten(String ganname, String ownerName, String address, String phone) {
+        this.ganname = ganname;
+        this.ownerName = ownerName;
+        this.address = address;
+        this.phone = phone;
+    }
+
+    // Full constructor
+    public KinderGarten(String id, String ganname, String ownerName, String address, String aboutgan,
+                        String hours, String phone, String image, boolean hasOnlineCameras,
+                        boolean hasClosedCircuitCameras, boolean isActiveOnFriday) {
+        this.id = id;
         this.ganname = ganname;
         this.ownerName = ownerName;
         this.address = address;
@@ -18,25 +52,12 @@ public class KinderGarten {
         this.hours = hours;
         this.phone = phone;
         this.image = image;
-    }
-    public KinderGarten() {
-
-    }
-
-    public String getImage() {
-        return image;
+        this.hasOnlineCameras = hasOnlineCameras;
+        this.hasClosedCircuitCameras = hasClosedCircuitCameras;
+        this.isActiveOnFriday = isActiveOnFriday;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public KinderGarten(String ganname, String ownerName, String address, String phone) {
-        this.ganname = ganname;
-        this.ownerName = ownerName;
-        this.address = address;
-        this.phone = phone;
-    }
+    // Getters and setters
     public String getId() {
         return id;
     }
@@ -93,6 +114,55 @@ public class KinderGarten {
         this.phone = phone;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean isHasOnlineCameras() {
+        return hasOnlineCameras;
+    }
+
+    public void setHasOnlineCameras(boolean hasOnlineCameras) {
+        this.hasOnlineCameras = hasOnlineCameras;
+    }
+
+    public boolean isHasClosedCircuitCameras() {
+        return hasClosedCircuitCameras;
+    }
+
+    public void setHasClosedCircuitCameras(boolean hasClosedCircuitCameras) {
+        this.hasClosedCircuitCameras = hasClosedCircuitCameras;
+    }
+
+    public boolean isActiveOnFriday() {
+        return isActiveOnFriday;
+    }
+
+    public void setActiveOnFriday(boolean activeOnFriday) {
+        isActiveOnFriday = activeOnFriday;
+    }
+
+    // Helper method to convert to Map for Firestore if needed
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("ganname", ganname);
+        result.put("ownerName", ownerName);
+        result.put("address", address);
+        result.put("aboutgan", aboutgan);
+        result.put("hours", hours);
+        result.put("phone", phone);
+        result.put("image", image);
+        result.put("hasOnlineCameras", hasOnlineCameras);
+        result.put("hasClosedCircuitCameras", hasClosedCircuitCameras);
+        result.put("isActiveOnFriday", isActiveOnFriday);
+        return result;
+    }
+
     @Override
     public String toString() {
         return "KinderGarten{" +
@@ -103,7 +173,10 @@ public class KinderGarten {
                 ", aboutgan='" + aboutgan + '\'' +
                 ", hours='" + hours + '\'' +
                 ", phone='" + phone + '\'' +
-                ", imgg='" + image + '\'' +
+                ", image='" + (image != null ? "Has image" : "No image") + '\'' +
+                ", hasOnlineCameras=" + hasOnlineCameras +
+                ", hasClosedCircuitCameras=" + hasClosedCircuitCameras +
+                ", isActiveOnFriday=" + isActiveOnFriday +
                 '}';
     }
 }

@@ -128,15 +128,14 @@ public class KinderGartenRepository {
         }
     }
     public void searchKinderGartensByCity(String city, FirebaseCallback<List<KinderGarten>> callback) {
-        // If city is empty or null, get all kindergartens
         if (city == null || city.trim().isEmpty()) {
             database.collection("kinderGartens")
                     .get()
                     .addOnCompleteListener(task -> handleQueryResult(task, callback));
         } else {
-            // If city is specified, filter by city
             database.collection("kinderGartens")
-                    .whereEqualTo("city", city.trim())
+                    .whereGreaterThanOrEqualTo("address", city.trim())
+                    .whereLessThanOrEqualTo("address", city.trim() + "\uf8ff")
                     .get()
                     .addOnCompleteListener(task -> handleQueryResult(task, callback));
         }

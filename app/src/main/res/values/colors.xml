@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="background_color">#F5F5F5</color>
+    <!-- Primary Theme Colors -->
+    <color name="primary">#4CAF50</color>
+    <color name="primary_dark">#388E3C</color>
+    <color name="primary_light">#C8E6C9</color>
+    <color name="accent">#FF9800</color>
+    <color name="accent_light">#FFCC80</color>
+
+    <!-- Text Colors -->
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
-    <color name="accent_color">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!-- Background Colors -->
+    <color name="background_start">#F8F9FA</color>
+    <color name="background_end">#E8F5E9</color>
+    <color name="surface_color">#F5F5F5</color>
+    <color name="card_background">#FFFFFF</color>
+
+    <!-- Bottom Navigation Colors -->
+    <color name="bottom_nav_background">#FFFFFF</color>
+    <color name="bottom_nav_item_color">@color/primary</color>
+
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FFC107</color>
+    <color name="error">#F44336</color>
+    <color name="info">#2196F3</color>
+
+    <!-- Feature Icons Colors -->
+    <color name="feature_icon_color">#4CAF50</color>
+    <color name="feature_icon_bg">#E8F5E9</color>
+
+    <!-- Divider Colors -->
+    <color name="divider">#E0E0E0</color>
 </resources>

@@ -1,44 +1,128 @@
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/kindergartenCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/ganImageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:id="@+id/kindergartenImageView"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
             android:scaleType="centerCrop"
-            android:layout_marginEnd="16dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <ImageButton
+            android:id="@+id/favoriteButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="8dp"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/btn_star_big_off"
+            android:tint="#FF4081"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="הוספה למועדפים" />
+
+        <TextView
+            android:id="@+id/kindergartenNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textAlignment="viewEnd"
+            android:textDirection="rtl"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/kindergartenImageView"
+            tools:text="גן ילדי הירוק" />
+
+        <TextView
+            android:id="@+id/kindergartenAddressTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAlignment="viewEnd"
+            android:textDirection="rtl"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/kindergartenNameTextView"
+            app:layout_constraintStart_toStartOf="@+id/kindergartenNameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/kindergartenNameTextView"
+            tools:text="רחוב הירקון 25, תל אביב" />
+
+        <TextView
+            android:id="@+id/ownerNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAlignment="viewEnd"
+            android:textDirection="rtl"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/kindergartenAddressTextView"
+            app:layout_constraintStart_toStartOf="@+id/kindergartenAddressTextView"
+            app:layout_constraintTop_toBottomOf="@+id/kindergartenAddressTextView"
+            tools:text="בעלים: שרה לוי" />
+
+        <TextView
+            android:id="@+id/hoursTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAlignment="viewEnd"
+            android:textDirection="rtl"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/ownerNameTextView"
+            app:layout_constraintStart_toStartOf="@+id/ownerNameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/ownerNameTextView"
+            tools:text="שעות: 7:30-16:30" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/featuresContainer"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/hoursTextView"
+            app:layout_constraintTop_toBottomOf="@+id/hoursTextView">
 
-            <TextView
-                android:id="@+id/nameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp"/>
+            <ImageView
+                android:id="@+id/onlineCameraIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="מצלמות אונליין" />
 
-            <TextView
-                android:id="@+id/cityTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"/>
+            <ImageView
+                android:id="@+id/closedCircuitIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="מצלמות מעגל סגור" />
 
+            <ImageView
+                android:id="@+id/fridayActiveIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="פעיל ביום שישי" />
         </LinearLayout>
-    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

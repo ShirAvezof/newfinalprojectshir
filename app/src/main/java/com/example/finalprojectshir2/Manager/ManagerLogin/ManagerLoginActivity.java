@@ -63,6 +63,7 @@ public class ManagerLoginActivity extends AppCompatActivity implements View.OnCl
         String password = passwordEditText.getText().toString().trim();
 
         // Validate input
+
         String emailError = InputValidator.validateEmail(email);
         if (!emailError.isEmpty()) {
             emailEditText.setError(emailError);

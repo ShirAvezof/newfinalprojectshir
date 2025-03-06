@@ -77,9 +77,9 @@ public class KinderGartenAdapter extends RecyclerView.Adapter<KinderGartenAdapte
 
         ViewHolder(View itemView) {
             super(itemView);
-            nameTextView = itemView.findViewById(R.id.nameTextView);
-            cityTextView = itemView.findViewById(R.id.cityTextView);
-            ganImageView = itemView.findViewById(R.id.ganImageView);
+            nameTextView = itemView.findViewById(R.id.kindergartenNameTextView);
+            cityTextView = itemView.findViewById(R.id.kindergartenAddressTextView);
+            ganImageView = itemView.findViewById(R.id.kindergartenImageView);
         }
     }
 }
