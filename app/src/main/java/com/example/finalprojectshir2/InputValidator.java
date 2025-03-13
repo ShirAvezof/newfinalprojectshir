@@ -52,12 +52,12 @@ public class InputValidator {
             return "Password must be at least 6 characters long.";
         }
 
-        // Ensure password contains at least one uppercase letter
+
         if (!password.matches(".*[A-Z].*")) {
             return "Password must contain at least one uppercase letter.";
         }
 
-        // Ensure password contains at least one digit
+
         if (!password.matches(".*[0-9].*")) {
             return "Password must contain at least one digit.";
         }
@@ -66,8 +66,15 @@ public class InputValidator {
         if (!password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
             return "Password must contain at least one special character.";
         }
-
         // If all checks pass, return an empty string (valid password)
         return "";
     }
+    public static String validateField (String field) {
+        if (field == null || field.isEmpty()) {
+            return "field cannot be empty";
+        }
+        return "";
+    }
 }
+
+

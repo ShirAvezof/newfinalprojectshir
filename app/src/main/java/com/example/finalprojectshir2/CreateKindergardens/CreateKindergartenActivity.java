@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.finalprojectshir2.InputValidator;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
 import com.google.firebase.auth.FirebaseAuth;
@@ -113,6 +114,21 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
             addressEditText.setError("כתובת נדרשת");
             isValid = false;
         }
+        if (aboutEditText.getText().toString().isEmpty()){
+            aboutEditText.setError("אודות הגן");
+            isValid = false;
+        }
+        if (hoursEditText.getText().toString().isEmpty()){
+            hoursEditText.setError("שעות נדרשות");
+            isValid = false;
+        }
+
+        if (kindergartenNameEditText.getText().toString().isEmpty()||ownerNameEditText.getText().toString().isEmpty()||
+                addressEditText.getText().toString().trim().isEmpty()||aboutEditText.getText().toString().isEmpty()||
+                hoursEditText.getText().toString().isEmpty()|| phoneEditText.getText().toString().isEmpty())
+        {
+            Toast.makeText(this, "אחד או יותר מהשדות ריקים, נא למלא" , Toast.LENGTH_SHORT).show();
+        }
 
         // Check phone number
         String phone = phoneEditText.getText().toString().trim();
@@ -141,6 +157,19 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         String phone = phoneEditText.getText().toString().trim();
         String aboutGan = aboutEditText.getText().toString().trim();
         String hours = hoursEditText.getText().toString().trim();
+
+//        String validkindergartenName = InputValidator.validateField(kindergartenName);
+//        String validOwnerName = InputValidator.validateField(ownerName);
+
+//        if (!validkindergartenName.isEmpty() || !validOwnerName.isEmpty()){
+//            if (!validkindergartenName.isEmpty()){
+//                Toast.makeText(this,validkindergartenName,Toast.LENGTH_SHORT).show();
+//            }
+//            if(!validOwnerName.isEmpty()){
+//                Toast.makeText(this,validOwnerName,Toast.LENGTH_SHORT).show();
+//            }
+//            return;
+//        }
 
         // Get values from checkboxes
         boolean hasOnlineCameras = onlineRegistrationCheckBox.isChecked();
