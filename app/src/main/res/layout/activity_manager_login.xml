@@ -24,23 +24,24 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_background"
             android:hint="הכנס כתובת מייל"
             android:inputType="textEmailAddress"
             android:padding="12dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="16dp"/>
+            android:text="s@gmail.com" />
 
         <EditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/edit_text_background"
             android:hint="הכנס סיסמה"
             android:inputType="textPassword"
             android:padding="12dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="24dp"
-            android:textAlignment="textEnd"
-            />
+            android:text="Ss1234@"
+            android:textAlignment="textEnd" />
 
         <Button
             android:id="@+id/loginButton"

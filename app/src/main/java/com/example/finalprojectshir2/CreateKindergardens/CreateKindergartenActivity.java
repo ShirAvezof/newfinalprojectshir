@@ -21,7 +21,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.finalprojectshir2.Home.HomeActivity;
 import com.example.finalprojectshir2.InputValidator;
+import com.example.finalprojectshir2.KindergardenProfile.KindergardenProfileActivity;
+import com.example.finalprojectshir2.Parent.Login.LoginActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
 import com.google.firebase.auth.FirebaseAuth;
@@ -235,8 +238,14 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
     }
 
     private void takePhotoFromCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
+       try {
+           Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+           startActivityForResult(intent, CAMERA);
+       }
+        catch (Exception e) {
+        e.printStackTrace();
+        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
     }
 
     @Override
@@ -308,6 +317,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         Toast.makeText(this, "הגן נוסף בהצלחה", Toast.LENGTH_SHORT).show();
         // Navigate back to previous screen or to a confirmation screen
         finish();
+
     }
 
     public void showError(String message) {
