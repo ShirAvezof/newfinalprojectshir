@@ -201,6 +201,10 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
 
         // Submit to Firestore through presenter
         presenter.submitKinderGarten(gan);
+
+        Intent i = new Intent(this, KindergardenProfileActivity.class);
+        i.putExtra("kindergarten_id", gan.getId());
+        startActivity(i);
     }
 
     @Override
@@ -316,6 +320,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
     public void showSuccess(KinderGarten garten) {
         Toast.makeText(this, "הגן נוסף בהצלחה", Toast.LENGTH_SHORT).show();
         // Navigate back to previous screen or to a confirmation screen
+
         finish();
 
     }

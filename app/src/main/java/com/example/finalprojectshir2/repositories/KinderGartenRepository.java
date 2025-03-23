@@ -68,6 +68,7 @@ public class KinderGartenRepository {
 
     public void addKinderGarden(KinderGarten kinderGarten, FirebaseCallback<KinderGarten> callback) {
         String kinderGartenID = auth.getCurrentUser().getUid();
+        kinderGarten.setId(kinderGartenID);
 
         if (kinderGartenID != null) {
             DocumentReference docRef = database.collection("kinderGartens").document(kinderGartenID);
