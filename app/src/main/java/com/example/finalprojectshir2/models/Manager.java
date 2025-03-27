@@ -7,6 +7,7 @@ public class Manager {
     private String managerEmail;
     private String createdAt;
 
+
     // Default constructor for Firebase
     public Manager() {
     }

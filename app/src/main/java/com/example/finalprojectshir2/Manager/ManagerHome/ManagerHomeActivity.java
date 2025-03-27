@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.CreateKindergardens.CreateKindergartenActivity;
+import com.example.finalprojectshir2.KinderGartenProfile;
 import com.example.finalprojectshir2.R;
 
 public class ManagerHomeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -25,6 +26,11 @@ public class ManagerHomeActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         if(v == startButton) {
             Intent i = new Intent(this, CreateKindergartenActivity.class);
+            startActivity(i);
+        }
+        else{
+            Intent i = new Intent(this, KinderGartenProfile.class);
+//            i.putExtra("kindergarten_id",)
             startActivity(i);
         }
     }

@@ -74,9 +74,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAlignment="center"
                     android:layout_marginBottom="8dp"
-
-                    android:gravity="end"
                     android:text="חיפוש גני ילדים"
                     android:textColor="@color/primary"
                     android:textSize="18sp" />
@@ -146,9 +145,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAlignment="center"
                     android:layout_marginBottom="8dp"
-
-                    android:gravity="end"
                     android:text="סינון תוצאות"
                     android:textColor="@color/primary"
                     android:textSize="18sp" />

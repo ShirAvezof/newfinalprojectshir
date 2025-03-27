@@ -25,7 +25,6 @@ public class ManagerRepository {
                     if(task.isSuccessful()) {
                         String managerId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
                         manager.setId(managerId);
-
                         database.collection("managers").document(managerId).set(manager)
                                 .addOnCompleteListener(task1 -> {
                                     if(task1.isSuccessful()) {
