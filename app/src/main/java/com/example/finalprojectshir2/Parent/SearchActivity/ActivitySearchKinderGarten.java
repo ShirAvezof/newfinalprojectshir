@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,8 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
     private MaterialButton applyFiltersButton;
     private MaterialButton filterToggleButton;
     private MaterialCardView filterCard;
+
+    private ImageButton back;
 
     // Filter checkboxes
     private MaterialCheckBox onlineCamerasCheckbox;
@@ -119,6 +122,7 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
         searchResultsTitle = findViewById(R.id.searchResultsTitle);
         resultsCountBadge = findViewById(R.id.resultsCountBadge);
         applyFiltersButton = findViewById(R.id.applyFiltersButton);
+        back = findViewById(R.id.back);
         filterToggleButton = findViewById(R.id.filterToggleButton);
         filterCard = findViewById(R.id.filterCard);
 
@@ -126,6 +130,13 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
         onlineCamerasCheckbox = findViewById(R.id.onlineCamerasCheckbox);
         closedCircuitCheckbox = findViewById(R.id.closedCircuitCheckbox);
         fridayActiveCheckbox = findViewById(R.id.fridayActiveCheckbox);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -343,21 +354,17 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-
-        if (itemId == R.id.nav_home) {
-            finish();
-            return true;
-        } else if (itemId == R.id.nav_profile) {
+        if(item.getItemId() == R.id.nav_profile) {
             Intent i = new Intent(this, ParentProfileActivity.class);
             startActivity(i);
-            return true;
-        } else if (itemId == R.id.nav_favorites) {
-            Intent i = new Intent(this, FavoriteKindergarndsActivity.class);
+        }
+        else if (item.getItemId() == R.id.nav_home){
+            Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
+        }
+        else if (item.getItemId() == R.id.nav_favorites ){
             return true;
         }
-
         return false;
     }
 }
