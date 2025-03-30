@@ -4,6 +4,8 @@ import static java.security.AccessController.getContext;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.Home.HomeActivity;
 import com.example.finalprojectshir2.InputValidator;
+import com.example.finalprojectshir2.InternetConnectionReceiver;
+import com.example.finalprojectshir2.NetworkReceiver;
 import com.example.finalprojectshir2.Parent.Register.RegisterActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.callbacks.FirebaseCallback;
@@ -30,6 +34,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView gotoSignUp;
     private Button buttonLogin,forgotPasswordTextView, btnSend;
     private FirebaseAuth mAuth;
+    InternetConnectionReceiver internetConectionReceiver;
+    NetworkReceiver networkReceiver;
+    IntentFilter intentConnectionFilter;
 
 
     @Override
@@ -51,8 +58,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonLogin.setOnClickListener(this);
         gotoSignUp.setOnClickListener(this);
         forgotPasswordTextView.setOnClickListener(this);
+
+        internetConectionReceiver = new InternetConnectionReceiver();
+        networkReceiver = new NetworkReceiver();
+        intentConnectionFilter = new IntentFilter();
+        intentConnectionFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(internetConectionReceiver, intentConnectionFilter);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(internetConectionReceiver);
+
+    }
     @Override
     public void onClick(View v) {
         if (v == gotoSignUp) {

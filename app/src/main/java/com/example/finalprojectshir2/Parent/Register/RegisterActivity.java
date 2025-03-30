@@ -1,11 +1,15 @@
 package com.example.finalprojectshir2.Parent.Register;
 import com.example.finalprojectshir2.Home.HomeActivity;
+import com.example.finalprojectshir2.InternetConnectionReceiver;
 import com.example.finalprojectshir2.MainActivity;
+import com.example.finalprojectshir2.NetworkReceiver;
 import com.example.finalprojectshir2.Parent.Login.LoginActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.User;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +31,9 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
     private RegisterPresenter presenter;
+    InternetConnectionReceiver internetConectionReceiver;
+    NetworkReceiver networkReceiver;
+    IntentFilter intentConnectionFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,11 @@ public class RegisterActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         signUpButton = findViewById(R.id.signUpButtonp);
+
+        internetConectionReceiver = new InternetConnectionReceiver();
+        networkReceiver = new NetworkReceiver();
+        intentConnectionFilter = new IntentFilter();
+        intentConnectionFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 
         // Set up sign up button click listener
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +76,21 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(internetConectionReceiver, intentConnectionFilter);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(internetConectionReceiver);
+
+    }
+
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }

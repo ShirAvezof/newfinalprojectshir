@@ -1,6 +1,8 @@
 package com.example.finalprojectshir2.Manager.ManagerRegister;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +12,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.InputValidator;
+import com.example.finalprojectshir2.InternetConnectionReceiver;
 import com.example.finalprojectshir2.Manager.ManagerHome.ManagerHomeActivity;
+import com.example.finalprojectshir2.NetworkReceiver;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.callbacks.FirebaseCallback;
 import com.example.finalprojectshir2.models.Manager;
@@ -21,7 +25,9 @@ public class ManagerRegisterActivity extends AppCompatActivity implements View.O
     private Button signUpButtonm;
     private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText;
     private ManagerRepository managerRepository;
-
+InternetConnectionReceiver internetConectionReceiver;
+NetworkReceiver networkReceiver;
+IntentFilter intentConnectionFilter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +42,26 @@ public class ManagerRegisterActivity extends AppCompatActivity implements View.O
         lastNameEditText = findViewById(R.id.lastNameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
-
         signUpButtonm.setOnClickListener(this);
+
+        internetConectionReceiver = new InternetConnectionReceiver();
+        networkReceiver = new NetworkReceiver();
+        intentConnectionFilter = new IntentFilter();
+        intentConnectionFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(internetConectionReceiver, intentConnectionFilter);
+
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(internetConectionReceiver);
+
+    }
     @Override
     public void onClick(View v) {
         if (v == signUpButtonm) {
