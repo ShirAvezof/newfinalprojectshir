@@ -69,33 +69,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/createKindergartenButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="פרופיל מנהל גן"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/button_background"
-            android:layout_marginEnd="8dp"/>
-
-        <Button
-            android:id="@+id/backToKindergartenButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="מסך גן"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/button_background"/>
-
-    </LinearLayout>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavManager"
         android:layout_width="390dp"

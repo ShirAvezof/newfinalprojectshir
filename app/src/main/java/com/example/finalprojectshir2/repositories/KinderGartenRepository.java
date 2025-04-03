@@ -26,6 +26,30 @@ public class KinderGartenRepository {
         this.auth = FirebaseAuth.getInstance();
         this.database = FirebaseFirestore.getInstance();
     }
+    public void updateKinderGarten(KinderGarten kindergarten, FirebaseCallback<Boolean> callback) {
+        String kindergartenId = kindergarten.getId();
+
+        if (kindergartenId == null || kindergartenId.isEmpty()) {
+            Log.e(TAG, "Invalid kindergarten ID for update");
+            callback.onError("Invalid kindergarten ID");
+            return;
+        }
+
+        Log.d(TAG, "Updating kindergarten with ID: " + kindergartenId);
+
+        database.collection(COLLECTION_NAME)
+                .document(kindergartenId)
+                .set(kindergarten, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Kindergarten successfully updated");
+                    callback.onSuccess(true);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error updating kindergarten", e);
+                    callback.onError(e.getMessage());
+                });
+    }
+
 
     public void getKinderGartenById(String kindergartenId, FirebaseCallback<KinderGarten> callback) {
         Log.d(TAG, "Getting kindergarten with ID: " + kindergartenId);

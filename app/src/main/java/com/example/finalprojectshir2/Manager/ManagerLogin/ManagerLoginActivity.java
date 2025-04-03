@@ -108,7 +108,7 @@ public class ManagerLoginActivity extends AppCompatActivity implements View.OnCl
                     loginButton.setEnabled(true);
                     Toast.makeText(ManagerLoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ManagerLoginActivity.this, ManagerHomeActivity.class);
-
+                    intent.putExtra("kindergarten_id", result.getId());
                     startActivity(intent);
                     finish(); // Close login activity
                 });
