@@ -5,10 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -21,25 +19,19 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.finalprojectshir2.Home.HomeActivity;
-import com.example.finalprojectshir2.InputValidator;
 import com.example.finalprojectshir2.KindergardenProfile.KindergardenProfileActivity;
-import com.example.finalprojectshir2.Parent.Login.LoginActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
 
 public class CreateKindergartenActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "CreateKindergartenActivity";
     private EditText kindergartenNameEditText, ownerNameEditText, addressEditText, phoneEditText, aboutEditText, hoursEditText;
-    private CheckBox onlineRegistrationCheckBox, summerActivityCheckBox, augustActivityCheckBox;
+    private CheckBox onlineCamerasCheckbox, closedCircuitCheckbox, fridayActiveCheckbox;
     private Button submitButton, uploadPhotosButton;
     private ImageView imageView;
     private FirebaseFirestore firestore;
@@ -72,9 +64,9 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         hoursEditText = findViewById(R.id.hoursEditText);
 
         // Checkboxes
-        onlineRegistrationCheckBox = findViewById(R.id.onlineRegistrationCheckBox);
-        summerActivityCheckBox = findViewById(R.id.summerActivityCheckBox);
-        augustActivityCheckBox = findViewById(R.id.augustActivityCheckBox);
+        onlineCamerasCheckbox = findViewById(R.id.onlineCamerasCheckbox);
+        closedCircuitCheckbox = findViewById(R.id.closedCircuitCheckbox);
+        fridayActiveCheckbox = findViewById(R.id.fridayActiveCheckbox);
 
         // Buttons
         submitButton = findViewById(R.id.submitButton);
@@ -175,9 +167,9 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
 //        }
 
         // Get values from checkboxes
-        boolean hasOnlineCameras = onlineRegistrationCheckBox.isChecked();
-        boolean hasClosedCircuitCameras = summerActivityCheckBox.isChecked();
-        boolean isActiveOnFriday = augustActivityCheckBox.isChecked();
+        boolean hasOnlineCameras = onlineCamerasCheckbox.isChecked();
+        boolean hasClosedCircuitCameras = closedCircuitCheckbox.isChecked();
+        boolean isActiveOnFriday = fridayActiveCheckbox.isChecked();
 
         // Create enhanced KinderGarten object
         KinderGarten gan = new KinderGarten();

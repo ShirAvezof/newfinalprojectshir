@@ -132,7 +132,7 @@
                 android:orientation="vertical">
 
                 <CheckBox
-                    android:id="@+id/onlineRegistrationCheckBox"
+                    android:id="@+id/onlineCamerasCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -140,7 +140,7 @@
                     android:text="מצלמות אונליין" />
 
                 <CheckBox
-                    android:id="@+id/summerActivityCheckBox"
+                    android:id="@+id/closedCircuitCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -148,7 +148,7 @@
                     android:text="מצלמות מעגל סגור" />
 
                 <CheckBox
-                    android:id="@+id/augustActivityCheckBox"
+                    android:id="@+id/fridayActiveCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
