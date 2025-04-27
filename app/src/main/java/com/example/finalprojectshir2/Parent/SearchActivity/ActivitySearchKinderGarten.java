@@ -2,7 +2,6 @@ package com.example.finalprojectshir2.Parent.SearchActivity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,9 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalprojectshir2.FavoriteKindergarnds.FavoriteKindergarndsActivity;
+import com.example.finalprojectshir2.AllKindergardens.KinderGardenAdapter;
 import com.example.finalprojectshir2.Home.HomeActivity;
-import com.example.finalprojectshir2.KinderGartenAdapter;
 import com.example.finalprojectshir2.KindergardenProfile.KindergardenProfileActivity;
 import com.example.finalprojectshir2.Parent.ParentProfile.ParentProfileActivity;
 import com.example.finalprojectshir2.R;
@@ -59,7 +57,7 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
     private MaterialCheckBox fridayActiveCheckbox;
 
     // Adapter and data
-    private KinderGartenAdapter adapter;
+    private KinderGardenAdapter adapter;
     private List<KinderGarten> allKindergartenResults = new ArrayList<>();
     private List<KinderGarten> filteredResults = new ArrayList<>();
 
@@ -141,7 +139,7 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
     }
 
     private void setupRecyclerView() {
-        adapter = new KinderGartenAdapter(new ArrayList<>(), this::onKindergartenSelected);
+        adapter = new KinderGardenAdapter(new ArrayList<>(), this::onKindergartenSelected, this);
         kindergartensRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         kindergartensRecyclerView.setAdapter(adapter);
 

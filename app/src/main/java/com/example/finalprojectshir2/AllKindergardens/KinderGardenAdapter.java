@@ -1,5 +1,6 @@
 package com.example.finalprojectshir2.AllKindergardens;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -29,16 +30,17 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
     private List<KinderGarten> kindergartenList;
     private final OnKindergartenClickListener listener;
     private FavoriteKindergartenRepository favoriteRepository;
-
+    private Context context;
 
     public interface OnKindergartenClickListener {
         void onKindergartenClick(KinderGarten kindergarten);
     }
 
-    public KinderGardenAdapter(List<KinderGarten> kindergartenList, OnKindergartenClickListener listener) {
+    public KinderGardenAdapter(List<KinderGarten> kindergartenList, OnKindergartenClickListener listener, Context context) {
         this.kindergartenList = kindergartenList;
         this.listener = listener;
         this.favoriteRepository = new FavoriteKindergartenRepository();
+        this.context = context;
     }
 
     @NonNull
@@ -52,9 +54,51 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
     @Override
     public void onBindViewHolder(@NonNull KinderGartenViewHolder holder, int position) {
         KinderGarten kindergarten = kindergartenList.get(position);
-        holder.bind(kindergarten, listener, favoriteRepository);
-    }
 
+        holder.bind(kindergarten, listener, favoriteRepository, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+                if (currentUser != null) {
+                    String userId = currentUser.getUid();
+                    favoriteRepository.checkIfFavorite(userId, kindergarten.getId(), isFavorite -> {
+                        if (isFavorite) {
+                            // Already a favorite, remove it
+                            favoriteRepository.removeFromFavorites(userId, kindergarten.getId(), success -> {
+                                if (success) {
+                                    // Update the button appearance immediately
+                                    ((ImageButton)v).setImageResource(android.R.drawable.btn_star_big_off);
+                                    Toast.makeText(context,
+                                            "הוסר מהמועדפים", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context,
+                                            "שגיאה בהסרה מהמועדפים", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            // Not a favorite, add it
+                            favoriteRepository.addToFavorites(userId, kindergarten.getId(), success -> {
+                                if (success) {
+                                    // Update the button appearance immediately
+                                    ((ImageButton)v).setImageResource(android.R.drawable.btn_star_big_on);
+                                    Toast.makeText(context,
+                                            "התווסף למועדפים", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context,
+                                            "שגיאה בהוספה למועדפים", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    Toast.makeText(context,
+                            "יש להתחבר כדי להוסיף למועדפים", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
     @Override
     public int getItemCount() {
         return kindergartenList != null ? kindergartenList.size() : 0;
@@ -93,7 +137,7 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
         }
 
         public void bind(KinderGarten kindergarten, OnKindergartenClickListener listener,
-                         FavoriteKindergartenRepository favoriteRepository) {
+                         FavoriteKindergartenRepository favoriteRepository, View.OnClickListener OnFavorite) {
             nameTextView.setText(kindergarten.getGanname());
             addressTextView.setText(kindergarten.getAddress());
             ownerTextView.setText("בעלים: " + kindergarten.getOwnerName());
@@ -123,7 +167,26 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
             closedCircuitIcon.setVisibility(kindergarten.isHasClosedCircuitCameras() ? View.VISIBLE : View.GONE);
             fridayActiveIcon.setVisibility(kindergarten.isActiveOnFriday() ? View.VISIBLE : View.GONE);
 
-            // Set click listener for the card
+
+
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (currentUser != null) {
+                Log.d(TAG, "logged in");
+                String userId = currentUser.getUid();
+                favoriteRepository.checkIfFavorite(userId, kindergarten.getId(), isFavorite -> {
+                    if (isFavorite) {
+                        Log.d(TAG, "favorite");
+                        favoriteButton.setImageResource(android.R.drawable.btn_star_big_on);
+                    } else {
+                        Log.d(TAG, "not favorite");
+                        favoriteButton.setImageResource(android.R.drawable.btn_star_big_off);
+                    }
+                });
+            } else {
+                Log.d(TAG, "not logged in");
+            }
+
+            favoriteButton.setOnClickListener(OnFavorite);
             cardView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onKindergartenClick(kindergarten);
@@ -131,56 +194,11 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
             });
 
 
-            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (currentUser != null) {
-                String userId = currentUser.getUid();
-                favoriteRepository.checkIfFavorite(userId, kindergarten.getId(), isFavorite -> {
-                    if (isFavorite) {
-                        favoriteButton.setImageResource(android.R.drawable.btn_star_big_on);
-                    } else {
-                        favoriteButton.setImageResource(android.R.drawable.btn_star_big_off);
-                    }
-                });
-            }
 
 
-            favoriteButton.setOnClickListener(v -> {
-                if (currentUser != null) {
-                    String userId = currentUser.getUid();
 
-                    // Check current favorite status
-                    favoriteRepository.checkIfFavorite(userId, kindergarten.getId(), isFavorite -> {
-                        if (isFavorite) {
-                            // Already a favorite, remove it
-                            favoriteRepository.removeFromFavorites(userId, kindergarten.getId(), success -> {
-                                if (success) {
-                                    favoriteButton.setImageResource(android.R.drawable.btn_star_big_off);
-                                    Toast.makeText(favoriteButton.getContext(),
-                                            "הוסר מהמועדפים", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(favoriteButton.getContext(),
-                                            "שגיאה בהסרה מהמועדפים", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } else {
-                            // Not a favorite, add it
-                            favoriteRepository.addToFavorites(userId, kindergarten.getId(), success -> {
-                                if (success) {
-                                    favoriteButton.setImageResource(android.R.drawable.btn_star_big_on);
-                                    Toast.makeText(favoriteButton.getContext(),
-                                            "התווסף למועדפים", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(favoriteButton.getContext(),
-                                            "שגיאה בהוספה למועדפים", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    Toast.makeText(favoriteButton.getContext(),
-                            "יש להתחבר כדי להוסיף למועדפים", Toast.LENGTH_SHORT).show();
-                }
-            });
+
+
         }
     }
 }

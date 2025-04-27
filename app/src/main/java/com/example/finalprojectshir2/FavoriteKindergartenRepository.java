@@ -55,7 +55,6 @@ public class FavoriteKindergartenRepository {
                         ArrayList<String> favorites = new ArrayList<>();
                         favorites.add(kindergartenId);
                         userData.put("favoriteGans", favorites);
-
                         userFavoritesRef.set(userData, SetOptions.merge())
                                 .addOnSuccessListener(aVoid2 -> {
                                     Log.d(TAG, "Successfully created favorites document and added kindergarten");
