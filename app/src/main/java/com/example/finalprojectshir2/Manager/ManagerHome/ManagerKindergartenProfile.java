@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.Home.HomeActivity;
 import com.example.finalprojectshir2.Manager.ManagerProfile.ManagerProfileActivity;
+import com.example.finalprojectshir2.Manager.ManagerReviews.ManagerReviewsActivity;
 import com.example.finalprojectshir2.Parent.ParentProfile.ParentProfileActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
@@ -31,7 +33,7 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
     private static final String TAG = "ManagerKGProfile";
     public static final String EXTRA_KINDERGARTEN_ID = "kindergarten_id";
 
-    // UI elements
+
     private ProgressBar progressBar;
     private TextView ganNameTextView;
     private TextView ownerNameTextView;
@@ -51,27 +53,24 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
     private TextView hoursLabelTextView;
     private TextView galleryLabelTextView;
 
-    // Edit mode text fields
+
     private EditText ownerNameEditText;
     private EditText addressEditText;
     private EditText phoneEditText;
     private EditText aboutEditText;
+    private RatingBar profileRatingBar;
+    private TextView reviewCountTextView;
     private EditText hoursEditText;
     private LinearLayout buttonContainer;
 
-    // Gallery images
     private ImageView[] galleryImages;
 
-    // Bottom navigation
     private BottomNavigationView bottomNavigationView;
 
-    // Kindergarten data
     private KinderGarten currentKindergarten;
 
-    // Edit mode flag
     private boolean isEditMode = false;
 
-    // Presenter
     private ManagerKindergartenProfilePresenter presenter;
 
     @Override
@@ -82,15 +81,11 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
 
         initializeViews();
         setupPresenter();
-
-        // Apply styling to views
         applyStyles();
 
-        // Set up navigation
         bottomNavigationView = findViewById(R.id.bottomNavManager);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        // Get the kindergarten_id from the intent
         String kindergartenId = getIntent().getStringExtra(EXTRA_KINDERGARTEN_ID);
         if (kindergartenId == null || kindergartenId.isEmpty()) {
             showError("No kindergarten ID provided");
@@ -110,12 +105,11 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         phoneTextView = findViewById(R.id.phoneTextView);
         aboutTextView = findViewById(R.id.aboutTextView);
         hoursTextView = findViewById(R.id.hoursTextView);
-
-        // Find label TextViews
         aboutLabelTextView = findViewById(R.id.aboutLabelTextView);
         hoursLabelTextView = findViewById(R.id.hoursLabelTextView);
         galleryLabelTextView = findViewById(R.id.galleryLabelTextView);
-
+        profileRatingBar = findViewById(R.id.profileRatingBar);
+        reviewCountTextView = findViewById(R.id.reviewCountTextView);
         onlineCamerasCheckBox = findViewById(R.id.onlineCamerasCheckBox);
         closedCircuitCamerasCheckBox = findViewById(R.id.closedCircuitCamerasCheckBox);
         activeFridaysCheckBox = findViewById(R.id.activeFridaysCheckBox);
@@ -134,7 +128,6 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         if (parent instanceof LinearLayout) {
             LinearLayout parentLayout = (LinearLayout) parent;
 
-            // Create a container for edit/save/cancel buttons
             buttonContainer = new LinearLayout(this);
             buttonContainer.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -151,7 +144,7 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
             editButton.setText("ערוך פרטי גן");
             buttonContainer.addView(editButton);
 
-            // Create save button (initially hidden)
+            // Create save button
             saveButton = new Button(this);
             saveButton.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -161,7 +154,7 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
             saveButton.setVisibility(View.GONE);
             buttonContainer.addView(saveButton);
 
-            // Create cancel button (initially hidden)
+            // Create cancel button
             cancelButton = new Button(this);
             cancelButton.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -179,17 +172,14 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         if (reviewsButton != null) {
             reviewsButton.setOnClickListener(v -> openReviews());
         }
-
         // Set up edit button click listener
         if (editButton != null) {
             editButton.setOnClickListener(v -> enableEditMode());
         }
-
         // Set up save button click listener
         if (saveButton != null) {
             saveButton.setOnClickListener(v -> saveChanges());
         }
-
         // Set up cancel button click listener
         if (cancelButton != null) {
             cancelButton.setOnClickListener(v -> cancelChanges());
@@ -278,7 +268,6 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
                 Bitmap decodedBitmap = android.graphics.BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                 if (decodedBitmap != null) {
-                    // Apply a subtle animation to the image loading
                     mainImageView.setAlpha(0f);
                     mainImageView.setImageBitmap(decodedBitmap);
                     mainImageView.animate()
@@ -305,13 +294,10 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
             showError("No kindergarten data available to edit");
             return;
         }
-
         isEditMode = true;
-
         // Create edit fields if not already created
         createEditFields();
 
-        // Hide display TextViews and show corresponding EditTexts
         ownerNameTextView.setVisibility(View.GONE);
         ownerNameEditText.setVisibility(View.VISIBLE);
         ownerNameEditText.setText(currentKindergarten.getOwnerName());
@@ -332,16 +318,13 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         hoursEditText.setVisibility(View.VISIBLE);
         hoursEditText.setText(currentKindergarten.getHours());
 
-        // Enable checkboxes
         onlineCamerasCheckBox.setEnabled(true);
         closedCircuitCamerasCheckBox.setEnabled(true);
         activeFridaysCheckBox.setEnabled(true);
-
         // Hide edit button and show save/cancel buttons
         editButton.setVisibility(View.GONE);
         saveButton.setVisibility(View.VISIBLE);
         cancelButton.setVisibility(View.VISIBLE);
-
         // Disable reviews button during edit
         reviewsButton.setEnabled(false);
         reviewsButton.setAlpha(0.5f);
@@ -350,7 +333,6 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
     }
 
     private void createEditFields() {
-        // Parent views to find containers
         View basicInfoContainer = (View) ownerNameTextView.getParent();
         View aboutContainer = (View) aboutTextView.getParent();
         View hoursContainer = (View) hoursTextView.getParent();
@@ -449,10 +431,8 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
             return;
         }
 
-        // Show loading indicator
         showLoading();
-
-        // Update the kindergarten object with edited values
+        // Update the kindergarten
         currentKindergarten.setOwnerName(ownerNameEditText.getText().toString().trim());
         currentKindergarten.setAddress(addressEditText.getText().toString().trim());
         currentKindergarten.setPhone(phoneEditText.getText().toString().trim());
@@ -469,7 +449,6 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
     }
 
     private void cancelChanges() {
-        // Revert to view mode without saving
         disableEditMode();
 
         // Display the current data again
@@ -570,6 +549,17 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
                 addressTextView.setText(fullAddress);
             }
 
+            if (profileRatingBar != null) {
+                Float rating = kindergarten.getAverageRating();
+                profileRatingBar.setRating(rating != null ? rating : 0f);
+            }
+
+            // Set review count if available
+            if (reviewCountTextView != null) {
+                Integer count = kindergarten.getReviewCount();
+                reviewCountTextView.setText("(" + (count != null ? count : 0) + ")");
+            }
+
             if (phoneTextView != null) phoneTextView.setText("טלפון: " + kindergarten.getPhone());
 
             if (aboutTextView != null) {
@@ -629,8 +619,15 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
     }
 
     private void openReviews() {
-        // For future implementation
-        Toast.makeText(this, "חוות דעת יתווספו בקרוב", Toast.LENGTH_SHORT).show();
+        if (currentKindergarten == null || currentKindergarten.getId() == null || currentKindergarten.getId().isEmpty()) {
+            Toast.makeText(this, "שגיאה: לא נמצא מזהה גן", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(this, ManagerReviewsActivity.class);
+        intent.putExtra(ManagerReviewsActivity.EXTRA_KINDERGARTEN_ID, currentKindergarten.getId());
+        intent.putExtra(ManagerReviewsActivity.EXTRA_KINDERGARTEN_NAME, currentKindergarten.getGanname());
+        startActivity(intent);
     }
 
     @Override

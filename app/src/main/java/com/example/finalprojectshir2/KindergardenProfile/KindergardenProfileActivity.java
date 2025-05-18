@@ -1,5 +1,6 @@
 package com.example.finalprojectshir2.KindergardenProfile;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,13 +22,14 @@ public class KindergardenProfileActivity extends AppCompatActivity {
     private static final String TAG = "KGProfileActivity";
     public static final String EXTRA_KINDERGARTEN_ID = "kindergarten_id";
 
-    // UI elements
+
     private ProgressBar progressBar;
     private TextView ganNameTextView;
     private TextView ownerNameTextView;
     private TextView addressTextView;
     private TextView phoneTextView;
     private TextView aboutTextView;
+    private String kindergartenId;
     private TextView hoursTextView;
     private CheckBox onlineCamerasCheckBox;
     private CheckBox closedCircuitCamerasCheckBox;
@@ -38,11 +40,7 @@ public class KindergardenProfileActivity extends AppCompatActivity {
     private TextView aboutLabelTextView;
     private TextView hoursLabelTextView;
     private TextView galleryLabelTextView;
-
-    // Gallery images
     private ImageView[] galleryImages;
-
-    // Presenter
     private KindergardenProfilePresenter presenter;
 
     @Override
@@ -53,12 +51,10 @@ public class KindergardenProfileActivity extends AppCompatActivity {
 
         initializeViews();
         setupPresenter();
-
-        // Apply styling to views
         applyStyles();
 
         // Get the kindergarten_id from the intent
-        String kindergartenId = getIntent().getStringExtra("kindergarten_id");
+         kindergartenId = getIntent().getStringExtra("kindergarten_id");
         if (kindergartenId == null || kindergartenId.isEmpty()) {
             showError("No kindergarten ID provided");
             finish();
@@ -68,7 +64,6 @@ public class KindergardenProfileActivity extends AppCompatActivity {
         // Load kindergarten details
         presenter.loadKindergartenDetails(kindergartenId);
     }
-
     private void initializeViews() {
         progressBar = findViewById(R.id.progressBar);
         ganNameTextView = findViewById(R.id.ganNameTextView);
@@ -77,8 +72,6 @@ public class KindergardenProfileActivity extends AppCompatActivity {
         phoneTextView = findViewById(R.id.phoneTextView);
         aboutTextView = findViewById(R.id.aboutTextView);
         hoursTextView = findViewById(R.id.hoursTextView);
-
-        // Find label TextViews if they exist in your layout
         aboutLabelTextView = findViewById(R.id.aboutLabelTextView);
         hoursLabelTextView = findViewById(R.id.hoursLabelTextView);
         galleryLabelTextView = findViewById(R.id.galleryLabelTextView);
@@ -121,7 +114,6 @@ public class KindergardenProfileActivity extends AppCompatActivity {
             reviewsButton.setBackgroundColor(0xFF4285F4); // Google Blue
             reviewsButton.setTextColor(0xFFFFFFFF); // White
         }
-
         // Style the checkboxes
         if (onlineCamerasCheckBox != null) {
             onlineCamerasCheckBox.setTextColor(0xFF333333); // Dark Gray
@@ -145,28 +137,19 @@ public class KindergardenProfileActivity extends AppCompatActivity {
             ownerNameTextView.setTextColor(0xFF666666); // Medium Gray
             ownerNameTextView.setTextSize(16);
         }
-
-        // Style the label text views if they exist
         if (aboutLabelTextView != null) {
             aboutLabelTextView.setTextColor(0xFF4285F4); // Google Blue
             aboutLabelTextView.setTextSize(18);
         }
-
         if (hoursLabelTextView != null) {
             hoursLabelTextView.setTextColor(0xFF4285F4); // Google Blue
             hoursLabelTextView.setTextSize(18);
         }
-
         if (galleryLabelTextView != null) {
             galleryLabelTextView.setTextColor(0xFF4285F4); // Google Blue
             galleryLabelTextView.setTextSize(18);
         }
-
-
-
-
     }
-
     private void loadMainImage(KinderGarten kindergarten) {
 
         ImageView mainImageView = findViewById(R.id.galleryImage3);
@@ -183,7 +166,6 @@ public class KindergardenProfileActivity extends AppCompatActivity {
                 Bitmap decodedBitmap = android.graphics.BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                 if (decodedBitmap != null) {
-                    // Apply a subtle animation to the image loading
                     mainImageView.setAlpha(0f);
                     mainImageView.setImageBitmap(decodedBitmap);
                     mainImageView.animate()
@@ -242,7 +224,6 @@ public class KindergardenProfileActivity extends AppCompatActivity {
     public void displayKindergartenDetails(KinderGarten kindergarten) {
         Log.d(TAG, "Displaying details for: " + kindergarten.getGanname());
         runOnUiThread(() -> {
-            // Set text values
             if (ganNameTextView != null) ganNameTextView.setText(kindergarten.getGanname());
             if (ownerNameTextView != null) ownerNameTextView.setText("מנהל/ת: " + kindergarten.getOwnerName());
 
@@ -275,20 +256,20 @@ public class KindergardenProfileActivity extends AppCompatActivity {
             // Set checkbox values
             if (onlineCamerasCheckBox != null) {
                 onlineCamerasCheckBox.setChecked(kindergarten.isHasOnlineCameras());
-                onlineCamerasCheckBox.setEnabled(false); // Just for display
+                onlineCamerasCheckBox.setEnabled(false);
             }
 
             if (closedCircuitCamerasCheckBox != null) {
                 closedCircuitCamerasCheckBox.setChecked(kindergarten.isHasClosedCircuitCameras());
-                closedCircuitCamerasCheckBox.setEnabled(false); // Just for display
+                closedCircuitCamerasCheckBox.setEnabled(false);
             }
 
             if (activeFridaysCheckBox != null) {
                 activeFridaysCheckBox.setChecked(kindergarten.isActiveOnFriday());
-                activeFridaysCheckBox.setEnabled(false); // Just for display
+                activeFridaysCheckBox.setEnabled(false);
             }
 
-            // Handle business license image
+
             if (businessLicenseImageView != null) {
                 if (kindergarten.isHasBusinessLicense()) {
                     businessLicenseImageView.setImageResource(android.R.drawable.checkbox_on_background);
@@ -305,7 +286,6 @@ public class KindergardenProfileActivity extends AppCompatActivity {
     }
 
     private void setupGalleryPlaceholders() {
-        // Set placeholder images for gallery
         for (ImageView galleryImage : galleryImages) {
             if (galleryImage != null) {
                 galleryImage.setImageResource(android.R.drawable.ic_menu_gallery);
@@ -316,10 +296,21 @@ public class KindergardenProfileActivity extends AppCompatActivity {
     }
 
     private void openReviews() {
-        // For future implementation
-        Toast.makeText(this, "חוות דעת יתווספו בקרוב", Toast.LENGTH_SHORT).show();
-    }
+        if (kindergartenId == null || kindergartenId.isEmpty()) {
+            Toast.makeText(this, "שגיאה: לא נמצא מזהה גן", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        Intent intent = new Intent(this, ReviewsActivity.class);
+        intent.putExtra(ReviewsActivity.EXTRA_KINDERGARTEN_ID, kindergartenId);
+
+        // If we have the name available, pass it too
+        if (ganNameTextView != null && ganNameTextView.getText() != null) {
+            intent.putExtra(ReviewsActivity.EXTRA_KINDERGARTEN_NAME, ganNameTextView.getText().toString());
+        }
+
+        startActivity(intent);
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

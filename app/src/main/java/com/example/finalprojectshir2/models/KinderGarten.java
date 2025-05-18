@@ -14,6 +14,25 @@ public class KinderGarten {
     private String hours;
     private String phone;
     private String image;
+
+    public Float getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Float averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Integer getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Integer reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
+    private Float averageRating;
+    private Integer reviewCount;
     private boolean hasOnlineCameras;
     private boolean hasClosedCircuitCameras;
 

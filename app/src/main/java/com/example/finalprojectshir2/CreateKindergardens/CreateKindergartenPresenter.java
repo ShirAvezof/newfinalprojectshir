@@ -10,8 +10,8 @@ public class CreateKindergartenPresenter {
     private CreateKindergartenActivity activity;
     private KinderGartenRepository repository;
 
-    public CreateKindergartenPresenter(CreateKindergartenActivity activity) {  // Change parameter type
-        this.activity = activity;  // Store the passed activity
+    public CreateKindergartenPresenter(CreateKindergartenActivity activity) {
+        this.activity = activity;
         repository = new KinderGartenRepository();
     }
 

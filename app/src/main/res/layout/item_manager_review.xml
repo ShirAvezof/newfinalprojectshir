@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Flagged indicator -->
+        <TextView
+            android:id="@+id/flaggedIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFECB3"
+            android:padding="4dp"
+            android:text="חוות דעת זו סומנה כלא ראויה וממתינה לסקירה"
+            android:textColor="#F57C00"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/reviewNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                tools:text="שם המשתמש" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/flagReviewButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_dialog_alert"
+                    android:tint="#FFC107"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="סמן כלא ראוי" />
+
+                <ImageView
+                    android:id="@+id/deleteReviewButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_delete"
+                    android:tint="#E53935"
+                    android:contentDescription="מחק חוות דעת" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RatingBar
+            android:id="@+id/reviewRatingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:stepSize="0.5" />
+
+        <TextView
+            android:id="@+id/reviewCommentTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            tools:text="תוכן חוות הדעת"
+            android:lineSpacingExtra="4dp" />
+
+        <TextView
+            android:id="@+id/reviewDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            tools:text="01/01/2025" />
+
+        <!-- Manager response card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/responseCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="#F5F5F5"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="1dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="תגובת מנהל/ת הגן"
+                    android:textColor="#4285F4"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/responseNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#333333"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="שם המנהל/ת" />
+
+                <TextView
+                    android:id="@+id/responseTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#666666"
+                    android:textSize="14sp"
+                    tools:text="תוכן התגובה" />
+
+                <TextView
+                    android:id="@+id/responseDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#999999"
+                    android:textSize="11sp"
+                    tools:text="01/01/2025" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Response button -->
+        <Button
+            android:id="@+id/respondButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="הגב"
+            android:textColor="#FFFFFF"
+            android:background="#4285F4" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

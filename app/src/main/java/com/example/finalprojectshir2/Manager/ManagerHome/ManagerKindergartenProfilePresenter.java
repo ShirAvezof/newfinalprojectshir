@@ -71,11 +71,9 @@ public class ManagerKindergartenProfilePresenter {
                 Log.d(TAG, "Save successful");
                 if (view != null) {
                     view.onSaveSuccess();
-                    // Reload the data to refresh the display
                     loadKindergartenDetails(kindergarten.getId());
                 }
             }
-
             @Override
             public void onError(String error) {
                 Log.e(TAG, "Save error: " + error);

@@ -50,7 +50,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_kindergarnds);
 
-        // Initialize UI components
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.nav_favorites);
@@ -61,12 +61,12 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
 
         // Set up RecyclerView
         favoriteKindergartens = new ArrayList<>();
-        // Use the activity itself as the click listener since it implements the interface
+
         adapter = new KinderGardenAdapter(favoriteKindergartens, this, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        // Initialize Firebase components
+
         db = FirebaseFirestore.getInstance();
         favoriteRepository = new FavoriteKindergartenRepository();
 
@@ -76,13 +76,13 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
             currentUserId = currentUser.getUid();
             loadFavoriteKindergartens();
         } else {
-            // Handle not logged in
+
             showEmptyState("Please log in to view your favorites");
         }
     }
 
     private void loadFavoriteKindergartens() {
-        showLoading(); // Start with loading state
+        showLoading();
 
         favoriteRepository.getAllFavorites(currentUserId, new FavoriteKindergartenRepository.OnFavoritesLoadedListener() {
             @Override
@@ -111,7 +111,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
         }
 
         KinderGartenRepository repository = new KinderGartenRepository();
-        final int[] loadedCount = {0}; // Track completion
+        final int[] loadedCount = {0};
         final int totalToLoad = kindergartenIds.size();
 
         for (String id : kindergartenIds) {
@@ -125,7 +125,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
 
                     // Check if all kindergartens are loaded
                     if (loadedCount[0] == totalToLoad) {
-                        // Update UI on the main thread
+
                         runOnUiThread(() -> {
                             adapter.updateData(favoriteKindergartens);
                             hideLoading();
@@ -161,7 +161,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
         }
     }
 
-    // UI state management methods
+
     private void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
@@ -189,8 +189,6 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, KindergardenProfileActivity.class);
         intent.putExtra(KindergardenProfileActivity.EXTRA_KINDERGARTEN_ID, kindergarten.getId());
         startActivity(intent);
-
-
     }
 
     @Override
@@ -214,7 +212,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        // Reload favorites when returning to this activity
+
         if (currentUserId != null) {
             loadFavoriteKindergartens();
         }
