@@ -21,10 +21,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.finalprojectshir2.Home.HomeActivity;
 import com.example.finalprojectshir2.Manager.ManagerProfile.ManagerProfileActivity;
 import com.example.finalprojectshir2.Manager.ManagerReviews.ManagerReviewsActivity;
-import com.example.finalprojectshir2.Parent.ParentProfile.ParentProfileActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,7 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ManagerKindergartenProfile extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "ManagerKGProfile";
     public static final String EXTRA_KINDERGARTEN_ID = "kindergarten_id";
-
+    private static final int REQUEST_IMAGE_PICK = 1001;
 
     private ProgressBar progressBar;
     private TextView ganNameTextView;
@@ -49,10 +47,18 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
     private Button editButton;
     private Button saveButton;
     private Button cancelButton;
+    private Button backButton;
     private TextView aboutLabelTextView;
     private TextView hoursLabelTextView;
     private TextView galleryLabelTextView;
 
+    // License type and image elements
+    private TextView licenseLabelTextView;
+    private TextView licenseTypeTextView;
+    private EditText licenseTypeEditText;
+    private Button uploadLicenseImageButton;
+    private ImageView licenseImageView;
+    private String selectedLicenseImageBase64;
 
     private EditText ownerNameEditText;
     private EditText addressEditText;
@@ -82,9 +88,7 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         initializeViews();
         setupPresenter();
         applyStyles();
-
-        bottomNavigationView = findViewById(R.id.bottomNavManager);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        setupListeners();
 
         String kindergartenId = getIntent().getStringExtra(EXTRA_KINDERGARTEN_ID);
         if (kindergartenId == null || kindergartenId.isEmpty()) {
@@ -113,8 +117,17 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         onlineCamerasCheckBox = findViewById(R.id.onlineCamerasCheckBox);
         closedCircuitCamerasCheckBox = findViewById(R.id.closedCircuitCamerasCheckBox);
         activeFridaysCheckBox = findViewById(R.id.activeFridaysCheckBox);
-
         businessLicenseImageView = findViewById(R.id.businessLicenseImageView);
+        backButton = findViewById(R.id.backButton);
+
+        // Initialize license views
+        licenseLabelTextView = findViewById(R.id.licenseLabelTextView);
+        licenseTypeTextView = findViewById(R.id.licenseTypeTextView);
+        licenseImageView = findViewById(R.id.licenseImageView);
+        uploadLicenseImageButton = findViewById(R.id.uploadLicenseImageButton);
+
+        // Initialize bottom navigation
+        bottomNavigationView = findViewById(R.id.bottomNavManager);
 
         galleryImages = new ImageView[3];
         galleryImages[0] = findViewById(R.id.galleryImage1);
@@ -168,24 +181,37 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
             parentLayout.addView(buttonContainer, parentLayout.indexOfChild(reviewsButton));
         }
 
-        // Set up reviews button click listener
+        Log.d(TAG, "Views initialized");
+    }
+
+    private void setupListeners() {
+        // Set up button click listeners
         if (reviewsButton != null) {
             reviewsButton.setOnClickListener(v -> openReviews());
         }
-        // Set up edit button click listener
+
         if (editButton != null) {
             editButton.setOnClickListener(v -> enableEditMode());
         }
-        // Set up save button click listener
+
         if (saveButton != null) {
             saveButton.setOnClickListener(v -> saveChanges());
         }
-        // Set up cancel button click listener
+
         if (cancelButton != null) {
             cancelButton.setOnClickListener(v -> cancelChanges());
         }
 
-        Log.d(TAG, "Views initialized");
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> onBackPressed());
+        }
+
+        if (uploadLicenseImageButton != null) {
+            uploadLicenseImageButton.setOnClickListener(v -> selectLicenseImage());
+        }
+
+        // Set up bottom navigation listener
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
     private void applyStyles() {
@@ -252,6 +278,18 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
             galleryLabelTextView.setTextColor(0xFF4285F4); // Google Blue
             galleryLabelTextView.setTextSize(18);
         }
+
+        // Style the license label
+        if (licenseLabelTextView != null) {
+            licenseLabelTextView.setTextColor(0xFF4285F4); // Google Blue
+            licenseLabelTextView.setTextSize(18);
+        }
+
+        // Style the license upload button
+        if (uploadLicenseImageButton != null) {
+            uploadLicenseImageButton.setBackgroundColor(0xFF4285F4); // Google Blue
+            uploadLicenseImageButton.setTextColor(0xFFFFFFFF); // White
+        }
     }
 
     private void loadMainImage(KinderGarten kindergarten) {
@@ -289,6 +327,45 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         }
     }
 
+    private void loadLicenseImage(KinderGarten kindergarten) {
+        if (licenseImageView == null) {
+            Log.w(TAG, "License image view not found in layout");
+            return;
+        }
+
+        if (kindergarten.getLicenseImage() != null && !kindergarten.getLicenseImage().isEmpty()) {
+            try {
+                // Convert Base64 string to bitmap
+                byte[] decodedString = android.util.Base64.decode(
+                        kindergarten.getLicenseImage(), android.util.Base64.DEFAULT);
+                Bitmap decodedBitmap = android.graphics.BitmapFactory.decodeByteArray(
+                        decodedString, 0, decodedString.length);
+
+                if (decodedBitmap != null) {
+                    licenseImageView.setAlpha(0f);
+                    licenseImageView.setImageBitmap(decodedBitmap);
+                    licenseImageView.animate()
+                            .alpha(1f)
+                            .setDuration(500)
+                            .setInterpolator(new android.view.animation.DecelerateInterpolator())
+                            .start();
+                    licenseImageView.setVisibility(View.VISIBLE);
+
+                    Log.d(TAG, "Successfully loaded license image");
+                } else {
+                    Log.e(TAG, "Failed to decode license bitmap from Base64 string");
+                    licenseImageView.setVisibility(View.GONE);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error loading license image: " + e.getMessage());
+                licenseImageView.setVisibility(View.GONE);
+            }
+        } else {
+            Log.d(TAG, "No license image available for this kindergarten");
+            licenseImageView.setVisibility(View.GONE);
+        }
+    }
+
     private void enableEditMode() {
         if (currentKindergarten == null) {
             showError("No kindergarten data available to edit");
@@ -318,13 +395,25 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         hoursEditText.setVisibility(View.VISIBLE);
         hoursEditText.setText(currentKindergarten.getHours());
 
+        // Show license type edit
+        licenseTypeTextView.setVisibility(View.GONE);
+        licenseTypeEditText.setVisibility(View.VISIBLE);
+        licenseTypeEditText.setText(currentKindergarten.getLicenseType());
+
+        // Show license image upload button
+        if (uploadLicenseImageButton != null) {
+            uploadLicenseImageButton.setVisibility(View.VISIBLE);
+        }
+
         onlineCamerasCheckBox.setEnabled(true);
         closedCircuitCamerasCheckBox.setEnabled(true);
         activeFridaysCheckBox.setEnabled(true);
+
         // Hide edit button and show save/cancel buttons
         editButton.setVisibility(View.GONE);
         saveButton.setVisibility(View.VISIBLE);
         cancelButton.setVisibility(View.VISIBLE);
+
         // Disable reviews button during edit
         reviewsButton.setEnabled(false);
         reviewsButton.setAlpha(0.5f);
@@ -336,6 +425,7 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         View basicInfoContainer = (View) ownerNameTextView.getParent();
         View aboutContainer = (View) aboutTextView.getParent();
         View hoursContainer = (View) hoursTextView.getParent();
+        View licenseContainer = (View) licenseTypeTextView.getParent();
 
         // Create owner name edit text if not exists
         if (ownerNameEditText == null && basicInfoContainer instanceof ViewGroup) {
@@ -423,6 +513,22 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
             hoursEditText.setVisibility(View.GONE);
             container.addView(hoursEditText, container.indexOfChild(hoursTextView) + 1);
         }
+
+        // Create license type edit text if not exists
+        if (licenseTypeEditText == null && licenseContainer instanceof ViewGroup) {
+            ViewGroup container = (ViewGroup) licenseContainer;
+            licenseTypeEditText = new EditText(this);
+            licenseTypeEditText.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            licenseTypeEditText.setTextColor(0xFF333333);
+            licenseTypeEditText.setTextSize(16);
+            licenseTypeEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+            licenseTypeEditText.setHint("סוג רישיון");
+            licenseTypeEditText.setVisibility(View.GONE);
+            container.addView(licenseTypeEditText, container.indexOfChild(licenseTypeTextView) + 1);
+        }
     }
 
     private void saveChanges() {
@@ -438,11 +544,17 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         currentKindergarten.setPhone(phoneEditText.getText().toString().trim());
         currentKindergarten.setAboutgan(aboutEditText.getText().toString().trim());
         currentKindergarten.setHours(hoursEditText.getText().toString().trim());
+        currentKindergarten.setLicenseType(licenseTypeEditText.getText().toString().trim());
 
         // Update checkbox values
         currentKindergarten.setHasOnlineCameras(onlineCamerasCheckBox.isChecked());
         currentKindergarten.setHasClosedCircuitCameras(closedCircuitCamerasCheckBox.isChecked());
         currentKindergarten.setActiveOnFriday(activeFridaysCheckBox.isChecked());
+
+        // Save license image if selected
+        if (selectedLicenseImageBase64 != null && !selectedLicenseImageBase64.isEmpty()) {
+            currentKindergarten.setLicenseImage(selectedLicenseImageBase64);
+        }
 
         // Save changes to database
         presenter.saveKindergartenDetails(currentKindergarten);
@@ -478,6 +590,14 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         hoursTextView.setVisibility(View.VISIBLE);
         hoursEditText.setVisibility(View.GONE);
 
+        licenseTypeTextView.setVisibility(View.VISIBLE);
+        licenseTypeEditText.setVisibility(View.GONE);
+
+        // Hide license upload button
+        if (uploadLicenseImageButton != null) {
+            uploadLicenseImageButton.setVisibility(View.GONE);
+        }
+
         // Disable checkboxes
         onlineCamerasCheckBox.setEnabled(false);
         closedCircuitCamerasCheckBox.setEnabled(false);
@@ -491,6 +611,84 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         // Re-enable reviews button
         reviewsButton.setEnabled(true);
         reviewsButton.setAlpha(1.0f);
+
+        // Reset selected image data
+        selectedLicenseImageBase64 = null;
+    }
+
+    private void selectLicenseImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_IMAGE_PICK);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
+            try {
+                // Get the image from data
+                android.net.Uri selectedImageUri = data.getData();
+                if (selectedImageUri != null) {
+                    // Show a loading indicator
+                    Toast.makeText(this, "מעבד את התמונה...", Toast.LENGTH_SHORT).show();
+
+                    // Process the image in a background thread
+                    new Thread(() -> {
+                        try {
+                            // Convert to Base64
+                            java.io.InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
+                            Bitmap bitmap = android.graphics.BitmapFactory.decodeStream(imageStream);
+
+                            // Resize the image to reduce memory usage
+                            bitmap = resizeBitmap(bitmap, 800); // Max width or height of 800px
+
+                            // Convert to Base64
+                            java.io.ByteArrayOutputStream byteArrayOutputStream = new java.io.ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+                            byte[] byteArray = byteArrayOutputStream.toByteArray();
+                            selectedLicenseImageBase64 = android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
+
+                            // Update UI on main thread
+                            Bitmap finalBitmap = bitmap;
+                            runOnUiThread(() -> {
+                                licenseImageView.setImageBitmap(finalBitmap);
+                                licenseImageView.setVisibility(View.VISIBLE);
+                                Toast.makeText(this, "התמונה נבחרה בהצלחה", Toast.LENGTH_SHORT).show();
+                            });
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error processing image: " + e.getMessage());
+                            runOnUiThread(() -> {
+                                Toast.makeText(this, "שגיאה בעיבוד התמונה: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            });
+                        }
+                    }).start();
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error selecting image: " + e.getMessage());
+                Toast.makeText(this, "שגיאה בבחירת התמונה: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    // Helper method to resize bitmap
+    private Bitmap resizeBitmap(Bitmap bitmap, int maxDimension) {
+        if (bitmap == null) return null;
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float ratio = (float) width / (float) height;
+
+        if (width > height && width > maxDimension) {
+            width = maxDimension;
+            height = (int) (width / ratio);
+        } else if (height > width && height > maxDimension) {
+            height = maxDimension;
+            width = (int) (height * ratio);
+        }
+
+        return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 
     public void onSaveSuccess() {
@@ -581,6 +779,16 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
                 }
             }
 
+            // Set license type text
+            if (licenseTypeTextView != null) {
+                String licenseType = kindergarten.getLicenseType();
+                if (licenseType != null && !licenseType.isEmpty()) {
+                    licenseTypeTextView.setText("סוג רישיון: " + licenseType);
+                } else {
+                    licenseTypeTextView.setText("סוג רישיון: לא צוין");
+                }
+            }
+
             // Set checkbox values
             if (onlineCamerasCheckBox != null) {
                 onlineCamerasCheckBox.setChecked(kindergarten.isHasOnlineCameras());
@@ -609,7 +817,11 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
                 businessLicenseImageView.setVisibility(View.VISIBLE);
             }
 
+            // Load main gallery image
             loadMainImage(kindergarten);
+
+            // Load license image
+            loadLicenseImage(kindergarten);
 
             // Enable edit button now that we have data
             if (editButton != null) {
@@ -633,17 +845,29 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.nav_profile) {
-            String kindergartenId = getIntent().getStringExtra("kindergarten_id");
+        String kindergartenId = currentKindergarten != null ? currentKindergarten.getId() : null;
 
+        if (itemId == R.id.nav_profile) {
             Intent i = new Intent(this, ManagerProfileActivity.class);
-            i.putExtra("kindergarten_id", kindergartenId);
+            if (kindergartenId != null) {
+                i.putExtra("kindergarten_id", kindergartenId);
+            }
             startActivity(i);
             return true;
         }
         else if (itemId == R.id.nav_ganHome) {
+            // Already on kindergarten profile page
             return true;
         }
+        else if (itemId == R.id.nav_home) {
+            Intent i = new Intent(this, ManagerHomeActivity.class);
+            if (kindergartenId != null) {
+                i.putExtra("kindergarten_id", kindergartenId);
+            }
+            startActivity(i);
+            return true;
+        }
+
         return false;
     }
 

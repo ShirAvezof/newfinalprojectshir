@@ -7,131 +7,188 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import android.widget.ProgressBar;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.finalprojectshir2.Manager.ManagerHome.ManagerHomeActivity;
 import com.example.finalprojectshir2.Manager.ManagerHome.ManagerKindergartenProfile;
+import com.example.finalprojectshir2.Manager.ManagerLogin.ManagerLoginActivity;
 import com.example.finalprojectshir2.R;
+import com.example.finalprojectshir2.models.Manager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.DocumentSnapshot;
-import android.widget.Toast;
+public class ManagerProfileActivity extends AppCompatActivity implements
+        BottomNavigationView.OnNavigationItemSelectedListener {
 
-
-public class ManagerProfileActivity extends AppCompatActivity  implements BottomNavigationView.OnNavigationItemSelectedListener{
-    BottomNavigationView bottomNavManager;
+    private BottomNavigationView bottomNavManager;
     private TextView tvManagerName;
-    Dialog dialog;
+    private Dialog dialog;
     private Button editProfileButton;
     private EditText editManagerName;
     private Button btnConfirm, btnCancel;
     private String kindergartenId;
+    private ProgressBar progressBar;
 
+    private ManagerProfilePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_manager_profile);
-        bottomNavManager = findViewById(R.id.bottomNavManager);
-        bottomNavManager.setOnNavigationItemSelectedListener(this);
 
+        initializeViews();
+        setupPresenter();
+        setupListeners();
+
+        kindergartenId = getIntent().getStringExtra("kindergarten_id");
+
+        // Load manager details using the presenter
+        presenter.loadManagerDetails();
+    }
+
+    private void initializeViews() {
+        bottomNavManager = findViewById(R.id.bottomNavManager);
         tvManagerName = findViewById(R.id.tvManagerName);
         editProfileButton = findViewById(R.id.editProfileButton);
-        loadManagerDetails(); // קריאה לפונקציה שתביא את הנתונים
-        // יצירת הדיאלוג לעריכת פרופיל
+        progressBar = findViewById(R.id.progressBar);
+
+        if (progressBar == null) {
+            // Create progress bar programmatically if not found in layout
+            progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
+            progressBar.setIndeterminate(true);
+            progressBar.setVisibility(View.GONE);
+
+            // Add to the root view
+            View rootView = findViewById(android.R.id.content);
+            if (rootView instanceof android.view.ViewGroup) {
+                ((android.view.ViewGroup) rootView).addView(progressBar);
+
+                // Center the progress bar
+                progressBar.setLayoutParams(new android.view.ViewGroup.LayoutParams(
+                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                ));
+                progressBar.setX((float) (rootView.getWidth() / 2 - 50));
+                progressBar.setY((float) (rootView.getHeight() / 2 - 50));
+            }
+        }
+
+        // Initialize dialog for editing profile
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_edit_manager);
 
         editManagerName = dialog.findViewById(R.id.editManagerName);
-
         btnConfirm = dialog.findViewById(R.id.btnConfirm);
         btnCancel = dialog.findViewById(R.id.btnCancel);
+    }
 
-        kindergartenId = getIntent().getStringExtra("kindergarten_id");
+    private void setupPresenter() {
+        presenter = new ManagerProfilePresenter(this, this);
+    }
 
+    private void setupListeners() {
+        bottomNavManager.setOnNavigationItemSelectedListener(this);
 
-        Button btnEdit = findViewById(R.id.editProfileButton);
-        btnEdit.setOnClickListener(v -> {
+        // Edit button listener
+        editProfileButton.setOnClickListener(v -> {
             editManagerName.setText(tvManagerName.getText());
-
             dialog.show();
         });
 
-// אישור עריכה
+        // Confirm button listener
         btnConfirm.setOnClickListener(v -> {
             String newName = editManagerName.getText().toString();
 
-            updateManagerProfile(newName);
+            if (newName.trim().isEmpty()) {
+                Toast.makeText(this, "שם לא יכול להיות ריק", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            presenter.updateManagerProfile(newName);
             dialog.dismiss();
         });
 
-// ביטול
+        // Cancel button listener
         btnCancel.setOnClickListener(v -> dialog.dismiss());
-
-
-    }
-    private void updateManagerProfile(String name) {
-        String managerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("managers").document(managerId)
-                .update("managerName", name)
-                .addOnSuccessListener(unused -> {
-                    Toast.makeText(this, "הפרופיל עודכן בהצלחה", Toast.LENGTH_SHORT).show();
-                    tvManagerName.setText(name);
-
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "שגיאה בעדכון פרופיל", Toast.LENGTH_SHORT).show();
-                });
     }
 
 
-    private void loadManagerDetails() {
-        // מזהה המנהל מתוך FirebaseAuth
-        String managerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("managers").document(managerId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        String name = documentSnapshot.getString("managerName");
-                        String email = documentSnapshot.getString("managerEmail");
-
-                        tvManagerName.setText(name);
-
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(ManagerProfileActivity.this, "שגיאה בטעינת פרטי המנהל", Toast.LENGTH_SHORT).show();
-                });
+    public void displayManagerDetails(Manager manager) {
+        if (manager != null) {
+            tvManagerName.setText(manager.getManagerName());
+        }
     }
+
+    public void showLoading() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideLoading() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    public void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void onProfileUpdateSuccess(String name) {
+        tvManagerName.setText(name);
+        Toast.makeText(this, "הפרופיל עודכן בהצלחה", Toast.LENGTH_SHORT).show();
+    }
+
 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.nav_profile) {
-//            Intent i = new Intent(this, ManagerProfileActivity.class);
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.nav_profile) {
+            // Already on profile page
             return true;
         }
-        else if (item.getItemId() == R.id.nav_ganHome){
-            if (kindergartenId == null) {
+        else if (itemId == R.id.nav_ganHome) {
+            if (kindergartenId == null || kindergartenId.isEmpty()) {
                 Toast.makeText(this, "לא התקבל מזהה גן", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
             Intent i = new Intent(this, ManagerKindergartenProfile.class);
-            i.putExtra("kindergarten_id", kindergartenId);
+            i.putExtra(ManagerKindergartenProfile.EXTRA_KINDERGARTEN_ID, kindergartenId);
+            startActivity(i);
+            return true;
+        }
+        else if (itemId == R.id.nav_home) {
+            Intent i = new Intent(this, ManagerHomeActivity.class);
+            if (kindergartenId != null) {
+                i.putExtra("kindergarten_id", kindergartenId);
+            }
+            startActivity(i);
+            return true;
+        }
+        else if (itemId == R.id.nav_home) {
+            Intent i = new Intent(this, ManagerLoginActivity.class);
             startActivity(i);
             return true;
         }
 
+
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (presenter != null) {
+            presenter.onDestroy();
+        }
     }
 }
