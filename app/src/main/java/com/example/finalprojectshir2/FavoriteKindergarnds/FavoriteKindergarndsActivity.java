@@ -118,7 +118,9 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
             repository.getKinderGartenById(id, new FirebaseCallback<KinderGarten>() {
                 @Override
                 public void onSuccess(KinderGarten kinderGarten) {
-                    favoriteKindergartens.add(kinderGarten);
+                    if (!containsKindergarten(favoriteKindergartens, kinderGarten.getId())) {
+                        favoriteKindergartens.add(kinderGarten);
+                    }
                     loadedCount[0]++;
 
                     // Check if all kindergartens are loaded
@@ -131,7 +133,14 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
                         });
                     }
                 }
-
+                private boolean containsKindergarten(List<KinderGarten> list, String id) {
+                    for (KinderGarten g : list) {
+                        if (g.getId().equals(id)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
                 @Override
                 public void onError(String error) {
                     loadedCount[0]++;
@@ -178,8 +187,10 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
     @Override
     public void onKindergartenClick(KinderGarten kindergarten) {
         Intent intent = new Intent(this, KindergardenProfileActivity.class);
-        intent.putExtra("KINDERGARTEN_ID", kindergarten.getId());
+        intent.putExtra(KindergardenProfileActivity.EXTRA_KINDERGARTEN_ID, kindergarten.getId());
         startActivity(intent);
+
+
     }
 
     @Override
@@ -208,4 +219,14 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
             loadFavoriteKindergartens();
         }
     }
+
+    public void removeFromFavoritesList(KinderGarten kindergarten) {
+        favoriteKindergartens.remove(kindergarten);
+        adapter.updateData(favoriteKindergartens);
+
+        if (favoriteKindergartens.isEmpty()) {
+            showEmptyState("אין גנים מועדפים");
+        }
+    }
+
 }

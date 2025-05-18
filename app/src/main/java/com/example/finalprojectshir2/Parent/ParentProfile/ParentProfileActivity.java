@@ -1,5 +1,7 @@
 package com.example.finalprojectshir2.Parent.ParentProfile;
 
+import android.annotation.SuppressLint;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,25 +23,36 @@ import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import android.widget.TextView;
+import android.widget.Toast;
+
+
 public class ParentProfileActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView;
     Dialog dialog;
-    EditText editname, editlastname;
-    Button btnconfirm,btncancel;
+    private EditText editParentName;
+    private Button btnConfirm,btnCancel;
+    private TextView tvParentName;
 
 
-
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent_profile);
-    bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
     dialog = new Dialog(this) ;
     dialog.setContentView(R.layout.editparentprofile);
-    editname = dialog.findViewById(R.id.editname);
-    editlastname = dialog.findViewById(R.id.editlastname);
-    btnconfirm = dialog.findViewById(R.id.btnconfirm);
-    btncancel = dialog.findViewById(R.id.btncancel);
+    //tvParentName = findViewById(R.id.tvParentName);
+    editParentName = dialog.findViewById(R.id.editParentName);
+    btnConfirm = dialog.findViewById(R.id.btnConfirm);
+    btnCancel = dialog.findViewById(R.id.btnCancel);
 
     bottomNavigationView.setOnNavigationItemSelectedListener(this);
 

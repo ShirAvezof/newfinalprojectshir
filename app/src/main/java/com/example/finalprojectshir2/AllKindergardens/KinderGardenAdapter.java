@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalprojectshir2.FavoriteKindergarnds.FavoriteKindergarndsActivity;
 import com.example.finalprojectshir2.FavoriteKindergartenRepository;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
@@ -42,6 +43,14 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
         this.favoriteRepository = new FavoriteKindergartenRepository();
         this.context = context;
     }
+    public void removeItem(KinderGarten kindergarten) {
+        int position = kindergartenList.indexOf(kindergarten);
+        if (position != -1) {
+            kindergartenList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
 
     @NonNull
     @Override
@@ -72,6 +81,9 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
                                     ((ImageButton)v).setImageResource(android.R.drawable.btn_star_big_off);
                                     Toast.makeText(context,
                                             "הוסר מהמועדפים", Toast.LENGTH_SHORT).show();
+                                    if (context instanceof FavoriteKindergarndsActivity) {
+                                        ((FavoriteKindergarndsActivity) context).removeFromFavoritesList(kindergarten);
+                                    }
                                 } else {
                                     Toast.makeText(context,
                                             "שגיאה בהסרה מהמועדפים", Toast.LENGTH_SHORT).show();
@@ -121,6 +133,7 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
         private final ImageView closedCircuitIcon;
         private final ImageView fridayActiveIcon;
         private final ImageButton favoriteButton;
+
 
         public KinderGartenViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -192,13 +205,6 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
                     listener.onKindergartenClick(kindergarten);
                 }
             });
-
-
-
-
-
-
-
         }
     }
 }

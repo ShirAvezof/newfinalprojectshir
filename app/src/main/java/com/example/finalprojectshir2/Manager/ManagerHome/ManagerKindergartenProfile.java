@@ -637,10 +637,14 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.nav_profile) {
+            String kindergartenId = getIntent().getStringExtra("kindergarten_id");
+
             Intent i = new Intent(this, ManagerProfileActivity.class);
+            i.putExtra("kindergarten_id", kindergartenId);
             startActivity(i);
             return true;
-        } else if (itemId == R.id.nav_ganHome) {
+        }
+        else if (itemId == R.id.nav_ganHome) {
             return true;
         }
         return false;

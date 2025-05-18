@@ -21,13 +21,7 @@
             android:textColor="#000000"
             android:textAlignment="viewEnd"/>
 
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="חזור"
-            android:textColor="#0000FF"
-            android:background="@android:color/transparent"/>
+
     </LinearLayout>
 
     <TextView
@@ -42,14 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="שם משפחה:"
-        android:textColor="#000000"
-        android:textAlignment="viewEnd"
-        android:layout_marginTop="16dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="אימייל:"
+        android:id="@+id/tvManagerName"
         android:textColor="#000000"
         android:textAlignment="viewEnd"
         android:layout_marginTop="16dp"/>
@@ -59,7 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="לעריכת פרופיל"
-
         android:background="@drawable/button_background"
         android:layout_gravity="end"
         android:layout_marginTop="16dp"/>

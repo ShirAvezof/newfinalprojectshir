@@ -11,7 +11,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header section with back button -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +32,6 @@
 
         </LinearLayout>
 
-        <!-- Basic info card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +71,6 @@
                 android:textAlignment="viewEnd"/>
         </LinearLayout>
 
-        <!-- About section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,7 +103,6 @@
                 android:lineSpacingExtra="4dp"/>
         </LinearLayout>
 
-        <!-- Hours section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,7 +133,6 @@
                 android:textAlignment="viewEnd"/>
         </LinearLayout>
 
-        <!-- Features section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -211,7 +206,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Gallery section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -267,7 +261,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Loading indicator -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
@@ -276,7 +269,6 @@
             android:layout_marginTop="16dp"
             android:visibility="visible" />
 
-        <!-- Reviews button -->
         <Button
             android:id="@+id/reviewsButton"
             android:layout_width="match_parent"

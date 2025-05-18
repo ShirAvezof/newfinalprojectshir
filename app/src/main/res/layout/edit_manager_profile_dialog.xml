@@ -35,7 +35,7 @@
         />
 
     <Button
-        android:id="@+id/btnconfirm"
+        android:id="@+id/btnConfirm"
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         android:text="עדכון פרטים"/>
 
     <Button
-        android:id="@+id/btncancel"
+        android:id="@+id/btnCancel"
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

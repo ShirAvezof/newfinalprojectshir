@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- App Bar -->
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/appBarCard"
             android:layout_width="match_parent"
@@ -50,7 +50,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Search Card -->
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/searchCard"
             android:layout_width="match_parent"
@@ -120,7 +120,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Filter Card -->
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/filterCard"
             android:layout_width="match_parent"
@@ -202,7 +202,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Results Container -->
+
         <FrameLayout
             android:id="@+id/resultContainer"
             android:layout_width="match_parent"

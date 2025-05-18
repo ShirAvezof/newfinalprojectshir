@@ -9,17 +9,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginBottom="24dp"
-        android:text="פרופיל הורה"
+        android:text="פרופיל מנהל"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:textColor="#000000"
         android:textSize="24sp" />
 
     <EditText
-        android:id="@+id/editParentName"
+        android:id="@+id/editManagerName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="שם הורה" />
+        android:hint="שם המנהל" />
 
     <Button
         android:id="@+id/btnConfirm"
