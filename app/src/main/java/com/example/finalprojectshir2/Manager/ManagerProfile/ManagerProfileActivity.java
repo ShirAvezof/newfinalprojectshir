@@ -29,7 +29,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements
     private Dialog dialog;
     private Button editProfileButton;
     private EditText editManagerName;
-    private Button btnConfirm, btnCancel;
+    private Button btnConfirm, btnCancel, btnLogout;
     private String kindergartenId;
     private ProgressBar progressBar;
 
@@ -55,6 +55,14 @@ public class ManagerProfileActivity extends AppCompatActivity implements
         tvManagerName = findViewById(R.id.tvManagerName);
         editProfileButton = findViewById(R.id.editProfileButton);
         progressBar = findViewById(R.id.progressBar);
+        btnLogout = findViewById(R.id.btnLogout);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         if (progressBar == null) {
             // Create progress bar programmatically if not found in layout

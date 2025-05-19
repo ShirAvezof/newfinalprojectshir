@@ -1,6 +1,5 @@
 package com.example.finalprojectshir2.repositories;
 
-
 import android.content.Context;
 import android.widget.Toast;
 
@@ -9,7 +8,6 @@ import com.example.finalprojectshir2.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.security.AccessControlContext;
 import java.util.Objects;
 
 public class UserRepository {
@@ -20,6 +18,7 @@ public class UserRepository {
         this.auth = FirebaseAuth.getInstance();
         this.database = FirebaseFirestore.getInstance();
     }
+
     public void addUser(User user, FirebaseCallback<User> callback) {
         auth.createUserWithEmailAndPassword(user.getUserEmail(), user.getUserPass()).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
@@ -38,6 +37,7 @@ public class UserRepository {
             }
         });
     }
+
     public void loginUser(String email, String password, FirebaseCallback<User> callback, Context context) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -57,16 +57,72 @@ public class UserRepository {
         });
     }
 
+    public String getCurrentUserId() {
+        if (auth.getCurrentUser() != null) {
+            return auth.getCurrentUser().getUid();
+        }
+        return null;
+    }
 
+    public void getUserById(String userId, FirebaseCallback<User> callback) {
+        database.collection("users").document(userId).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                        User user = task.getResult().toObject(User.class);
+                        callback.onSuccess(user);
+                    } else {
+                        String errorMsg = task.getException() != null ? task.getException().getMessage() : "User not found";
+                        callback.onError(errorMsg);
+                    }
+                });
+    }
 
-    public void getUser(User user, FirebaseCallback<User> callback) {
+    public void updateUser(User user, FirebaseCallback<User> callback) {
+        if (user == null || user.getId() == null) {
+            callback.onError("Invalid user data");
+            return;
+        }
 
+        database.collection("users").document(user.getId())
+                .set(user)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.onSuccess(user);
+                    } else {
+                        String errorMsg = task.getException() != null ? task.getException().getMessage() : "Update failed";
+                        callback.onError(errorMsg);
+                    }
+                });
     }
 
     public void deleteUser(User user, FirebaseCallback<User> callback) {
-
+        if (auth.getCurrentUser() != null && user != null && user.getId() != null) {
+            // Delete from Firestore first
+            database.collection("users").document(user.getId())
+                    .delete()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Then delete the authentication account
+                            auth.getCurrentUser().delete()
+                                    .addOnCompleteListener(authTask -> {
+                                        if (authTask.isSuccessful()) {
+                                            callback.onSuccess(user);
+                                        } else {
+                                            callback.onError("Auth deletion failed: " +
+                                                    (authTask.getException() != null ? authTask.getException().getMessage() : "Unknown error"));
+                                        }
+                                    });
+                        } else {
+                            callback.onError("Database deletion failed: " +
+                                    (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
+                        }
+                    });
+        } else {
+            callback.onError("Invalid user or not authenticated");
+        }
     }
-    public void updateUser(User user, FirebaseCallback<User> callback) {
 
+    public void logoutUser() {
+        auth.signOut();
     }
 }

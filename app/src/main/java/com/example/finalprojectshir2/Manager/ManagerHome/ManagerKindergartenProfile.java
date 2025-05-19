@@ -25,9 +25,9 @@ import com.example.finalprojectshir2.Manager.ManagerProfile.ManagerProfileActivi
 import com.example.finalprojectshir2.Manager.ManagerReviews.ManagerReviewsActivity;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class ManagerKindergartenProfile extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+public class ManagerKindergartenProfile extends AppCompatActivity  {
     private static final String TAG = "ManagerKGProfile";
     public static final String EXTRA_KINDERGARTEN_ID = "kindergarten_id";
     private static final int REQUEST_IMAGE_PICK = 1001;
@@ -71,7 +71,6 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
 
     private ImageView[] galleryImages;
 
-    private BottomNavigationView bottomNavigationView;
 
     private KinderGarten currentKindergarten;
 
@@ -126,8 +125,13 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         licenseImageView = findViewById(R.id.licenseImageView);
         uploadLicenseImageButton = findViewById(R.id.uploadLicenseImageButton);
 
-        // Initialize bottom navigation
-        bottomNavigationView = findViewById(R.id.bottomNavManager);
+        ImageView ivBack = findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         galleryImages = new ImageView[3];
         galleryImages[0] = findViewById(R.id.galleryImage1);
@@ -210,8 +214,7 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
             uploadLicenseImageButton.setOnClickListener(v -> selectLicenseImage());
         }
 
-        // Set up bottom navigation listener
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
     }
 
     private void applyStyles() {
@@ -842,34 +845,7 @@ public class ManagerKindergartenProfile extends AppCompatActivity implements Bot
         startActivity(intent);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        String kindergartenId = currentKindergarten != null ? currentKindergarten.getId() : null;
 
-        if (itemId == R.id.nav_profile) {
-            Intent i = new Intent(this, ManagerProfileActivity.class);
-            if (kindergartenId != null) {
-                i.putExtra("kindergarten_id", kindergartenId);
-            }
-            startActivity(i);
-            return true;
-        }
-        else if (itemId == R.id.nav_ganHome) {
-            // Already on kindergarten profile page
-            return true;
-        }
-        else if (itemId == R.id.nav_home) {
-            Intent i = new Intent(this, ManagerHomeActivity.class);
-            if (kindergartenId != null) {
-                i.putExtra("kindergarten_id", kindergartenId);
-            }
-            startActivity(i);
-            return true;
-        }
-
-        return false;
-    }
 
     @Override
     protected void onDestroy() {

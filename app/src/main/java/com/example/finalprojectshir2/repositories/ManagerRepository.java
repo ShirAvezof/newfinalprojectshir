@@ -1,6 +1,7 @@
 package com.example.finalprojectshir2.repositories;
 
 import android.content.Context;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.example.finalprojectshir2.callbacks.FirebaseCallback;
@@ -52,18 +53,21 @@ public class ManagerRepository {
                 });
     }
 
-    public void loginManager(String email, String password, FirebaseCallback<Manager> callback, Context context) {
+    public void loginManager(String email, String password, FirebaseCallback<Pair<Manager, Boolean>> callback, Context context) {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         String managerId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
                         Toast.makeText(context, managerId, Toast.LENGTH_SHORT).show();
 
+
                         database.collection("managers").document(managerId).get()
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful() && task1.getResult().exists()) {
                                         Manager manager = task1.getResult().toObject(Manager.class);
-                                        callback.onSuccess(manager);
+                                        database.collection("kinderGartens").document(managerId).get().addOnCompleteListener(task2 -> {
+                                                callback.onSuccess(new Pair<>(manager, task2.isSuccessful() && task2.getResult().exists()));
+                                        });
                                     } else {
                                         callback.onError("Manager not found in Firestore.");
                                     }

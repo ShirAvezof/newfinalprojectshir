@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.KindergardenProfile.KindergardenProfileActivity;
+import com.example.finalprojectshir2.Manager.ManagerHome.ManagerKindergartenProfile;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
 import com.google.firebase.auth.FirebaseAuth;
@@ -209,8 +210,8 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         // Submit to Firestore through presenter
         presenter.submitKinderGarten(gan);
 
-        Intent i = new Intent(this, KindergardenProfileActivity.class);
-        i.putExtra("kindergarten_id", gan.getId());
+        Intent i = new Intent(this, ManagerKindergartenProfile.class);
+        i.putExtra(ManagerKindergartenProfile.EXTRA_KINDERGARTEN_ID, gan.getId());
         startActivity(i);
     }
 

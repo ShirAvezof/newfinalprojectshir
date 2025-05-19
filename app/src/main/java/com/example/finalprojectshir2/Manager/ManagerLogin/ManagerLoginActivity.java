@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,14 +102,14 @@ public class ManagerLoginActivity extends AppCompatActivity implements View.OnCl
         }
 
         loginButton.setEnabled(false);
-        managerRepository.loginManager(email, password, new FirebaseCallback<Manager>() {
+        managerRepository.loginManager(email, password, new FirebaseCallback<Pair<Manager, Boolean>>() {
             @Override
-            public void onSuccess(Manager result) {
+            public void onSuccess(Pair<Manager, Boolean> result) {
                 runOnUiThread(() -> {
                     loginButton.setEnabled(true);
                     Toast.makeText(ManagerLoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ManagerLoginActivity.this, ManagerHomeActivity.class);
-                    intent.putExtra("kindergarten_id", result.getId());
+                        intent.putExtra("kindergarten_id", result.second ? result.first.getId() : null);
                     startActivity(intent);
                     finish(); // Close login activity
                 });
