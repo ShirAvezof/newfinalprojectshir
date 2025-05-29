@@ -61,6 +61,7 @@ public class ManagerRepository {
 //                        Toast.makeText(context, managerId, Toast.LENGTH_SHORT).show();
 
 
+
                         database.collection("managers").document(managerId).get()
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful() && task1.getResult().exists()) {
