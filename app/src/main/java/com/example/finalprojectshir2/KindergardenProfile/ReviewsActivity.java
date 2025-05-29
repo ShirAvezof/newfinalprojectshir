@@ -29,8 +29,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter.OnReviewActionListener {
@@ -102,6 +104,34 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
     }
+
+    private void updateReviewCountInFirebase() {
+        reviewRepository.getReviewsByKindergarten(kindergartenId, new FirebaseCallback<List<Review>>() {
+            @Override
+            public void onSuccess(List<Review> reviews) {
+                int count = reviews.size();
+                kindergartenRepository.updateReviewCount(kindergartenId, count, new FirebaseCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        Log.d(TAG, "reviewCount updated via repository: " + count);
+                        loadKindergartenDetails();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e(TAG, "Failed to update reviewCount via repository: " + error);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(TAG, "Failed to get reviews for count update: " + error);
+            }
+        });
+    }
+
+
 
     private void initializeRepositories() {
         reviewRepository = new ReviewRepository();
@@ -312,7 +342,9 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
                                     hideLoading();
                                     Toast.makeText(ReviewsActivity.this, "חוות הדעת נוספה בהצלחה", Toast.LENGTH_SHORT).show();
                                     loadReviews();
-                                    loadKindergartenDetails();
+//                                    loadKindergartenDetails();
+                                    updateReviewCountInFirebase(); // ← גם כאן
+
                                 }
 
                                 @Override
@@ -347,7 +379,9 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
 
                             // Reload reviews and kindergarten details to update ratings
                             loadReviews();
-                            loadKindergartenDetails();
+//                            loadKindergartenDetails();
+                            updateReviewCountInFirebase();
+
                         }
 
                         @Override

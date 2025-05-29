@@ -14,6 +14,8 @@ public class Review implements Serializable {
     private String comment;
 //    private float rating;
 
+
+
     public boolean isFlagged() {
         return flagged;
     }
@@ -41,6 +43,7 @@ public class Review implements Serializable {
     // Empty constructor needed for Firestore
     public Review() {
     }
+
 
     public Review(String kindergartenId, String userId, String userName, String comment) {
         this.kindergartenId = kindergartenId;

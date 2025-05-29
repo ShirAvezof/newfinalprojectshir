@@ -13,6 +13,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class KinderGartenRepository {
@@ -189,5 +190,16 @@ public class KinderGartenRepository {
                     task.getException().getMessage() :
                     "Unknown error occurred");
         }
+    }
+
+
+
+    public void updateReviewCount(String kindergartenId, int count, FirebaseCallback<Void> callback) {
+        FirebaseFirestore.getInstance()
+                .collection("kinderGartens")
+                .document(kindergartenId)
+                .set(Collections.singletonMap("reviewCount", count), SetOptions.merge())
+                .addOnSuccessListener(aVoid -> callback.onSuccess(null))
+                .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
 }
