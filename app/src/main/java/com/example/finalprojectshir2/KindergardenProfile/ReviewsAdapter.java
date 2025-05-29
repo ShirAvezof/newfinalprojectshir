@@ -27,6 +27,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     private Context context;
     private OnReviewActionListener listener;
 
+    //נועד כדי שהאקטיביטי שמכיל את האדפטר יוכל להגיב כשלוחצים "מחק".
     public interface OnReviewActionListener {
         void onDeleteReview(Review review);
     }
@@ -50,7 +51,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
         holder.nameTextView.setText(review.getUserName());
         holder.commentTextView.setText(review.getComment());
-        holder.ratingBar.setRating(review.getRating());
+//        holder.ratingBar.setRating(review.getRating());
 
         // Format date
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -83,7 +84,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         TextView nameTextView;
         TextView commentTextView;
         TextView dateTextView;
-        RatingBar ratingBar;
+//        RatingBar ratingBar;
         ImageView deleteButton;
 
         ReviewViewHolder(View itemView) {
@@ -91,7 +92,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             nameTextView = itemView.findViewById(R.id.reviewNameTextView);
             commentTextView = itemView.findViewById(R.id.reviewCommentTextView);
             dateTextView = itemView.findViewById(R.id.reviewDateTextView);
-            ratingBar = itemView.findViewById(R.id.reviewRatingBar);
+//            ratingBar = itemView.findViewById(R.id.reviewRatingBar);
             deleteButton = itemView.findViewById(R.id.deleteReviewButton);
         }
     }

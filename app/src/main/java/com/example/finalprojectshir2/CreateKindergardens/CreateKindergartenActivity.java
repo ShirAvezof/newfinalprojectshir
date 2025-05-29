@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.KindergardenProfile.KindergardenProfileActivity;
+import com.example.finalprojectshir2.Manager.ManagerHome.ManagerKindergartenProfile;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,14 +33,17 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
     private static final String TAG = "CreateKindergartenActivity";
     private EditText kindergartenNameEditText, ownerNameEditText, addressEditText, phoneEditText, aboutEditText, hoursEditText;
     private CheckBox onlineCamerasCheckbox, closedCircuitCheckbox, fridayActiveCheckbox;
-    private Button submitButton, uploadPhotosButton;
-    private ImageView imageView;
+    private Button submitButton, uploadPhotosButton, uploadLicenseButton;
+    private ImageView imageView, licenseImageView;
     private FirebaseFirestore firestore;
+    //שירות ניהול המשתמשים
     private FirebaseAuth mAuth;
     private CreateKindergartenPresenter presenter;
     private static final String IMAGE_DIRECTORY = "/demonuts";
-    private int GALLERY = 1, CAMERA = 2;
+    private int GALLERY = 1, CAMERA = 2, LICENSE_GALLERY = 3, LICENSE_CAMERA = 4;
     private boolean hasImage = false;
+    private boolean hasLicenseImage = false;
+    private ImageView currentSelectedImageView; // Track which ImageView we're currently uploading to
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +75,11 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         // Buttons
         submitButton = findViewById(R.id.submitButton);
         uploadPhotosButton = findViewById(R.id.uploadPhotosButton);
+        uploadLicenseButton = findViewById(R.id.uploadLicenseButton); // New button for license
 
-        // ImageView
+        // ImageViews
         imageView = findViewById(R.id.imageView2);
+        licenseImageView = findViewById(R.id.licenseImageView); // New ImageView for license
     }
 
     private void setupListeners() {
@@ -86,7 +92,21 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
             }
         });
 
-        uploadPhotosButton.setOnClickListener(this);
+        uploadPhotosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentSelectedImageView = imageView; // Set the current target
+                showPictureDialog();
+            }
+        });
+
+        uploadLicenseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentSelectedImageView = licenseImageView; // Set the current target
+                showPictureDialog();
+            }
+        });
     }
 
     private boolean validateInput() {
@@ -141,9 +161,14 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
             isValid = false;
         }
 
+        // Check if license image is selected
+        if (!hasLicenseImage) {
+            Toast.makeText(this, "נא להעלות תמונה של רישיון העסק", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
         return isValid;
     }
-
     private void submitForm() {
         // Get values from form fields
         String kindergartenName = kindergartenNameEditText.getText().toString().trim();
@@ -152,19 +177,6 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         String phone = phoneEditText.getText().toString().trim();
         String aboutGan = aboutEditText.getText().toString().trim();
         String hours = hoursEditText.getText().toString().trim();
-
-//        String validkindergartenName = InputValidator.validateField(kindergartenName);
-//        String validOwnerName = InputValidator.validateField(ownerName);
-
-//        if (!validkindergartenName.isEmpty() || !validOwnerName.isEmpty()){
-//            if (!validkindergartenName.isEmpty()){
-//                Toast.makeText(this,validkindergartenName,Toast.LENGTH_SHORT).show();
-//            }
-//            if(!validOwnerName.isEmpty()){
-//                Toast.makeText(this,validOwnerName,Toast.LENGTH_SHORT).show();
-//            }
-//            return;
-//        }
 
         // Get values from checkboxes
         boolean hasOnlineCameras = onlineCamerasCheckbox.isChecked();
@@ -180,27 +192,33 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         gan.setAboutgan(aboutGan);
         gan.setHours(hours);
 
-
         gan.setHasOnlineCameras(hasOnlineCameras);
         gan.setHasClosedCircuitCameras(hasClosedCircuitCameras);
         gan.setActiveOnFriday(isActiveOnFriday);
 
-        // Convert image to base64 and add to KinderGarten object
+        // Convert kindergarten image to base64 and add to KinderGarten object
         String base64Image = imageViewToBase64(imageView);
         if (base64Image != null) {
             gan.setImage(base64Image);
         }
 
+        // Convert license image to base64 and add to KinderGarten object
+        String base64LicenseImage = imageViewToBase64(licenseImageView);
+        if (base64LicenseImage != null) {
+            gan.setLicenseImage(base64LicenseImage);
+        }
+
         // Submit to Firestore through presenter
         presenter.submitKinderGarten(gan);
 
-        Intent i = new Intent(this, KindergardenProfileActivity.class);
-        i.putExtra("kindergarten_id", gan.getId());
+        Intent i = new Intent(this, ManagerKindergartenProfile.class);
+        i.putExtra(ManagerKindergartenProfile.EXTRA_KINDERGARTEN_ID, gan.getId());
         startActivity(i);
     }
 
     @Override
     public void onClick(View v) {
+        currentSelectedImageView = imageView; // Default to main image
         showPictureDialog();
     }
 
@@ -230,20 +248,28 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
     public void choosePhotoFromGallary() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, GALLERY);
+        if (currentSelectedImageView == licenseImageView) {
+            startActivityForResult(galleryIntent, LICENSE_GALLERY);
+        } else {
+            startActivityForResult(galleryIntent, GALLERY);
+        }
     }
 
     private void takePhotoFromCamera() {
-       try {
-           Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-           startActivityForResult(intent, CAMERA);
-       }
+        try {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (currentSelectedImageView == licenseImageView) {
+                startActivityForResult(intent, LICENSE_CAMERA);
+            } else {
+                startActivityForResult(intent, CAMERA);
+            }
+        }
         catch (Exception e) {
-        e.printStackTrace();
-        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
-    }
-
+//ממירה את התמונה בהתאם
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -252,21 +278,29 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
             return;
         }
 
-        if (requestCode == GALLERY) {
+        if (requestCode == GALLERY || requestCode == LICENSE_GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    processSelectedImage(bitmap);
+                    if (requestCode == LICENSE_GALLERY) {
+                        processLicenseImage(bitmap);
+                    } else {
+                        processSelectedImage(bitmap);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
                 }
             }
-        } else if (requestCode == CAMERA) {
+        } else if (requestCode == CAMERA || requestCode == LICENSE_CAMERA) {
             if (data != null && data.getExtras() != null) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                processSelectedImage(bitmap);
+                if (requestCode == LICENSE_CAMERA) {
+                    processLicenseImage(bitmap);
+                } else {
+                    processSelectedImage(bitmap);
+                }
             }
         }
     }
@@ -277,6 +311,14 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         imageView.setImageBitmap(compressedBitmap);
         hasImage = true;
         Toast.makeText(this, "התמונה נטענה בהצלחה", Toast.LENGTH_SHORT).show();
+    }
+
+    private void processLicenseImage(Bitmap bitmap) {
+        // Compress the bitmap to reduce file size before encoding to base64
+        Bitmap compressedBitmap = getResizedBitmap(bitmap, 800); // Max 800px width/height
+        licenseImageView.setImageBitmap(compressedBitmap);
+        hasLicenseImage = true;
+        Toast.makeText(this, "תמונת רישיון העסק נטענה בהצלחה", Toast.LENGTH_SHORT).show();
     }
 
     // Method to resize bitmap to prevent large base64 strings
@@ -297,6 +339,10 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
 
     private String imageViewToBase64(ImageView imageView) {
         try {
+            if (imageView.getDrawable() == null) {
+                return null;
+            }
+
             Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // 70% quality compression
@@ -312,9 +358,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
     public void showSuccess(KinderGarten garten) {
         Toast.makeText(this, "הגן נוסף בהצלחה", Toast.LENGTH_SHORT).show();
         // Navigate back to previous screen or to a confirmation screen
-
         finish();
-
     }
 
     public void showError(String message) {

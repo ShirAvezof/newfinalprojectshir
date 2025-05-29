@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KinderGartenRepository {
-    private FirebaseAuth auth;
-    private FirebaseFirestore database;
+    private FirebaseAuth auth;//משמש לאימות משתמשים בכניסה והרשמה
+    private FirebaseFirestore database;//משמש גישה למ סד נתונים
 
     private static final String TAG = "KGRepository";
     private static final String COLLECTION_NAME = "kinderGartens";
@@ -25,7 +25,10 @@ public class KinderGartenRepository {
     public KinderGartenRepository() {
         this.auth = FirebaseAuth.getInstance();
         this.database = FirebaseFirestore.getInstance();
+        //תבנית עיצוב שמבטיחה שיש רק מופע אחד מהמחלקה.
+        //הגט אינסטאנס משמש כדי לקבל גישה לשירותים של Firebase בצורה בטוחה ויעילה, בלי ליצור מופעים חדשים כל פעם
     }
+    //הפעולה מוודאת שלגן יש מזהה חוקי, ואם כן – מתחילה תהליך של עדכון הנתונים שלו במסד Firestore.
     public void updateKinderGarten(KinderGarten kindergarten, FirebaseCallback<Boolean> callback) {
         String kindergartenId = kindergarten.getId();
 

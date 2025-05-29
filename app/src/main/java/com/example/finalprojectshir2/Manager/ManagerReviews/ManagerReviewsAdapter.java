@@ -54,7 +54,7 @@ public class ManagerReviewsAdapter extends RecyclerView.Adapter<ManagerReviewsAd
 
         holder.nameTextView.setText(review.getUserName());
         holder.commentTextView.setText(review.getComment());
-        holder.ratingBar.setRating(review.getRating());
+//        holder.ratingBar.setRating(review.getRating());
 
         // Format date
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -124,7 +124,7 @@ public class ManagerReviewsAdapter extends RecyclerView.Adapter<ManagerReviewsAd
             nameTextView = itemView.findViewById(R.id.reviewNameTextView);
             commentTextView = itemView.findViewById(R.id.reviewCommentTextView);
             dateTextView = itemView.findViewById(R.id.reviewDateTextView);
-            ratingBar = itemView.findViewById(R.id.reviewRatingBar);
+//            ratingBar = itemView.findViewById(R.id.reviewRatingBar);
             respondButton = itemView.findViewById(R.id.respondButton);
             deleteButton = itemView.findViewById(R.id.deleteReviewButton);
             flagButton = itemView.findViewById(R.id.flagReviewButton);

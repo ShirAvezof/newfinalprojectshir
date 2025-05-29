@@ -141,6 +141,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
                     }
                     return false;
                 }
+                //
                 @Override
                 public void onError(String error) {
                     loadedCount[0]++;

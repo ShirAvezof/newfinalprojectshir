@@ -21,34 +21,74 @@
             android:textColor="#000000"
             android:textAlignment="viewEnd"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp"
+        android:background="#F5F5F5"
+        android:padding="16dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="שם מנהל:"
+            android:textColor="#666666"
+            android:textAlignment="viewEnd"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvManagerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="שם המנהל"
+            android:textColor="#000000"
+            android:textAlignment="viewEnd"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/editProfileButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="עריכת פרופיל"
+            android:background="@drawable/button_background"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"/>
+
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="התנתקות"
+            android:background="@drawable/button_background"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"/>
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="שם:"
-        android:textColor="#000000"
-        android:textAlignment="viewEnd"
-        android:layout_marginTop="24dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="שם משפחה:"
-        android:id="@+id/tvManagerName"
-        android:textColor="#000000"
-        android:textAlignment="viewEnd"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/editProfileButton"
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="לעריכת פרופיל"
-        android:background="@drawable/button_background"
-        android:layout_gravity="end"
-        android:layout_marginTop="16dp"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"/>
 
     <View
         android:layout_width="match_parent"
@@ -57,7 +97,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavManager"
-        android:layout_width="390dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_nav_manager_menu" />

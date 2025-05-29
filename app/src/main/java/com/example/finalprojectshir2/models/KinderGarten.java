@@ -14,38 +14,14 @@ public class KinderGarten {
     private String hours;
     private String phone;
     private String image;
-
-    public Float getAverageRating() {
-        return averageRating;
-    }
-
-    public void setAverageRating(Float averageRating) {
-        this.averageRating = averageRating;
-    }
-
-    public Integer getReviewCount() {
-        return reviewCount;
-    }
-
-    public void setReviewCount(Integer reviewCount) {
-        this.reviewCount = reviewCount;
-    }
-
     private Float averageRating;
     private Integer reviewCount;
     private boolean hasOnlineCameras;
     private boolean hasClosedCircuitCameras;
-
-    public boolean isHasBusinessLicense() {
-        return hasBusinessLicense;
-    }
-
-    public void setHasBusinessLicense(boolean hasBusinessLicense) {
-        this.hasBusinessLicense = hasBusinessLicense;
-    }
-
+    private String licenseImage;
     private boolean hasBusinessLicense;
     private boolean isActiveOnFriday;
+    private String licenseType; // Added license type field
 
     // Default constructor required for Firestore
     public KinderGarten() {
@@ -141,6 +117,22 @@ public class KinderGarten {
         this.image = image;
     }
 
+    public Float getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Float averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Integer getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Integer reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
     public boolean isHasOnlineCameras() {
         return hasOnlineCameras;
     }
@@ -165,21 +157,29 @@ public class KinderGarten {
         isActiveOnFriday = activeOnFriday;
     }
 
-    // Helper method to convert to Map for Firestore if needed
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("ganname", ganname);
-        result.put("ownerName", ownerName);
-        result.put("address", address);
-        result.put("aboutgan", aboutgan);
-        result.put("hours", hours);
-        result.put("phone", phone);
-        result.put("image", image);
-        result.put("hasOnlineCameras", hasOnlineCameras);
-        result.put("hasClosedCircuitCameras", hasClosedCircuitCameras);
-        result.put("isActiveOnFriday", isActiveOnFriday);
-        return result;
+    public String getLicenseImage() {
+        return licenseImage;
+    }
+
+    public void setLicenseImage(String licenseImage) {
+        this.licenseImage = licenseImage;
+    }
+
+    public boolean isHasBusinessLicense() {
+        return hasBusinessLicense;
+    }
+
+    public void setHasBusinessLicense(boolean hasBusinessLicense) {
+        this.hasBusinessLicense = hasBusinessLicense;
+    }
+
+    // License type getter and setter
+    public String getLicenseType() {
+        return licenseType;
+    }
+
+    public void setLicenseType(String licenseType) {
+        this.licenseType = licenseType;
     }
 
     @Override
@@ -193,8 +193,11 @@ public class KinderGarten {
                 ", hours='" + hours + '\'' +
                 ", phone='" + phone + '\'' +
                 ", image='" + (image != null ? "Has image" : "No image") + '\'' +
+                ", licenseImage='" + (licenseImage != null ? "Has license image" : "No license image") + '\'' +
+                ", licenseType='" + licenseType + '\'' +
                 ", hasOnlineCameras=" + hasOnlineCameras +
                 ", hasClosedCircuitCameras=" + hasClosedCircuitCameras +
+                ", hasBusinessLicense=" + hasBusinessLicense +
                 ", isActiveOnFriday=" + isActiveOnFriday +
                 '}';
     }

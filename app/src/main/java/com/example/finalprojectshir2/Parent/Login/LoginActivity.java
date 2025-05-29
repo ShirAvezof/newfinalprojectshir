@@ -54,6 +54,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonLogin = findViewById(R.id.loginButton);
         forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
 
+
+        // debug
+        emailEditText.setText("stav@gmail.com");
+        passwordEditText.setText("Sstav71!");
         // Set click listeners
         buttonLogin.setOnClickListener(this);
         gotoSignUp.setOnClickListener(this);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5">
@@ -57,32 +58,7 @@
                 android:textAlignment="viewEnd"
                 android:layout_marginBottom="8dp"/>
 
-            <LinearLayout
-                android:id="@+id/ratingLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp">
 
-                <RatingBar
-                    android:id="@+id/profileRatingBar"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:stepSize="0.1" />
-
-                <TextView
-                    android:id="@+id/reviewCountTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textSize="12sp"
-                    android:textColor="#666666"
-                    android:text="(0)" />
-            </LinearLayout>
             <TextView
                 android:id="@+id/addressTextView"
                 android:layout_width="match_parent"
@@ -222,6 +198,7 @@
                 android:layout_marginTop="8dp">
 
                 <TextView
+                    android:id="@+id/businessLicenseTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -234,8 +211,61 @@
                     android:id="@+id/businessLicenseImageView"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
             </LinearLayout>
+        </LinearLayout>
+
+        <!-- New License Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/licenseLabelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="מידע על רישיון"
+                android:textColor="#4285F4"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="viewEnd"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:id="@+id/licenseTypeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="סוג רישיון: לא צוין"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textAlignment="viewEnd"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/uploadLicenseImageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="העלאת תמונת רישיון"
+                android:textColor="#FFFFFF"
+                android:background="#4285F4"
+                android:visibility="gone"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <ImageView
+                android:id="@+id/licenseImageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerInside"
+                android:background="#EEEEEE"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout
@@ -297,6 +327,7 @@
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:visibility="visible" />
 
@@ -312,5 +343,6 @@
             android:padding="12dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"/>
+
     </LinearLayout>
 </ScrollView>
