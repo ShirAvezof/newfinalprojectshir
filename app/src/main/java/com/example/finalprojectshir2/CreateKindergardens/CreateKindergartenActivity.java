@@ -345,7 +345,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
 
             Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // 70% quality compression
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
         } catch (Exception e) {

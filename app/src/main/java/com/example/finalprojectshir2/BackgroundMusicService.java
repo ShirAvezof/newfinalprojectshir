@@ -12,7 +12,7 @@ public class BackgroundMusicService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        // הפעלת קובץ מוזיקה  - res/raw/music.mp3
+        // הפעלת קובץ מוזיקה  -
         mediaPlayer = MediaPlayer.create(this, R.raw.parents_music);
         mediaPlayer.setLooping(true); // השמעה בלולאה
     }
