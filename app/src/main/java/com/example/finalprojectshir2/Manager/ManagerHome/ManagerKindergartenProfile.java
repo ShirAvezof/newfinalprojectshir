@@ -116,7 +116,6 @@ public class ManagerKindergartenProfile extends AppCompatActivity  {
         onlineCamerasCheckBox = findViewById(R.id.onlineCamerasCheckBox);
         closedCircuitCamerasCheckBox = findViewById(R.id.closedCircuitCamerasCheckBox);
         activeFridaysCheckBox = findViewById(R.id.activeFridaysCheckBox);
-        businessLicenseImageView = findViewById(R.id.businessLicenseImageView);
         backButton = findViewById(R.id.backButton);
 
         // Initialize license views
@@ -808,17 +807,7 @@ public class ManagerKindergartenProfile extends AppCompatActivity  {
                 activeFridaysCheckBox.setEnabled(false); // Just for display
             }
 
-            // Handle business license image
-            if (businessLicenseImageView != null) {
-                if (kindergarten.isHasBusinessLicense()) {
-                    businessLicenseImageView.setImageResource(android.R.drawable.checkbox_on_background);
-                    businessLicenseImageView.setColorFilter(0xFF4CAF50); // Green color
-                } else {
-                    businessLicenseImageView.setImageResource(android.R.drawable.checkbox_off_background);
-                    businessLicenseImageView.setColorFilter(0xFFE53935); // Red color
-                }
-                businessLicenseImageView.setVisibility(View.VISIBLE);
-            }
+
 
             // Load main gallery image
             loadMainImage(kindergarten);

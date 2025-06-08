@@ -33,8 +33,7 @@ public class KindergardenProfileActivity extends AppCompatActivity {
     private CheckBox onlineCamerasCheckBox;
     private CheckBox closedCircuitCamerasCheckBox;
     private CheckBox activeFridaysCheckBox;
-    private ImageView businessLicenseImageView;
-    private TextView businessLicenseTextView;
+
     private Button backButton;
     private Button reviewsButton;
     private TextView aboutLabelTextView;
@@ -76,13 +75,13 @@ public class KindergardenProfileActivity extends AppCompatActivity {
         aboutLabelTextView = findViewById(R.id.aboutLabelTextView);
         hoursLabelTextView = findViewById(R.id.hoursLabelTextView);
         galleryLabelTextView = findViewById(R.id.galleryLabelTextView);
-        businessLicenseTextView = findViewById(R.id.businessLicenseTextView);
+
 
         onlineCamerasCheckBox = findViewById(R.id.onlineCamerasCheckBox);
         closedCircuitCamerasCheckBox = findViewById(R.id.closedCircuitCamerasCheckBox);
         activeFridaysCheckBox = findViewById(R.id.activeFridaysCheckBox);
 
-        businessLicenseImageView = findViewById(R.id.businessLicenseImageView);
+
 
         galleryImages = new ImageView[3];
         galleryImages[0] = findViewById(R.id.galleryImage1);
@@ -152,9 +151,6 @@ public class KindergardenProfileActivity extends AppCompatActivity {
             galleryLabelTextView.setTextSize(18);
         }
 
-        if (businessLicenseTextView != null) {
-            businessLicenseTextView.setTextColor(0xFF333333); // Dark Gray
-        }
     }
 
     private void loadMainImage(KinderGarten kindergarten) {
@@ -194,10 +190,7 @@ public class KindergardenProfileActivity extends AppCompatActivity {
     }
 
     private void loadLicenseImage(KinderGarten kindergarten) {
-        if (businessLicenseImageView == null) {
-            Log.w(TAG, "Business license image view not found in layout");
-            return;
-        }
+
 
         if (kindergarten.getLicenseImage() != null && !kindergarten.getLicenseImage().isEmpty()) {
             try {
@@ -206,36 +199,20 @@ public class KindergardenProfileActivity extends AppCompatActivity {
                 Bitmap decodedBitmap = android.graphics.BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                 if (decodedBitmap != null) {
-                    // Set up a click listener to show the full license image
-                    businessLicenseImageView.setImageResource(android.R.drawable.ic_menu_gallery);
-                    businessLicenseImageView.setColorFilter(0xFF4CAF50); // Green color
 
-                    // Make the license image clickable to view full image
-                    businessLicenseImageView.setOnClickListener(v -> {
-                        // Create a dialog to show the full image
-                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-                        ImageView imageView = new ImageView(this);
-                        imageView.setImageBitmap(decodedBitmap);
-                        builder.setView(imageView);
-                        builder.setPositiveButton("סגור", (dialog, which) -> dialog.dismiss());
-                        builder.show();
-                    });
 
                     Log.d(TAG, "Successfully loaded license image");
                 } else {
                     Log.e(TAG, "Failed to decode license bitmap from Base64 string");
-                    businessLicenseImageView.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-                    businessLicenseImageView.setColorFilter(0xFFE53935); // Red color
+
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error loading license image: " + e.getMessage());
-                businessLicenseImageView.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-                businessLicenseImageView.setColorFilter(0xFFE53935); // Red color
+
             }
         } else {
             Log.d(TAG, "No license image available for this kindergarten");
-            businessLicenseImageView.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-            businessLicenseImageView.setColorFilter(0xFFE53935); // Red color
+
         }
     }
 

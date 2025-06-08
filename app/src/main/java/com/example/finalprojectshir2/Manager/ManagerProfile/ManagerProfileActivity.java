@@ -71,7 +71,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements
 
 
         if (progressBar == null) {
-            // Create progress bar programmatically if not found in layout
+            // Create progress bar
             progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
             progressBar.setIndeterminate(true);
             progressBar.setVisibility(View.GONE);
@@ -91,7 +91,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements
             }
         }
 
-        // Initialize dialog for editing profile
+        //  dialog for editing profile
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_edit_manager);
 

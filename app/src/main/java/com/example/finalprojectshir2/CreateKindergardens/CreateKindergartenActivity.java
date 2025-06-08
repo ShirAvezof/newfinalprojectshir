@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.KindergardenProfile.KindergardenProfileActivity;
+import com.example.finalprojectshir2.Manager.ManagerHome.ManagerHomeActivity;
 import com.example.finalprojectshir2.Manager.ManagerHome.ManagerKindergartenProfile;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
@@ -357,8 +358,9 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
 
     public void showSuccess(KinderGarten garten) {
         Toast.makeText(this, "הגן נוסף בהצלחה", Toast.LENGTH_SHORT).show();
-        // Navigate back to previous screen or to a confirmation screen
-        finish();
+        Intent i = new Intent(this, ManagerHomeActivity.class);
+        i.putExtra("kindergarten_id", garten.getId());
+        startActivity(i);
     }
 
     public void showError(String message) {
