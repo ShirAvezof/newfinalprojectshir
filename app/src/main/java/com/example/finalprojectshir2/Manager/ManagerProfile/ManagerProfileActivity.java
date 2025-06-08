@@ -62,9 +62,13 @@ public class ManagerProfileActivity extends AppCompatActivity implements
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(ManagerProfileActivity.this, ManagerLoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             }
         });
+
 
         if (progressBar == null) {
             // Create progress bar programmatically if not found in layout

@@ -198,6 +198,7 @@
                     android:textSize="14sp"
                     app:cornerRadius="12dp"
                     app:icon="@drawable/ic_filter"
+                    android:visibility="gone"
                     app:iconGravity="textStart" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

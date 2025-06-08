@@ -169,9 +169,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintTop_toBottomOf="@id/resultsCountBadge"
-            tools:ignore="NotSibling">
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/kindergartensRecyclerView"
