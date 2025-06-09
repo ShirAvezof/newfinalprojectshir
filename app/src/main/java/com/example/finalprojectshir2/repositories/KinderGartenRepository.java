@@ -93,6 +93,44 @@ public class KinderGartenRepository {
         }
     }
 
+    public void deleteKinderGarten(KinderGarten kinderGarten, FirebaseCallback<KinderGarten> callback) {
+        String kinderGartenID = kinderGarten.getId();
+
+        if (kinderGartenID == null || kinderGartenID.isEmpty()) {
+            Log.e(TAG, "Invalid kindergarten ID for deletion");
+            callback.onError("Invalid kindergarten ID");
+            return;
+        }
+
+        Log.d(TAG, "Deleting kindergarten with ID: " + kinderGartenID);
+        database.collection(COLLECTION_NAME)
+                .document(kinderGartenID)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Kindergarten exists, proceed with deletion
+                        database.collection(COLLECTION_NAME)
+                                .document(kinderGartenID)
+                                .delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d(TAG, "Kindergarten successfully deleted");
+                                    callback.onSuccess(kinderGarten);
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e(TAG, "Error deleting kindergarten", e);
+                                    callback.onError("Failed to delete kindergarten: " + e.getMessage());
+                                });
+                    } else {
+                        Log.e(TAG, "Kindergarten document does not exist");
+                        callback.onError("Kindergarten not found");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error checking kindergarten existence", e);
+                    callback.onError("Error accessing kindergarten: " + e.getMessage());
+                });
+    }
+
 
     public void addKinderGarden(KinderGarten kinderGarten, FirebaseCallback<KinderGarten> callback) {
         String kinderGartenID = auth.getCurrentUser().getUid();

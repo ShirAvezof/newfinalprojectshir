@@ -1,5 +1,6 @@
 package com.example.finalprojectshir2.Manager.ManagerHome;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.Manager.ManagerProfile.ManagerProfileActivity;
@@ -48,6 +50,7 @@ public class ManagerKindergartenProfile extends AppCompatActivity  {
     private Button saveButton;
     private Button cancelButton;
     private Button backButton;
+    private Button deleteButton;
     private TextView aboutLabelTextView;
     private TextView hoursLabelTextView;
     private TextView galleryLabelTextView;
@@ -180,6 +183,15 @@ public class ManagerKindergartenProfile extends AppCompatActivity  {
             cancelButton.setVisibility(View.GONE);
             buttonContainer.addView(cancelButton);
 
+            deleteButton = new Button(this);
+            deleteButton.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            deleteButton.setText("מחק גן");
+            deleteButton.setBackgroundColor(0xFFE53935); // Red color
+            deleteButton.setTextColor(0xFFFFFFFF); // White text
+            buttonContainer.addView(deleteButton);
             // Add the button container to the layout before the reviews button
             parentLayout.addView(buttonContainer, parentLayout.indexOfChild(reviewsButton));
         }
@@ -212,8 +224,9 @@ public class ManagerKindergartenProfile extends AppCompatActivity  {
         if (uploadLicenseImageButton != null) {
             uploadLicenseImageButton.setOnClickListener(v -> selectLicenseImage());
         }
-
-
+        if (deleteButton != null) {
+            deleteButton.setOnClickListener(v -> showDeleteConfirmationDialog());
+        }
     }
 
     private void applyStyles() {
@@ -292,7 +305,89 @@ public class ManagerKindergartenProfile extends AppCompatActivity  {
             uploadLicenseImageButton.setBackgroundColor(0xFF4285F4); // Google Blue
             uploadLicenseImageButton.setTextColor(0xFFFFFFFF); // White
         }
+        if (deleteButton != null) {
+            deleteButton.setBackgroundColor(0xFFE53935); // Red
+            deleteButton.setTextColor(0xFFFFFFFF); // White
+        }
     }
+
+    private void showDeleteConfirmationDialog() {
+        if (currentKindergarten == null) {
+            showError("No kindergarten data available to delete");
+            return;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("מחיקת גן")
+                .setMessage("האם אתה בטוח שברצונך למחוק את הגן '" +
+                        currentKindergarten.getGanname() + "'?\n\n" +
+                        "פעולה זו אינה ניתנת לביטול ותמחק את כל המידע והביקורות של הגן.")
+                .setPositiveButton("מחק", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteKindergarten();
+                    }
+                })
+                .setNegativeButton("בטל", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void deleteKindergarten() {
+        if (currentKindergarten == null) {
+            showError("No kindergarten data available to delete");
+            return;
+        }
+
+        showLoading();
+
+        // Disable all buttons during deletion
+        deleteButton.setEnabled(false);
+        editButton.setEnabled(false);
+        reviewsButton.setEnabled(false);
+
+        presenter.deleteKindergarten(currentKindergarten);
+    }
+
+    public void onDeleteSuccess() {
+        hideLoading();
+
+        new AlertDialog.Builder(this)
+                .setTitle("מחיקה הושלמה")
+                .setMessage("הגן נמחק בהצלחה")
+                .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setResult(RESULT_OK);
+                        Intent i = new Intent(getApplicationContext(), ManagerHomeActivity.class);
+                        startActivity(i);
+                    }
+                })
+                .setCancelable(false)
+                .show();
+    }
+
+    public void onDeleteError(String error) {
+        hideLoading();
+
+        // Re-enable buttons
+        deleteButton.setEnabled(true);
+        editButton.setEnabled(true);
+        reviewsButton.setEnabled(true);
+
+        new AlertDialog.Builder(this)
+                .setTitle("שגיאה במחיקה")
+                .setMessage("שגיאה במחיקת הגן: " + error)
+                .setPositiveButton("אישור", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
 
     private void loadMainImage(KinderGarten kindergarten) {
         ImageView mainImageView = findViewById(R.id.galleryImage3);
@@ -419,6 +514,9 @@ public class ManagerKindergartenProfile extends AppCompatActivity  {
         // Disable reviews button during edit
         reviewsButton.setEnabled(false);
         reviewsButton.setAlpha(0.5f);
+
+        deleteButton.setEnabled(false);
+        deleteButton.setAlpha(0.5f);
 
         Toast.makeText(this, "מצב עריכה פעיל", Toast.LENGTH_SHORT).show();
     }
@@ -613,6 +711,9 @@ public class ManagerKindergartenProfile extends AppCompatActivity  {
         // Re-enable reviews button
         reviewsButton.setEnabled(true);
         reviewsButton.setAlpha(1.0f);
+
+        deleteButton.setEnabled(true);
+        deleteButton.setAlpha(1.0f);
 
         // Reset selected image data
         selectedLicenseImageBase64 = null;
