@@ -26,9 +26,12 @@ public class KindergardenProfileActivity extends AppCompatActivity {
     private TextView ganNameTextView;
     private TextView ownerNameTextView;
     private TextView addressTextView;
+
+    private TextView licenseTypeTextView;
     private TextView phoneTextView;
     private TextView aboutTextView;
     private String kindergartenId;
+
     private TextView hoursTextView;
     private CheckBox onlineCamerasCheckBox;
     private CheckBox closedCircuitCamerasCheckBox;
@@ -75,6 +78,8 @@ public class KindergardenProfileActivity extends AppCompatActivity {
         aboutLabelTextView = findViewById(R.id.aboutLabelTextView);
         hoursLabelTextView = findViewById(R.id.hoursLabelTextView);
         galleryLabelTextView = findViewById(R.id.galleryLabelTextView);
+        licenseTypeTextView = findViewById(R.id.licenseTypeTextView);
+
 
 
         onlineCamerasCheckBox = findViewById(R.id.onlineCamerasCheckBox);
@@ -190,7 +195,7 @@ public class KindergardenProfileActivity extends AppCompatActivity {
     }
 
     private void loadLicenseImage(KinderGarten kindergarten) {
-
+        licenseTypeTextView.setText(kindergarten.getLicenseType());
 
         if (kindergarten.getLicenseImage() != null && !kindergarten.getLicenseImage().isEmpty()) {
             try {
@@ -293,24 +298,11 @@ public class KindergardenProfileActivity extends AppCompatActivity {
                 activeFridaysCheckBox.setChecked(kindergarten.isActiveOnFriday());
                 activeFridaysCheckBox.setEnabled(false);
             }
-
-            // Load the business license image
             loadLicenseImage(kindergarten);
-
-            // Load the main kindergarten image
             loadMainImage(kindergarten);
         });
     }
 
-    private void setupGalleryPlaceholders() {
-        for (ImageView galleryImage : galleryImages) {
-            if (galleryImage != null) {
-                galleryImage.setImageResource(android.R.drawable.ic_menu_gallery);
-                galleryImage.setBackgroundColor(0xFFEEEEEE);
-                galleryImage.setVisibility(View.VISIBLE);
-            }
-        }
-    }
 
     private void openReviews() {
         if (kindergartenId == null || kindergartenId.isEmpty()) {
