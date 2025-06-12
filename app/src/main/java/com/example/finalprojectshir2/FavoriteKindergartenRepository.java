@@ -16,6 +16,14 @@ public class FavoriteKindergartenRepository {
     private static final String TAG = "FavoriteRepository";
     private static final String COLLECTION_NAME = "likedGans";
     private final FirebaseFirestore db;
+    private static FavoriteKindergartenRepository instance;
+
+    public static FavoriteKindergartenRepository getInstance() {
+        if(instance == null) {
+            instance = new FavoriteKindergartenRepository();
+        }
+        return instance;
+    }
 
     public interface FavoriteCallback {
         void onResult(boolean success);
@@ -31,9 +39,7 @@ public class FavoriteKindergartenRepository {
 
     /**
      * Adds a kindergarten to user's favorites
-     * @param userId User ID
-     * @param kindergartenId Kindergarten ID to add to favorites
-     * @param callback Callback for operation result
+
      */
     public void addToFavorites(String userId, String kindergartenId, FavoriteCallback callback) {
         Log.d(TAG, "Adding kindergarten " + kindergartenId + " to favorites for user " + userId);
@@ -114,13 +120,15 @@ public class FavoriteKindergartenRepository {
                     } else {
                         Log.d(TAG, "User doesn't have favorites document yet");
                         callback.onResult(false);
-                    }
+
+                   }
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error checking favorite status", e);
                     callback.onResult(false);
                 });
     }
+
 
     /**
      * Gets all of a user's favorite kindergartens
