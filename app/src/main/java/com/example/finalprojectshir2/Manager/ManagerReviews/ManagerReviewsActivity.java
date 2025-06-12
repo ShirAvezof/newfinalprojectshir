@@ -48,7 +48,7 @@ public class ManagerReviewsActivity extends AppCompatActivity implements Manager
     private TextView emptyReviewsTextView;
     private ProgressBar progressBar;
     private TextView kindergartenNameTextView;
-    private RatingBar averageRatingBar;
+//    private RatingBar averageRatingBar;
     private TextView ratingCountTextView;
 
     @Override
@@ -80,7 +80,7 @@ public class ManagerReviewsActivity extends AppCompatActivity implements Manager
         emptyReviewsTextView = findViewById(R.id.emptyReviewsTextView);
         progressBar = findViewById(R.id.reviewsProgressBar);
         kindergartenNameTextView = findViewById(R.id.kindergartenNameTextView);
-        averageRatingBar = findViewById(R.id.averageRatingBar);
+//        averageRatingBar = findViewById(R.id.averageRatingBar);
         ratingCountTextView = findViewById(R.id.ratingCountTextView);
 
         if (kindergartenName != null && !kindergartenName.isEmpty()) {
@@ -136,7 +136,7 @@ public class ManagerReviewsActivity extends AppCompatActivity implements Manager
             if (kindergarten.getAverageRating() != null) {
                 rating = kindergarten.getAverageRating();
             }
-            averageRatingBar.setRating(rating);
+//            averageRatingBar.setRating(rating);
 
             // Check if reviewCount exists in the model
             int count = 0;

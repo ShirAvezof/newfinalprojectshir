@@ -28,8 +28,11 @@ import com.example.finalprojectshir2.repositories.ReviewRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter.OnReviewActionListener {
@@ -49,7 +52,7 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
     private ProgressBar progressBar;
     private FloatingActionButton addReviewFab;
     private TextView kindergartenNameTextView;
-    private RatingBar averageRatingBar;
+//    private RatingBar averageRatingBar;
     private TextView ratingCountTextView;
 
     @Override
@@ -84,7 +87,6 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
         progressBar = findViewById(R.id.reviewsProgressBar);
         addReviewFab = findViewById(R.id.addReviewFab);
         kindergartenNameTextView = findViewById(R.id.kindergartenNameTextView);
-        averageRatingBar = findViewById(R.id.averageRatingBar);
         ratingCountTextView = findViewById(R.id.ratingCountTextView);
 
         if (kindergartenName != null && !kindergartenName.isEmpty()) {
@@ -102,6 +104,34 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
     }
+
+    private void updateReviewCountInFirebase() {
+        reviewRepository.getReviewsByKindergarten(kindergartenId, new FirebaseCallback<List<Review>>() {
+            @Override
+            public void onSuccess(List<Review> reviews) {
+                int count = reviews.size();
+                kindergartenRepository.updateReviewCount(kindergartenId, count, new FirebaseCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        Log.d(TAG, "reviewCount updated via repository: " + count);
+                        loadKindergartenDetails();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e(TAG, "Failed to update reviewCount via repository: " + error);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(TAG, "Failed to get reviews for count update: " + error);
+            }
+        });
+    }
+
+
 
     private void initializeRepositories() {
         reviewRepository = new ReviewRepository();
@@ -139,7 +169,7 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
             if (kindergarten.getAverageRating() != null) {
                 rating = kindergarten.getAverageRating();
             }
-            averageRatingBar.setRating(rating);
+//            averageRatingBar.setRating(rating);
 
             // Check if reviewCount exists in the model, if not, you might need to add it
             int count = 0;
@@ -192,6 +222,75 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
         });
     }
 
+    //פותח דיאלוג להוספת ביקורת חדשה.
+    //
+    //בודק שהמשתמש מחובר (FirebaseUser).
+    //
+    //אוסף דירוג וטקסט מהמשתמש ושומר במסד הנתונים.
+    //
+    //אם הצליח – טוען מחדש את הביקורות ופרטי הגן.
+//    private void showAddReviewDialog() {
+//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//        if (currentUser == null) {
+//            showError("יש להתחבר כדי להוסיף חוות דעת");
+//            return;
+//        }
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_review, null);
+//        builder.setView(dialogView);
+//
+//        EditText commentEditText = dialogView.findViewById(R.id.newReviewCommentEditText);
+//        Button cancelButton = dialogView.findViewById(R.id.cancelReviewButton);
+//        Button submitButton = dialogView.findViewById(R.id.submitReviewButton);
+//
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//
+//        cancelButton.setOnClickListener(v -> dialog.dismiss());
+//
+//        submitButton.setOnClickListener(v -> {
+//            String comment = commentEditText.getText().toString().trim();
+//
+//
+//
+//            if (comment.isEmpty()) {
+//                Toast.makeText(this, "אנא הוסף/י תיאור", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            // Create review object
+//            String userId = currentUser.getUid();
+//            String userName = currentUser.getDisplayName() != null ?
+//                    currentUser.getDisplayName() : "משתמש/ת";
+//
+//            Review newReview = new Review(kindergartenId, userId, userName, comment);
+//
+//            // Show loading
+//            dialog.dismiss();
+//            showLoading();
+//
+//            // Save review to Firebase
+//            reviewRepository.addReview(newReview, new FirebaseCallback<String>() {
+//                @Override
+//                public void onSuccess(String result) {
+//                    hideLoading();
+//                    Toast.makeText(ReviewsActivity.this, "חוות הדעת נוספה בהצלחה", Toast.LENGTH_SHORT).show();
+//
+//                    // Reload reviews and kindergarten details to update ratings
+//                    loadReviews();
+//                    loadKindergartenDetails();
+//                }
+//
+//                @Override
+//                public void onError(String error) {
+//                    hideLoading();
+//                    showError("Error adding review: " + error);
+//                }
+//            });
+//        });
+//    }
+
     private void showAddReviewDialog() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
@@ -203,7 +302,6 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_review, null);
         builder.setView(dialogView);
 
-        RatingBar ratingBar = dialogView.findViewById(R.id.newReviewRatingBar);
         EditText commentEditText = dialogView.findViewById(R.id.newReviewCommentEditText);
         Button cancelButton = dialogView.findViewById(R.id.cancelReviewButton);
         Button submitButton = dialogView.findViewById(R.id.submitReviewButton);
@@ -214,50 +312,57 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
         cancelButton.setOnClickListener(v -> dialog.dismiss());
 
         submitButton.setOnClickListener(v -> {
-            float rating = ratingBar.getRating();
             String comment = commentEditText.getText().toString().trim();
-
-            if (rating == 0) {
-                Toast.makeText(this, "אנא דרג/י את הגן", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
             if (comment.isEmpty()) {
                 Toast.makeText(this, "אנא הוסף/י תיאור", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Create review object
             String userId = currentUser.getUid();
-            String userName = currentUser.getDisplayName() != null ?
-                    currentUser.getDisplayName() : "משתמש/ת";
 
-            Review newReview = new Review(kindergartenId, userId, userName, comment, rating);
+            FirebaseFirestore.getInstance().collection("users")
+                    .document(userId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String userName = documentSnapshot.getString("userName");
+                            if (userName == null || userName.isEmpty()) {
+                                userName = "משתמש/ת";
+                            }
 
-            // Show loading
-            dialog.dismiss();
-            showLoading();
+                            Review newReview = new Review(kindergartenId, userId, userName, comment);
 
-            // Save review to Firebase
-            reviewRepository.addReview(newReview, new FirebaseCallback<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    hideLoading();
-                    Toast.makeText(ReviewsActivity.this, "חוות הדעת נוספה בהצלחה", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            showLoading();
 
-                    // Reload reviews and kindergarten details to update ratings
-                    loadReviews();
-                    loadKindergartenDetails();
-                }
+                            reviewRepository.addReview(newReview, new FirebaseCallback<String>() {
+                                @Override
+                                public void onSuccess(String result) {
+                                    hideLoading();
+                                    Toast.makeText(ReviewsActivity.this, "חוות הדעת נוספה בהצלחה", Toast.LENGTH_SHORT).show();
+                                    loadReviews();
+//                                    loadKindergartenDetails();
+                                    updateReviewCountInFirebase(); // ← גם כאן
 
-                @Override
-                public void onError(String error) {
-                    hideLoading();
-                    showError("Error adding review: " + error);
-                }
-            });
+                                }
+
+                                @Override
+                                public void onError(String error) {
+                                    hideLoading();
+                                    showError("שגיאה בהוספת חוות הדעת: " + error);
+                                }
+                            });
+                        } else {
+                            showError("שם משתמש לא נמצא במסד הנתונים");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        showError("שגיאה בשליפת שם המשתמש: " + e.getMessage());
+                    });
         });
     }
+
 
     @Override
     public void onDeleteReview(Review review) {
@@ -274,7 +379,9 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
 
                             // Reload reviews and kindergarten details to update ratings
                             loadReviews();
-                            loadKindergartenDetails();
+//                            loadKindergartenDetails();
+                            updateReviewCountInFirebase();
+
                         }
 
                         @Override
@@ -314,6 +421,7 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
         runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_LONG).show());
     }
 
+    //מפעיל כפתור חזור
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

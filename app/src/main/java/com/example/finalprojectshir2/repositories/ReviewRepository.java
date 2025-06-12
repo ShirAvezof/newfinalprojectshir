@@ -10,8 +10,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,10 +142,10 @@ public class ReviewRepository {
                         Review review = document.toObject(Review.class);
 
                         // Only include non-flagged reviews in the average
-                        if (!review.isFlagged()) {
-                            totalRating += review.getRating();
-                            count++;
-                        }
+//                        if (!review.isFlagged()) {
+////                            totalRating += review.getRating();
+//                            count++;
+//                        }
                     }
 
                     float averageRating = count > 0 ? totalRating / count : 0;
@@ -161,4 +163,7 @@ public class ReviewRepository {
                 .addOnFailureListener(e ->
                         Log.e(TAG, "Error calculating average rating", e));
     }
+
+
+
 }

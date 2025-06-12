@@ -111,6 +111,7 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
             }
         });
     }
+    //כמה פריטיים יש ברשימה אם ריק מחזירה 0
     @Override
     public int getItemCount() {
         return kindergartenList != null ? kindergartenList.size() : 0;
@@ -121,7 +122,8 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
         notifyDataSetChanged();
         Log.d(TAG, "Data updated with " + newData.size() + " items");
     }
-
+//אחראית להחזיק את האלמנטים של כל כרטיס (CardView) ברשימה.
+//🔹 כל שורה ב־RecyclerView מיוצגת ע״י אובייקט מהמחלקה הזו.
     static class KinderGartenViewHolder extends RecyclerView.ViewHolder {
         private final CardView cardView;
         private final TextView nameTextView;
@@ -134,7 +136,7 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
         private final ImageView fridayActiveIcon;
         private final ImageButton favoriteButton;
 
-
+//
         public KinderGartenViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.kindergartenCardView);

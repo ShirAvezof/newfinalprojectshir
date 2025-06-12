@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import com.example.finalprojectshir2.BackgroundMusicService;
 import com.example.finalprojectshir2.FavoriteKindergarnds.FavoriteKindergarndsActivity;
 import com.example.finalprojectshir2.Parent.ParentProfile.ParentProfileActivity;
 import com.example.finalprojectshir2.Parent.SearchActivity.ActivitySearchKinderGarten;
@@ -26,6 +30,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     private BottomNavigationView bottomNavigationView;
     private TextInputEditText searchEditText;
     private MaterialButton searchButton;
+    private ImageButton musicButton;
+    private boolean isPlaying = false;
 
 
     private MaterialCheckBox onlineCamerasCheckbox;
@@ -45,7 +51,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         searchEditText = findViewById(R.id.searchEditText);
         searchButton = findViewById(R.id.searchButton);
-
+        musicButton=findViewById(R.id.musicButton);
 
         onlineCamerasCheckbox = findViewById(R.id.onlineCamerasCheckbox);
         closedCircuitCheckbox = findViewById(R.id.closedCircuitCheckbox);
@@ -54,6 +60,19 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        musicButton.setOnClickListener(view -> {
+            if (!isPlaying) {
+                startService(new Intent(HomeActivity.this, BackgroundMusicService.class));
+                musicButton.setImageDrawable(getResources().getDrawable(R.drawable.play_music));
+                isPlaying = !isPlaying;
+
+            } else {
+                stopService(new Intent(HomeActivity.this, BackgroundMusicService.class));
+                musicButton.setImageDrawable(getResources().getDrawable(R.drawable.stop_music));
+                isPlaying = !isPlaying;
+            }
+        });
+
     }
 
     private void setupListeners() {
@@ -62,7 +81,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
 
     }
-
+// מעבירה את הנתונים הדרושים למסך התוצאה עם רשימת הגנים
     private void navigateToSearchActivity() {
         String city = searchEditText.getText().toString().trim();
 
@@ -81,6 +100,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         // Start the activity
         startActivity(intent);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, BackgroundMusicService.class));
     }
 
     @Override

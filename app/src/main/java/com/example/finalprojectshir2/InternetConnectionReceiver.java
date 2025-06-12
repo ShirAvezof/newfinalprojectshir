@@ -21,9 +21,7 @@ public class InternetConnectionReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: This method is called when the BroadcastReceiver is receiving
-        // an Intent broadcast.
-        //throw new UnsupportedOperationException("Not yet implemented");
+       //הפעולה מופעלת כשיש שינוי בחיבור לרשת, ואם אין אינטרנט - היא מציגה חלונית (Dialog) המתריעה למשתמש על כך.
         ConnectivityManager connectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -44,7 +42,7 @@ public class InternetConnectionReceiver extends BroadcastReceiver {
             dialog.getWindow().getAttributes().windowAnimations= android.R.style.Animation_Dialog;
             TextView tvStatus=dialog.findViewById(R.id.tvStatus);
             tvStatus.setText(status);
-            Button bOk=dialog.findViewById(R.id.bOk);
+            Button bOk=dialog.findViewById(R.id.bOk);//כפתור לסגירת דיאלוג
             bOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

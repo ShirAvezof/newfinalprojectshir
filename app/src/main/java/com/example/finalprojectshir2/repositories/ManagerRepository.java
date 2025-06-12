@@ -58,7 +58,8 @@ public class ManagerRepository {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         String managerId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-                        Toast.makeText(context, managerId, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, managerId, Toast.LENGTH_SHORT).show();
+
 
 
                         database.collection("managers").document(managerId).get()

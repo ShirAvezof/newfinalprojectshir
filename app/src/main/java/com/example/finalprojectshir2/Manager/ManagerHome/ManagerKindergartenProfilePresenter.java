@@ -84,6 +84,36 @@ public class ManagerKindergartenProfilePresenter {
         });
     }
 
+    public void deleteKindergarten(KinderGarten kindergarten) {
+        if (kindergarten == null || kindergarten.getId() == null || kindergarten.getId().isEmpty()) {
+            Log.e(TAG, "Invalid kindergarten data for deletion");
+            if (view != null) {
+                view.onDeleteError("Invalid kindergarten data");
+            }
+            return;
+        }
+
+        Log.d(TAG, "Deleting kindergarten: " + kindergarten.getGanname() + " (ID: " + kindergarten.getId() + ")");
+
+        repository.deleteKinderGarten(kindergarten, new FirebaseCallback<KinderGarten>() {
+            @Override
+            public void onSuccess(KinderGarten result) {
+                Log.d(TAG, "Delete successful for kindergarten: " + (result != null ? result.getGanname() : "unknown"));
+                if (view != null) {
+                    view.onDeleteSuccess();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(TAG, "Delete error: " + error);
+                if (view != null) {
+                    view.onDeleteError(error);
+                }
+            }
+        });
+    }
+
     public void onDestroy() {
         this.view = null;
     }

@@ -13,11 +13,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class KinderGartenRepository {
-    private FirebaseAuth auth;
-    private FirebaseFirestore database;
+    private FirebaseAuth auth;//משמש לאימות משתמשים בכניסה והרשמה
+    private FirebaseFirestore database;//משמש גישה למ סד נתונים
 
     private static final String TAG = "KGRepository";
     private static final String COLLECTION_NAME = "kinderGartens";
@@ -25,7 +26,10 @@ public class KinderGartenRepository {
     public KinderGartenRepository() {
         this.auth = FirebaseAuth.getInstance();
         this.database = FirebaseFirestore.getInstance();
+
+        //הגט אינסטאנס משמש כדי לקבל גישה לשירותים של Firebase בצורה בטוחה ויעילה, בלי ליצור מופעים חדשים כל פעם
     }
+    //הפעולה מוודאת שלגן יש מזהה חוקי, ואם כן – מתחילה תהליך של עדכון הנתונים שלו במסד Firestore.
     public void updateKinderGarten(KinderGarten kindergarten, FirebaseCallback<Boolean> callback) {
         String kindergartenId = kindergarten.getId();
 
@@ -87,6 +91,44 @@ public class KinderGartenRepository {
             Log.e(TAG, "Invalid kindergarten ID provided");
             callback.onError("Invalid kindergarten ID");
         }
+    }
+
+    public void deleteKinderGarten(KinderGarten kinderGarten, FirebaseCallback<KinderGarten> callback) {
+        String kinderGartenID = kinderGarten.getId();
+
+        if (kinderGartenID == null || kinderGartenID.isEmpty()) {
+            Log.e(TAG, "Invalid kindergarten ID for deletion");
+            callback.onError("Invalid kindergarten ID");
+            return;
+        }
+
+        Log.d(TAG, "Deleting kindergarten with ID: " + kinderGartenID);
+        database.collection(COLLECTION_NAME)
+                .document(kinderGartenID)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Kindergarten exists, proceed with deletion
+                        database.collection(COLLECTION_NAME)
+                                .document(kinderGartenID)
+                                .delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d(TAG, "Kindergarten successfully deleted");
+                                    callback.onSuccess(kinderGarten);
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e(TAG, "Error deleting kindergarten", e);
+                                    callback.onError("Failed to delete kindergarten: " + e.getMessage());
+                                });
+                    } else {
+                        Log.e(TAG, "Kindergarten document does not exist");
+                        callback.onError("Kindergarten not found");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error checking kindergarten existence", e);
+                    callback.onError("Error accessing kindergarten: " + e.getMessage());
+                });
     }
 
 
@@ -186,5 +228,16 @@ public class KinderGartenRepository {
                     task.getException().getMessage() :
                     "Unknown error occurred");
         }
+    }
+
+
+
+    public void updateReviewCount(String kindergartenId, int count, FirebaseCallback<Void> callback) {
+        FirebaseFirestore.getInstance()
+                .collection("kinderGartens")
+                .document(kindergartenId)
+                .set(Collections.singletonMap("reviewCount", count), SetOptions.merge())
+                .addOnSuccessListener(aVoid -> callback.onSuccess(null))
+                .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
 }

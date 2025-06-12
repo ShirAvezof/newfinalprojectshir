@@ -220,8 +220,9 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
     }
 
     public void showResults(List<KinderGarten> kindergartens) {
-        allKindergartenResults = new ArrayList<>(kindergartens); // Store all results for filtering
+        allKindergartenResults = new ArrayList<>(kindergartens); // אחסן את כל התוצאות לסינון
         runOnUiThread(() -> {
+            // אם מסננים כבר מיושמים כאשר התוצאות מגיעות, החל אותם מיד
             // If filters are already applied when results come in, apply them immediately
             if (hasOnlineCameras || hasClosedCircuitCameras || isActiveOnFriday) {
                 applyFilters();
@@ -246,7 +247,7 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
                 resultsCountBadge.setScaleX(0f);
                 resultsCountBadge.setScaleY(0f);
                 resultsCountBadge.animate()
-                        .scaleX(1f)
+                        .scaleX(1f)//מפעיל אנימציה של הגדלה מ־0 ל־1 (כלומר מגודל אפס לגודל מלא)
                         .scaleY(1f)
                         .setDuration(300)
                         .setInterpolator(new DecelerateInterpolator())

@@ -44,6 +44,8 @@ public class ManagerProfileActivity extends AppCompatActivity implements
         setupPresenter();
         setupListeners();
 
+
+
         kindergartenId = getIntent().getStringExtra("kindergarten_id");
 
         // Load manager details using the presenter
@@ -55,17 +57,21 @@ public class ManagerProfileActivity extends AppCompatActivity implements
         tvManagerName = findViewById(R.id.tvManagerName);
         editProfileButton = findViewById(R.id.editProfileButton);
         progressBar = findViewById(R.id.progressBar);
-        btnLogout = findViewById(R.id.btnLogout);
+        btnLogout = findViewById(R.id.logoutButton);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(ManagerProfileActivity.this, ManagerLoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             }
         });
 
+
         if (progressBar == null) {
-            // Create progress bar programmatically if not found in layout
+            // Create progress bar
             progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
             progressBar.setIndeterminate(true);
             progressBar.setVisibility(View.GONE);
@@ -85,7 +91,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements
             }
         }
 
-        // Initialize dialog for editing profile
+        //  dialog for editing profile
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_edit_manager);
 
@@ -152,6 +158,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements
         tvManagerName.setText(name);
         Toast.makeText(this, "הפרופיל עודכן בהצלחה", Toast.LENGTH_SHORT).show();
     }
+
 
 
 

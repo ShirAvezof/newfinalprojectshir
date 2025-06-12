@@ -18,9 +18,9 @@ public class ManagerProfilePresenter {
         this.repository = new ManagerRepository();
     }
 
-    /**
-     * Loads the manager's details from the repository
-     */
+
+// Loads the manager's details from the repository
+
     public void loadManagerDetails() {
         view.showLoading();
 
@@ -51,10 +51,9 @@ public class ManagerProfilePresenter {
         });
     }
 
-    /**
-     * Updates the manager's profile information
-     * @param name The new name for the manager
-     */
+
+    // Updates the manager's profile information
+
     public void updateManagerProfile(String name) {
         view.showLoading();
 
@@ -84,6 +83,7 @@ public class ManagerProfilePresenter {
             }
         });
     }
+
 
     /**
      * Called when the presenter is no longer needed

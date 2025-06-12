@@ -12,7 +12,9 @@ public class Review implements Serializable {
     private String userId;
     private String userName;
     private String comment;
-    private float rating;
+//    private float rating;
+
+
 
     public boolean isFlagged() {
         return flagged;
@@ -42,12 +44,13 @@ public class Review implements Serializable {
     public Review() {
     }
 
-    public Review(String kindergartenId, String userId, String userName, String comment, float rating) {
+
+    public Review(String kindergartenId, String userId, String userName, String comment) {
         this.kindergartenId = kindergartenId;
         this.userId = userId;
         this.userName = userName;
         this.comment = comment;
-        this.rating = rating;
+//        this.rating = rating;
     }
 
     // Getters and Setters
@@ -91,13 +94,13 @@ public class Review implements Serializable {
         this.comment = comment;
     }
 
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
+//    public float getRating() {
+//        return rating;
+//    }
+//
+//    public void setRating(float rating) {
+//        this.rating = rating;
+//    }
 
     public Timestamp getCreatedAt() {
         return createdAt;

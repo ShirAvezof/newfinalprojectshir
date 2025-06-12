@@ -64,11 +64,11 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
 
         adapter = new KinderGardenAdapter(favoriteKindergartens, this, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);//מקשר את האדפטר לרשימה
 
 
-        db = FirebaseFirestore.getInstance();
-        favoriteRepository = new FavoriteKindergartenRepository();
+        db = FirebaseFirestore.getInstance();//גט אינסטנט אחראי על מופע ושימוש יחיד במסד נתונים
+        favoriteRepository = FavoriteKindergartenRepository.getInstance();
 
         // Get current user
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -141,6 +141,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
                     }
                     return false;
                 }
+                //
                 @Override
                 public void onError(String error) {
                     loadedCount[0]++;

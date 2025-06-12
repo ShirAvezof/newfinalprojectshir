@@ -1,5 +1,12 @@
 package com.example.finalprojectshir2.CreateKindergardens;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.os.Build;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalprojectshir2.KindergardenProfile.KindergardenProfileActivity;
+import com.example.finalprojectshir2.Manager.ManagerHome.ManagerHomeActivity;
 import com.example.finalprojectshir2.Manager.ManagerHome.ManagerKindergartenProfile;
 import com.example.finalprojectshir2.R;
 import com.example.finalprojectshir2.models.KinderGarten;
@@ -31,11 +39,13 @@ import java.io.IOException;
 
 public class CreateKindergartenActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "CreateKindergartenActivity";
+    private static final int REQUEST_IMAGE_PICK = 1;
     private EditText kindergartenNameEditText, ownerNameEditText, addressEditText, phoneEditText, aboutEditText, hoursEditText;
     private CheckBox onlineCamerasCheckbox, closedCircuitCheckbox, fridayActiveCheckbox;
     private Button submitButton, uploadPhotosButton, uploadLicenseButton;
     private ImageView imageView, licenseImageView;
     private FirebaseFirestore firestore;
+    //שירות ניהול המשתמשים
     private FirebaseAuth mAuth;
     private CreateKindergartenPresenter presenter;
     private static final String IMAGE_DIRECTORY = "/demonuts";
@@ -44,6 +54,9 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
     private boolean hasLicenseImage = false;
     private ImageView currentSelectedImageView; // Track which ImageView we're currently uploading to
 
+    private static final int PERMISSION_REQUEST_CAMERA = 1002;
+    private static final int PERMISSION_REQUEST_GALLERY = 1003;
+    private static final int PERMISSION_REQUEST_CAMERA_AND_STORAGE = 1004;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -233,16 +246,198 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                choosePhotoFromGallary();
+                                checkGalleryPermissionAndProceed();
                                 break;
                             case 1:
-                                takePhotoFromCamera();
+                                checkCameraPermissionAndProceed();
                                 break;
                         }
                     }
                 });
         pictureDialog.show();
     }
+
+    private void checkGalleryPermissionAndProceed() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13+ uses READ_MEDIA_IMAGES
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED) {
+                showPermissionExplanationDialog(
+                        "גישה לגלריה",
+                        "האפליקציה זקוקה לגישה לגלריה כדי לבחור תמונות.\nהאם תרצה לאשר הרשאה זו?",
+                        new String[]{Manifest.permission.READ_MEDIA_IMAGES},
+                        PERMISSION_REQUEST_GALLERY
+                );
+            } else {
+                choosePhotoFromGallary();
+            }
+        } else {
+            // Android 12 and below use READ_EXTERNAL_STORAGE
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                showPermissionExplanationDialog(
+                        "גישה לאחסון",
+                        "האפליקציה זקוקה לגישה לאחסון כדי לבחור תמונות מהגלריה.\nהאם תרצה לאשר הרשאה זו?",
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PERMISSION_REQUEST_GALLERY
+                );
+            } else {
+                choosePhotoFromGallary();
+            }
+        }
+    }
+
+    private void checkCameraPermissionAndProceed() {
+        boolean needsCameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED;
+
+        boolean needsStoragePermission;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            needsStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED;
+        } else {
+            needsStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED;
+        }
+
+        if (needsCameraPermission && needsStoragePermission) {
+            // Need both permissions
+            String[] permissions;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES};
+            } else {
+                permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            }
+
+            showPermissionExplanationDialog(
+                    "גישה למצלמה ואחסון",
+                    "האפליקציה זקוקה לגישה למצלמה ולאחסון כדי לצלם ולשמור תמונות.\nהאם תרצה לאשר הרשאות אלו?",
+                    permissions,
+                    PERMISSION_REQUEST_CAMERA_AND_STORAGE
+            );
+        } else if (needsCameraPermission) {
+            // Need only camera permission
+            showPermissionExplanationDialog(
+                    "גישה למצלמה",
+                    "האפליקציה זקוקה לגישה למצלמה כדי לצלם תמונות.\nהאם תרצה לאשר הרשאה זו?",
+                    new String[]{Manifest.permission.CAMERA},
+                    PERMISSION_REQUEST_CAMERA
+            );
+        } else if (needsStoragePermission) {
+            // Need only storage permission
+            String[] permissions;
+            String message;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                permissions = new String[]{Manifest.permission.READ_MEDIA_IMAGES};
+                message = "האפליקציה זקוקה לגישה לתמונות כדי לשמור תמונות שצולמו.\nהאם תרצה לאשר הרשאה זו?";
+            } else {
+                permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                message = "האפליקציה זקוקה לגישה לאחסון כדי לשמור תמונות שצולמו.\nהאם תרצה לאשר הרשאה זו?";
+            }
+
+            showPermissionExplanationDialog(
+                    "גישה לאחסון",
+                    message,
+                    permissions,
+                    PERMISSION_REQUEST_CAMERA
+            );
+        } else {
+            takePhotoFromCamera();
+        }
+    }
+
+    private void showPermissionExplanationDialog(String title, String message, String[] permissions, int requestCode) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("אשר הרשאה", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(CreateKindergartenActivity.this, permissions, requestCode);
+                    }
+                })
+                .setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Toast.makeText(CreateKindergartenActivity.this,
+                                "לא ניתן להמשיך ללא הרשאות נדרשות", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setCancelable(false)
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case PERMISSION_REQUEST_GALLERY:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    choosePhotoFromGallary();
+                } else {
+                    handlePermissionDenied("גלריה", "לא ניתן לבחור תמונות מהגלריה ללא הרשאה זו");
+                }
+                break;
+
+            case PERMISSION_REQUEST_CAMERA:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    checkCameraPermissionAndProceed();
+                } else {
+                    handlePermissionDenied("מצלמה", "לא ניתן לצלם תמונות ללא הרשאה זו");
+                }
+                break;
+
+            case PERMISSION_REQUEST_CAMERA_AND_STORAGE:
+                boolean allGranted = true;
+                for (int result : grantResults) {
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+                        allGranted = false;
+                        break;
+                    }
+                }
+
+                if (allGranted) {
+                    takePhotoFromCamera();
+                } else {
+                    handlePermissionDenied("מצלמה ואחסון", "לא ניתן לצלם ולשמור תמונות ללא הרשאות אלו");
+                }
+                break;
+        }
+    }
+
+    private void handlePermissionDenied(String permissionType, String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("הרשאה נדחתה")
+                .setMessage(message + "\n\nבאפשרותך לאשר הרשאות בהגדרות האפליקציה.")
+                .setPositiveButton("פתח הגדרות", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        openAppSettings();
+                    }
+                })
+                .setNegativeButton("אישור", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void openAppSettings() {
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(android.net.Uri.parse("package:" + getPackageName()));
+        startActivity(intent);
+    }
+
+    private void selectLicenseImage() {
+        checkGalleryPermissionAndProceed();
+    }
+
 
     public void choosePhotoFromGallary() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
@@ -268,7 +463,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
+//ממירה את התמונה בהתאם
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -344,7 +539,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
 
             Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream); // 70% quality compression
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
         } catch (Exception e) {
@@ -356,8 +551,9 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
 
     public void showSuccess(KinderGarten garten) {
         Toast.makeText(this, "הגן נוסף בהצלחה", Toast.LENGTH_SHORT).show();
-        // Navigate back to previous screen or to a confirmation screen
-        finish();
+        Intent i = new Intent(this, ManagerHomeActivity.class);
+        i.putExtra("kindergarten_id", garten.getId());
+        startActivity(i);
     }
 
     public void showError(String message) {

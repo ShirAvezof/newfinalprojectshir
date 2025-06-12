@@ -14,10 +14,10 @@ public class NetworkReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()))  {
-            boolean noConnectivity=intent.getBooleanExtra(
+        if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()))  {//האם מדובר בשינוי במצב החיבור לרשת.
+            boolean noConnectivity=intent.getBooleanExtra(//בודק ואומר כן אם אין חיבור ולא אם יש חיבור
                     ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-            if (noConnectivity) {
+            if (noConnectivity) {//אם אין חיבור מציג הודעה ואמור גם צליל
                 Toast.makeText(context, "Network Disconnected", Toast.LENGTH_LONG).show();
                 mp=MediaPlayer.create(context, R.raw.ok);
                 mp.start();

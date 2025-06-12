@@ -198,6 +198,7 @@
                     android:textSize="14sp"
                     app:cornerRadius="12dp"
                     app:icon="@drawable/ic_filter"
+                    android:visibility="gone"
                     app:iconGravity="textStart" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -209,9 +210,16 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-            app:layout_constraintTop_toBottomOf="@id/filterCard">
+            app:layout_constraintTop_toBottomOf="@id/filterCard"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp">
 
-
+            <ImageButton
+                android:id="@+id/musicButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src = "@drawable/play_music" />
 
 
         </FrameLayout>
@@ -228,6 +236,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_nav_menu" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

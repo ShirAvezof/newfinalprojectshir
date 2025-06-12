@@ -33,7 +33,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="הוספה למועדפים"
-            app:tint="#FF4081" />
+             />
 
         <TextView
             android:id="@+id/kindergartenNameTextView"

@@ -24,7 +24,7 @@ public class ManagerRegisterActivity extends AppCompatActivity implements
     private ManagerRegisterPresenter presenter;
     private InternetConnectionReceiver internetConnectionReceiver;
     private NetworkReceiver networkReceiver;
-    private IntentFilter intentConnectionFilter;
+    private IntentFilter intentConnectionFilter;//התראה שהחיבור לרשת משתנה
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
