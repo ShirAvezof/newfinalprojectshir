@@ -37,10 +37,10 @@ public class FavoriteKindergartenRepository {
         this.db = FirebaseFirestore.getInstance();
     }//המשתנה db הוא בעצם האובייקט שמייצג את החיבור ל־Firestore
 
-    /**
-     * Adds a kindergarten to user's favorites
 
-     */
+     //Adds a kindergarten to user's favorites
+
+
     public void addToFavorites(String userId, String kindergartenId, FavoriteCallback callback) {
         Log.d(TAG, "Adding kindergarten " + kindergartenId + " to favorites for user " + userId);
 

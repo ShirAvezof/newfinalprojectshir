@@ -136,7 +136,7 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
         private final ImageView fridayActiveIcon;
         private final ImageButton favoriteButton;
 
-//
+
         public KinderGartenViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.kindergartenCardView);
@@ -200,7 +200,7 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
                 Log.d(TAG, "not logged in");
             }
 
-            favoriteButton.setOnClickListener(OnFavorite);
+            favoriteButton.setOnClickListener(OnFavorite);//מצרף לפעולה הזו את הקוד שהוגדר קודם – מה קורה בלחיצה (הוספה/הסרה ממועדפים).
             cardView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onKindergartenClick(kindergarten);
