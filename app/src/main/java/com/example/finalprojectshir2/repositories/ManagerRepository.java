@@ -92,29 +92,6 @@ public class ManagerRepository {
                 });
     }
 
-    public void deleteManager(Manager manager, FirebaseCallback<Manager> callback) {
-        String managerId = manager.getId();
-        database.collection("managers").document(managerId).delete()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        callback.onSuccess(manager);
-                    } else {
-                        callback.onError(Objects.requireNonNull(task.getException()).getMessage());
-                    }
-                });
-    }
-
-    public void updateManager(Manager manager, FirebaseCallback<Manager> callback) {
-        String managerId = manager.getId();
-        database.collection("managers").document(managerId).set(manager)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        callback.onSuccess(manager);
-                    } else {
-                        callback.onError(Objects.requireNonNull(task.getException()).getMessage());
-                    }
-                });
-    }
 
     /**
      * Update only the manager's name without affecting other fields

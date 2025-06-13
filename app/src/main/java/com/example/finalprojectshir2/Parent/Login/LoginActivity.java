@@ -130,12 +130,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         userRepository.loginUser(email, password, new FirebaseCallback<User>() {
             @Override
             public void onSuccess(User user) {
-                Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "התחברת בהצלחה!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
             }
-
             @Override
             public void onError(String errorMessage) {
                 Toast.makeText(LoginActivity.this, "Login Failed: " + errorMessage, Toast.LENGTH_SHORT).show();

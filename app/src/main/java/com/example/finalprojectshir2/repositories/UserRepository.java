@@ -97,32 +97,7 @@ public class UserRepository {
                 });
     }
 
-    public void deleteUser(User user, FirebaseCallback<User> callback) {
-        if (auth.getCurrentUser() != null && user != null && user.getId() != null) {
-            // Delete from Firestore first
-            database.collection("users").document(user.getId())
-                    .delete()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            // Then delete the authentication account
-                            auth.getCurrentUser().delete()
-                                    .addOnCompleteListener(authTask -> {
-                                        if (authTask.isSuccessful()) {
-                                            callback.onSuccess(user);
-                                        } else {
-                                            callback.onError("Auth deletion failed: " +
-                                                    (authTask.getException() != null ? authTask.getException().getMessage() : "Unknown error"));
-                                        }
-                                    });
-                        } else {
-                            callback.onError("Database deletion failed: " +
-                                    (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
-                        }
-                    });
-        } else {
-            callback.onError("Invalid user or not authenticated");
-        }
-    }
+
 
     public void logoutUser() {
         auth.signOut();

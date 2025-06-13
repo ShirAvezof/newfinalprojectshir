@@ -142,10 +142,10 @@ public class ReviewRepository {
                         Review review = document.toObject(Review.class);
 
                         // Only include non-flagged reviews in the average
-//                        if (!review.isFlagged()) {
-////                            totalRating += review.getRating();
-//                            count++;
-//                        }
+                        // if (!review.isFlagged()) {
+                        //     totalRating += review.getRating();
+                        //     count++;
+                        // }
                     }
 
                     float averageRating = count > 0 ? totalRating / count : 0;
@@ -163,7 +163,4 @@ public class ReviewRepository {
                 .addOnFailureListener(e ->
                         Log.e(TAG, "Error calculating average rating", e));
     }
-
-
-
 }

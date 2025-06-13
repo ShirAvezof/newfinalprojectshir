@@ -17,8 +17,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class KinderGartenRepository {
-    private FirebaseAuth auth;//משמש לאימות משתמשים בכניסה והרשמה
-    private FirebaseFirestore database;//משמש גישה למ סד נתונים
+    private FirebaseAuth auth;
+    private FirebaseFirestore database;
 
     private static final String TAG = "KGRepository";
     private static final String COLLECTION_NAME = "kinderGartens";
@@ -26,10 +26,8 @@ public class KinderGartenRepository {
     public KinderGartenRepository() {
         this.auth = FirebaseAuth.getInstance();
         this.database = FirebaseFirestore.getInstance();
-
-        //הגט אינסטאנס משמש כדי לקבל גישה לשירותים של Firebase בצורה בטוחה ויעילה, בלי ליצור מופעים חדשים כל פעם
     }
-    //הפעולה מוודאת שלגן יש מזהה חוקי, ואם כן – מתחילה תהליך של עדכון הנתונים שלו במסד Firestore.
+
     public void updateKinderGarten(KinderGarten kindergarten, FirebaseCallback<Boolean> callback) {
         String kindergartenId = kindergarten.getId();
 
@@ -53,7 +51,6 @@ public class KinderGartenRepository {
                     callback.onError(e.getMessage());
                 });
     }
-
 
     public void getKinderGartenById(String kindergartenId, FirebaseCallback<KinderGarten> callback) {
         Log.d(TAG, "Getting kindergarten with ID: " + kindergartenId);
@@ -131,7 +128,6 @@ public class KinderGartenRepository {
                 });
     }
 
-
     public void addKinderGarden(KinderGarten kinderGarten, FirebaseCallback<KinderGarten> callback) {
         String kinderGartenID = auth.getCurrentUser().getUid();
         kinderGarten.setId(kinderGartenID);
@@ -149,6 +145,7 @@ public class KinderGartenRepository {
             callback.onError("id is not valid");
         }
     }
+
     public void getKinderGarten(KinderGarten kinderGarten, FirebaseCallback<KinderGarten> callback) {
         String kinderGartenID = kinderGarten.getId();
         if(kinderGartenID != null) {
@@ -163,6 +160,7 @@ public class KinderGartenRepository {
             callback.onError("id is not valid");
         }
     }
+
     public void updateKinderGarden(KinderGarten kinderGarten, FirebaseCallback<KinderGarten> callback) {
         String kinderGartenID = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
 
@@ -179,6 +177,7 @@ public class KinderGartenRepository {
             callback.onError("id is not valid");
         }
     }
+
     public void deleteKinderGarden(KinderGarten kinderGarten, FirebaseCallback<KinderGarten> callback) {
         String kinderGartenID = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
 
@@ -194,6 +193,7 @@ public class KinderGartenRepository {
             callback.onError("id is not valid");
         }
     }
+
     public void searchKinderGartensByCity(String city, FirebaseCallback<List<KinderGarten>> callback) {
         if (city == null || city.trim().isEmpty()) {
             database.collection("kinderGartens")
@@ -229,8 +229,6 @@ public class KinderGartenRepository {
                     "Unknown error occurred");
         }
     }
-
-
 
     public void updateReviewCount(String kindergartenId, int count, FirebaseCallback<Void> callback) {
         FirebaseFirestore.getInstance()

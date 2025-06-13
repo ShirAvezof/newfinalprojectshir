@@ -77,20 +77,7 @@ public class ManagerReviewsAdapter extends RecyclerView.Adapter<ManagerReviewsAd
             holder.responseCard.setVisibility(View.GONE);
             holder.respondButton.setText("הגב");
         }
-
-        // Handle flagged reviews
-        if (review.isFlagged()) {
-            holder.flaggedIndicator.setVisibility(View.VISIBLE);
-            holder.flagButton.setVisibility(View.GONE); // Already flagged
-        } else {
-            holder.flaggedIndicator.setVisibility(View.GONE);
-            holder.flagButton.setVisibility(View.VISIBLE);
-        }
-
-        // Set up button listeners
         holder.respondButton.setOnClickListener(v -> listener.onRespondToReview(review));
-        holder.deleteButton.setOnClickListener(v -> listener.onDeleteReview(review));
-        holder.flagButton.setOnClickListener(v -> listener.onFlagReview(review));
     }
 
     @Override
@@ -109,9 +96,6 @@ public class ManagerReviewsAdapter extends RecyclerView.Adapter<ManagerReviewsAd
         TextView dateTextView;
         RatingBar ratingBar;
         Button respondButton;
-        ImageView deleteButton;
-        ImageView flagButton;
-        View flaggedIndicator;
 
         // Response card elements
         CardView responseCard;
@@ -126,9 +110,6 @@ public class ManagerReviewsAdapter extends RecyclerView.Adapter<ManagerReviewsAd
             dateTextView = itemView.findViewById(R.id.reviewDateTextView);
 //            ratingBar = itemView.findViewById(R.id.reviewRatingBar);
             respondButton = itemView.findViewById(R.id.respondButton);
-            deleteButton = itemView.findViewById(R.id.deleteReviewButton);
-            flagButton = itemView.findViewById(R.id.flagReviewButton);
-            flaggedIndicator = itemView.findViewById(R.id.flaggedIndicator);
 
             responseCard = itemView.findViewById(R.id.responseCard);
             responseNameTextView = itemView.findViewById(R.id.responseNameTextView);

@@ -10,6 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalprojectshir2.R;
@@ -68,6 +69,20 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         } else {
             holder.deleteButton.setVisibility(View.GONE);
         }
+
+        // Handle manager response display
+        if (review.hasResponse()) {
+            holder.responseCard.setVisibility(View.VISIBLE);
+            holder.responseNameTextView.setText(review.getResponse().getUserName());
+            holder.responseTextView.setText(review.getResponse().getComment());
+
+            // Format response date
+            SimpleDateFormat responseSdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            String responseDate = responseSdf.format(review.getResponse().getCreatedAtDate());
+            holder.responseDateTextView.setText(responseDate);
+        } else {
+            holder.responseCard.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -84,8 +99,14 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         TextView nameTextView;
         TextView commentTextView;
         TextView dateTextView;
-//        RatingBar ratingBar;
+        //        RatingBar ratingBar;
         ImageView deleteButton;
+
+        // Manager response elements
+        CardView responseCard;
+        TextView responseNameTextView;
+        TextView responseTextView;
+        TextView responseDateTextView;
 
         ReviewViewHolder(View itemView) {
             super(itemView);
@@ -94,6 +115,12 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             dateTextView = itemView.findViewById(R.id.reviewDateTextView);
 //            ratingBar = itemView.findViewById(R.id.reviewRatingBar);
             deleteButton = itemView.findViewById(R.id.deleteReviewButton);
+
+            // Initialize response views
+            responseCard = itemView.findViewById(R.id.responseCard);
+            responseNameTextView = itemView.findViewById(R.id.responseNameTextView);
+            responseTextView = itemView.findViewById(R.id.responseTextView);
+            responseDateTextView = itemView.findViewById(R.id.responseDateTextView);
         }
     }
 }
