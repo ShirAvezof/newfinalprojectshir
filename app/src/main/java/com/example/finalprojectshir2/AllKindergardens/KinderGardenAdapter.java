@@ -177,7 +177,6 @@ public class KinderGardenAdapter extends RecyclerView.Adapter<KinderGardenAdapte
                 }
             }
 
-            // Show feature icons based on kindergarten properties
             onlineCameraIcon.setVisibility(kindergarten.isHasOnlineCameras() ? View.VISIBLE : View.GONE);
             closedCircuitIcon.setVisibility(kindergarten.isHasClosedCircuitCameras() ? View.VISIBLE : View.GONE);
             fridayActiveIcon.setVisibility(kindergarten.isActiveOnFriday() ? View.VISIBLE : View.GONE);
