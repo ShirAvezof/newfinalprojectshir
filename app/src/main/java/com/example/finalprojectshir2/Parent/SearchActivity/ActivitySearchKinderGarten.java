@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalprojectshir2.AllKindergardens.KinderGardenAdapter;
+import com.example.finalprojectshir2.KindergardenAdapter.KinderGardenAdapter;
 import com.example.finalprojectshir2.Home.HomeActivity;
 import com.example.finalprojectshir2.KindergardenProfile.KindergardenProfileActivity;
 import com.example.finalprojectshir2.Parent.ParentProfile.ParentProfileActivity;
@@ -38,7 +38,6 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
     private static final String TAG = "SearchActivity";
     private static final int ANIMATION_DURATION = 300;
 
-    // UI components
     private BottomNavigationView bottomNavigationView;
     private RecyclerView kindergartensRecyclerView;
     private ProgressBar searchProgressBar;
@@ -220,17 +219,16 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
     }
 
     public void showResults(List<KinderGarten> kindergartens) {
-        allKindergartenResults = new ArrayList<>(kindergartens); // אחסן את כל התוצאות לסינון
+        allKindergartenResults = new ArrayList<>(kindergartens); // אחסן את כל התוצאות לסינון לפי עיר כרגע
         runOnUiThread(() -> {
             // אם מסננים כבר מיושמים כאשר התוצאות מגיעות, החל אותם מיד
             // If filters are already applied when results come in, apply them immediately
             if (hasOnlineCameras || hasClosedCircuitCameras || isActiveOnFriday) {
-                applyFilters();
+                applyFilters();//סינון לפי צקבוקסים
             } else {
                 noResultsTextView.setVisibility(View.GONE);
                 kindergartensRecyclerView.setVisibility(View.VISIBLE);
-                adapter.updateData(kindergartens);
-
+                adapter.updateData(kindergartens);//הצגה של כל הגנים לפי עיר ללא התייחסות לצקבוקסים כי לא סומנו
                 // Update results count badge
                 updateResultsCountBadge(kindergartens.size());
             }
@@ -242,7 +240,6 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
 
         if (count > 0) {
             if (resultsCountBadge.getVisibility() == View.GONE) {
-                // Animate badge entry
                 resultsCountBadge.setVisibility(View.VISIBLE);
                 resultsCountBadge.setScaleX(0f);
                 resultsCountBadge.setScaleY(0f);
@@ -277,12 +274,12 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
                     Toast.LENGTH_SHORT).show();
             return;
         }
-
+//קבלת מצב צקבוקסים אם true/false
         boolean filterOnlineCameras = onlineCamerasCheckbox.isChecked();
         boolean filterClosedCircuit = closedCircuitCheckbox.isChecked();
         boolean filterFridayActive = fridayActiveCheckbox.isChecked();
 
-        // Highlight filter button if any filters are active
+        // שינוי עיצוב הכפתור לפי האם מופעל סינון
         if (filterOnlineCameras || filterClosedCircuit || filterFridayActive) {
             filterToggleButton.setStrokeWidth(3);
             filterToggleButton.setStrokeColorResource(R.color.primary);
@@ -293,7 +290,7 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
             filterToggleButton.setIconTintResource(android.R.color.darker_gray);
         }
 
-        // If no filters are selected, show all results
+        // אם לא סומן שום צ'קבוקס – הצג את כל התוצאות
         if (!filterOnlineCameras && !filterClosedCircuit && !filterFridayActive) {
             filteredResults = new ArrayList<>(allKindergartenResults);
             noResultsTextView.setVisibility(View.GONE);
@@ -303,7 +300,7 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
             return;
         }
 
-        // Apply filters
+        // החלת הסינון עובר על כל גן ב־allKindergartenResults בודק איזה צק בוקס סומן
         filteredResults = allKindergartenResults.stream()
                 .filter(kg -> {
                     boolean passesFilter = true;
@@ -331,13 +328,13 @@ public class ActivitySearchKinderGarten extends AppCompatActivity implements Bot
             Toast.makeText(this,
                     "לא נמצאו גני ילדים העונים לקריטריוני הסינון",
                     Toast.LENGTH_SHORT).show();
-        } else {
+        } else {//הצגת הגנים שעונים לסינון
             noResultsTextView.setVisibility(View.GONE);
             kindergartensRecyclerView.setVisibility(View.VISIBLE);
             adapter.updateData(filteredResults);
             updateResultsCountBadge(filteredResults.size());
 
-            // Show toast with filter results
+            // Show toast
             Toast.makeText(this,
                     "נמצאו " + filteredResults.size() + " גני ילדים",
                     Toast.LENGTH_SHORT).show();

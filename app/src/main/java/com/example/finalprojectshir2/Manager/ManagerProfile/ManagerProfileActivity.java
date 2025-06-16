@@ -167,7 +167,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements
         int itemId = item.getItemId();
 
         if (itemId == R.id.nav_profile) {
-            // Already on profile page
+            // Already on profile
             return true;
         }
         else if (itemId == R.id.nav_ganHome) {

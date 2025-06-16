@@ -45,7 +45,6 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         presenter = new RegisterPresenter(this);
 
-        // Initialize UI components
         lastNameEditText = findViewById(R.id.lastNameEditText);
         firstNameEditText = findViewById(R.id.firstNameEditText);
         emailEditText = findViewById(R.id.emailEditText);
@@ -99,31 +98,4 @@ public class RegisterActivity extends AppCompatActivity {
         Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
-
-   /* private void saveUserToFirestore(String firstName, String lastName, String email) {
-        // Create a new user document in Firestore
-  /*      CollectionReference usersCollection = firestore.collection("users");
-        DocumentReference newUserRef = usersCollection.document();
-
-
-         User user = new  com.example.finalprojectshir2.models.User(firstName, lastName, email);
-
-
-        newUserRef.set(user)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
-                    navigateToHome();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(RegisterActivity.this, "Error saving user data", Toast.LENGTH_SHORT).show();
-                });
-    }
-
-    private void navigateToHome() {
-        // Navigate to HomeActivity after successful registration
-        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish(); // Optional: Close the registration screen
-    }
-    */
 }

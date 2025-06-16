@@ -22,7 +22,7 @@ public class BackgroundMusicService extends Service {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
         }
-        return START_STICKY; // שירות ימשיך גם אם ייהרס ויופעל מחדש
+        return START_STICKY; //  ימשיך גם אם ייהרס ויופעל מחדש
     }
 
     @Override

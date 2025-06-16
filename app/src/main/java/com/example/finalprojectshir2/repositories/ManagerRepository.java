@@ -22,10 +22,10 @@ public class ManagerRepository {
         this.database = FirebaseFirestore.getInstance();
     }
 
-    /**
-     * Get the current manager ID from Firebase Auth
-     * @return The current manager ID or null if not logged in
-     */
+
+     // Get the current manager ID from Firebase Auth
+    //return The current manager ID or null if not logged in
+
     public String getCurrentManagerId() {
         if (auth.getCurrentUser() != null) {
             return auth.getCurrentUser().getUid();
@@ -92,12 +92,6 @@ public class ManagerRepository {
                 });
     }
 
-
-    /**
-     * Update only the manager's name without affecting other fields
-     * @param manager Manager object containing ID and new name
-     * @param callback Callback for success/error handling
-     */
     public void updateManagerName(Manager manager, FirebaseCallback<Manager> callback) {
         String managerId = manager.getId();
 

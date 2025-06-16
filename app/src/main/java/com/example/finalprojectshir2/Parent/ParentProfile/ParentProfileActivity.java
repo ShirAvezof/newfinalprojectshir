@@ -114,7 +114,7 @@ public class ParentProfileActivity extends AppCompatActivity implements
         return false;
     }
 
-    // ParentProfileView implementation
+    // ParentProfileView implementation יישום
     @Override
     public void showLoading() {
         progressBar.setVisibility(View.VISIBLE);

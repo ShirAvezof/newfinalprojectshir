@@ -1,4 +1,4 @@
-package com.example.finalprojectshir2.AllKindergardens;
+package com.example.finalprojectshir2.KindergardenAdapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;

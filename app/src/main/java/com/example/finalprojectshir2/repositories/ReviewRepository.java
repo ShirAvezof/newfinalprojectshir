@@ -96,7 +96,7 @@ public class ReviewRepository {
                 });
     }
 
-    // New method for adding a manager response to a review
+    //  adding a manager response to a review
     public void addResponseToReview(String reviewId, ReviewResponse response, FirebaseCallback<Void> callback) {
         Log.d(TAG, "Adding response to review: " + reviewId);
 
@@ -113,7 +113,7 @@ public class ReviewRepository {
                 });
     }
 
-    // New method for flagging a review
+    // לא בשימוש כבר מחקתי את האזהרה על תגובה
     public void flagReview(String reviewId, FirebaseCallback<Void> callback) {
         Log.d(TAG, "Flagging review: " + reviewId);
 
@@ -130,6 +130,7 @@ public class ReviewRepository {
                 });
     }
 
+    //גם זה לא בשימוש
     private void updateKindergartenRating(String kindergartenId) {
         // Calculate average rating from all reviews for this kindergarten
         reviewsCollection.whereEqualTo("kindergartenId", kindergartenId)

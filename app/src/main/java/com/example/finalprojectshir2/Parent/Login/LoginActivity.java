@@ -47,13 +47,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // Find views by ID
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         gotoSignUp = findViewById(R.id.gotoSignUp);
         buttonLogin = findViewById(R.id.loginButton);
         forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
-
 
         // debug
         emailEditText.setText("stav@gmail.com");
@@ -85,17 +83,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v == gotoSignUp) {
-            // Navigate to the Sign-Up screen
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
         }
         if (v == buttonLogin) {
-            // Handle Login
             loginUser();
         }
         if (v == forgotPasswordTextView) {
-            // Handle Forgot Password (optional)
-            // You can add functionality to reset the password here
             Toast.makeText(this, "Password reset functionality", Toast.LENGTH_SHORT).show();
             createCustomDialog();
         }

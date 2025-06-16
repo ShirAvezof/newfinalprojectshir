@@ -46,7 +46,7 @@ public class FavoriteKindergartenRepository {
 
         DocumentReference userFavoritesRef = db.collection(COLLECTION_NAME).document(userId);
 
-        // Add the kindergarten ID to the favorites array
+        // Add the kindergarten ID to the favorites array מוסיף איידי של גן למערך מועדפים
         userFavoritesRef.update("favoriteGans", FieldValue.arrayUnion(kindergartenId))
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Successfully added to favorites");
@@ -77,12 +77,6 @@ public class FavoriteKindergartenRepository {
                 });
     }
 
-    /**
-     * Removes a kindergarten from user's favorites
-     * @param userId User ID
-     * @param kindergartenId Kindergarten ID to remove from favorites
-     * @param callback Callback for operation result
-     */
     public void removeFromFavorites(String userId, String kindergartenId, FavoriteCallback callback) {
         Log.d(TAG, "Removing kindergarten " + kindergartenId + " from favorites for user " + userId);
 
@@ -99,12 +93,6 @@ public class FavoriteKindergartenRepository {
                 });
     }
 
-    /**
-     * Checks if a kindergarten is in user's favorites
-     * @param userId User ID
-     * @param kindergartenId Kindergarten ID to check
-     * @param callback Callback with result (true if favorite, false if not)
-     */
     public void checkIfFavorite(String userId, String kindergartenId, FavoriteStatusCallback callback) {
         Log.d(TAG, "Checking if kindergarten " + kindergartenId + " is in favorites for user " + userId);
 
@@ -129,12 +117,7 @@ public class FavoriteKindergartenRepository {
                 });
     }
 
-
-    /**
-     * Gets all of a user's favorite kindergartens
-     * @param userId User ID
-     * @return List of kindergarten IDs that are favorites
-     */
+    //מביאה את רשימת איי די של גנים מועדפים
     public void getAllFavorites(String userId, final OnFavoritesLoadedListener listener) {
         Log.d(TAG, "Getting all favorites for user " + userId);
 
@@ -144,8 +127,10 @@ public class FavoriteKindergartenRepository {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         ArrayList<String> favorites = (ArrayList<String>) documentSnapshot.get("favoriteGans");
+                        //שליפה של המערך עם כל מזהי הגנים מהועדפים של המשתמש
                         Log.d(TAG, "Retrieved " + (favorites != null ? favorites.size() : 0) + " favorites");
                         listener.onFavoritesLoaded(favorites != null ? favorites : new ArrayList<>());
+                        //אם יש גנים מועדפים שולחים לפעולה בליסר שמציג את הגנים אם ריק מציג מערך ריק
                     } else {
                         Log.d(TAG, "User doesn't have favorites document yet");
                         listener.onFavoritesLoaded(new ArrayList<>());

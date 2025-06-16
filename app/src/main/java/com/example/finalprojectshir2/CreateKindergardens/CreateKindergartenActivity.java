@@ -52,7 +52,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
     private int GALLERY = 1, CAMERA = 2, LICENSE_GALLERY = 3, LICENSE_CAMERA = 4;
     private boolean hasImage = false;
     private boolean hasLicenseImage = false;
-    private ImageView currentSelectedImageView; // Track which ImageView we're currently uploading to
+    private ImageView currentSelectedImageView;
 
     private static final int PERMISSION_REQUEST_CAMERA = 1002;
     private static final int PERMISSION_REQUEST_GALLERY = 1003;
@@ -107,7 +107,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         uploadPhotosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentSelectedImageView = imageView; // Set the current target
+                currentSelectedImageView = imageView; // Set the current
                 showPictureDialog();
             }
         });
@@ -115,7 +115,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         uploadLicenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentSelectedImageView = licenseImageView; // Set the current target
+                currentSelectedImageView = licenseImageView; // Set the current
                 showPictureDialog();
             }
         });
@@ -272,7 +272,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
                 choosePhotoFromGallary();
             }
         } else {
-            // Android 12 and below use READ_EXTERNAL_STORAGE
+
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 showPermissionExplanationDialog(
@@ -301,7 +301,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
         }
 
         if (needsCameraPermission && needsStoragePermission) {
-            // Need both permissions
+            // permissions
             String[] permissions;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES};
@@ -316,7 +316,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
                     PERMISSION_REQUEST_CAMERA_AND_STORAGE
             );
         } else if (needsCameraPermission) {
-            // Need only camera permission
+            // camera permission
             showPermissionExplanationDialog(
                     "גישה למצלמה",
                     "האפליקציה זקוקה לגישה למצלמה כדי לצלם תמונות.\nהאם תרצה לאשר הרשאה זו?",
@@ -324,7 +324,7 @@ public class CreateKindergartenActivity extends AppCompatActivity implements Vie
                     PERMISSION_REQUEST_CAMERA
             );
         } else if (needsStoragePermission) {
-            // Need only storage permission
+            // storage permission
             String[] permissions;
             String message;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

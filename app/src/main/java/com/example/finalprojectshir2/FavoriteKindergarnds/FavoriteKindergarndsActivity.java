@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalprojectshir2.AllKindergardens.KinderGardenAdapter;
+import com.example.finalprojectshir2.KindergardenAdapter.KinderGardenAdapter;
 import com.example.finalprojectshir2.FavoriteKindergartenRepository;
 import com.example.finalprojectshir2.Home.HomeActivity;
 
@@ -102,6 +102,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
         });
     }
 
+    //פעולה מביאה את פרטי הגן לפי איידי
     private void fetchKindergartenDetails(List<String> kindergartenIds) {
         favoriteKindergartens.clear();
 
@@ -117,6 +118,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
         for (String id : kindergartenIds) {
             repository.getKinderGartenById(id, new FirebaseCallback<KinderGarten>() {
                 @Override
+                //מוסיף את הגן לרשימה רק אם לא קיים.
                 public void onSuccess(KinderGarten kinderGarten) {
                     if (!containsKindergarten(favoriteKindergartens, kinderGarten.getId())) {
                         favoriteKindergartens.add(kinderGarten);

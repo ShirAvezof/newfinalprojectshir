@@ -78,7 +78,7 @@
             android:name=".FavoriteKindergarnds.FavoriteKindergarndsActivity"
             android:exported="false" />
         <activity
-            android:name=".AllKindergardens.AllKindergardensActivity"
+            android:name=".KindergardenAdapter.AllKindergardensActivity"
             android:exported="false" />
         <activity
             android:name=".Home.HomeActivity"

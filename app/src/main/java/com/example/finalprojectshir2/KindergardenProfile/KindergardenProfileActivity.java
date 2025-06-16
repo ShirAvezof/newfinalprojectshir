@@ -313,7 +313,6 @@ public class KindergardenProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ReviewsActivity.class);
         intent.putExtra(ReviewsActivity.EXTRA_KINDERGARTEN_ID, kindergartenId);
 
-        // If we have the name available, pass it too
         if (ganNameTextView != null && ganNameTextView.getText() != null) {
             intent.putExtra(ReviewsActivity.EXTRA_KINDERGARTEN_NAME, ganNameTextView.getText().toString());
         }

@@ -161,13 +161,13 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsAdapter
         runOnUiThread(() -> {
             kindergartenNameTextView.setText(kindergarten.getGanname());
 
-            // Check if averageRating exists in the model, if not, you might need to add it
+            //  averageRating
             float rating = 0f;
             if (kindergarten.getAverageRating() != null) {
                 rating = kindergarten.getAverageRating();
             }
 
-            // Check if reviewCount exists in the model, if not, you might need to add it
+            //  reviewCount
             int count = 0;
             if (kindergarten.getReviewCount() != null) {
                 count = kindergarten.getReviewCount();

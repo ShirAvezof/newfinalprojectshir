@@ -32,7 +32,7 @@ public class ManagerProfilePresenter {
             return;
         }
 
-        // Create a Manager object with just the ID to retrieve details
+        // Create a Manager object with just the ID to retrieve details לאחזר פרטים
         Manager manager = new Manager();
         manager.setId(managerId);
 
@@ -84,10 +84,6 @@ public class ManagerProfilePresenter {
         });
     }
 
-
-    /**
-     * Called when the presenter is no longer needed
-     */
     public void onDestroy() {
         this.view = null;
     }

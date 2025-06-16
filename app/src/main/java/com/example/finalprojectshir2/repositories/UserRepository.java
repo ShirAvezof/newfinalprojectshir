@@ -42,8 +42,6 @@ public class UserRepository {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String userId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-//                Toast.makeText(context, userId, Toast.LENGTH_SHORT).show();
-
 
                 database.collection("users").document(userId).get().addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful() && task1.getResult().exists()) {

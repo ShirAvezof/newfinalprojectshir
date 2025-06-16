@@ -34,7 +34,6 @@ public class ManagerRegisterActivity extends AppCompatActivity implements
         // Initialize Presenter
         presenter = new ManagerRegisterPresenter(this);
 
-        // Initialize UI elements
         signUpButtonm = findViewById(R.id.signUpButtonm);
         firstNameEditText = findViewById(R.id.firstNameEditText);
         lastNameEditText = findViewById(R.id.lastNameEditText);
@@ -73,7 +72,7 @@ public class ManagerRegisterActivity extends AppCompatActivity implements
         }
     }
 
-    // ManagerRegisterView implementation
+    // ManagerRegisterView implementation יישום
     @Override
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
