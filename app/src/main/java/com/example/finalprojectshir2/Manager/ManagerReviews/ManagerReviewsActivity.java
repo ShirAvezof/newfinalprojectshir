@@ -66,12 +66,12 @@ public class ManagerReviewsActivity extends AppCompatActivity implements Manager
             finish();
             return;
         }
-
         initializeViews();
         setupToolbar();
         initializeRepositories();
         loadKindergartenDetails();
         setupRecyclerView();
+
         loadReviews();
     }
 

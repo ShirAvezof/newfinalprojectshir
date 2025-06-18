@@ -31,20 +31,23 @@ public class ReviewRepository {
 
     public void getReviewsByKindergarten(String kindergartenId, FirebaseCallback<List<Review>> callback) {
         Log.d(TAG, "Getting reviews for kindergarten: " + kindergartenId);
-
+//מביא רק את הביקורות שבהן השדה kindergartenId שווה למזהה של הגן.
         reviewsCollection.whereEqualTo("kindergartenId", kindergartenId)
-                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .orderBy("createdAt", Query.Direction.DESCENDING)//מסדר לפי מהחדש לישן
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<Review> reviews = new ArrayList<>();
+                        //עוברים על כל מסמך שהוחזר (כל ביקורת)
+                        //ממירים את המסמך מאוסף reviews לאובייקט מסוג Review.
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Review review = document.toObject(Review.class);
                             review.setId(document.getId());
-                            reviews.add(review);
+                            reviews.add(review);// מוסיפים את האובייקט לרשימה.
                         }
+                        //כמות הביקורות
                         Log.d(TAG, "Successfully retrieved " + reviews.size() + " reviews");
-                        callback.onSuccess(reviews);
+                        callback.onSuccess(reviews);//מחזיר לאקטיביטי
                     } else {
                         Log.e(TAG, "Error getting reviews", task.getException());
                         callback.onError(task.getException() != null ? task.getException().getMessage() : "Unknown error");

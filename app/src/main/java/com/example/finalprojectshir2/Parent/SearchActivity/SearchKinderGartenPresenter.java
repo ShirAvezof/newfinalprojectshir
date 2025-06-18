@@ -21,8 +21,6 @@ public class SearchKinderGartenPresenter {
     public void searchKindergartensByCity(String city) {
         Log.d(TAG, "Searching for city: " + city);
 
-
-
         view.showLoading();
         repository.searchKinderGartensByCity(city.trim(), new FirebaseCallback<List<KinderGarten>>() {
             @Override
@@ -33,7 +31,7 @@ public class SearchKinderGartenPresenter {
                     if (result == null || result.isEmpty()) {
                         view.showNoResults();
                     } else {
-                        view.showResults(result);
+                        view.showResults(result);//הפרזנטר קורא לאקטיבי דרך פעולה זו בעצם שולח לRecyclerView את התוצאות
                     }
                 }
             }

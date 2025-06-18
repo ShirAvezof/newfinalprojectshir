@@ -81,7 +81,7 @@ public class FavoriteKindergartenRepository {
         Log.d(TAG, "Removing kindergarten " + kindergartenId + " from favorites for user " + userId);
 
         DocumentReference userFavoritesRef = db.collection(COLLECTION_NAME).document(userId);
-
+//הסרת id של גן ממערך מועדפים של משתמש
         userFavoritesRef.update("favoriteGans", FieldValue.arrayRemove(kindergartenId))
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Successfully removed from favorites");
@@ -127,10 +127,10 @@ public class FavoriteKindergartenRepository {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         ArrayList<String> favorites = (ArrayList<String>) documentSnapshot.get("favoriteGans");
-                        //שליפה של המערך עם כל מזהי הגנים מהועדפים של המשתמש
+                        //שליפה של המערך עם כל מזהי הגנים המועדפים של המשתמש
                         Log.d(TAG, "Retrieved " + (favorites != null ? favorites.size() : 0) + " favorites");
                         listener.onFavoritesLoaded(favorites != null ? favorites : new ArrayList<>());
-                        //אם יש גנים מועדפים שולחים לפעולה בליסר שמציג את הגנים אם ריק מציג מערך ריק
+                        //אם יש גנים מועדפים שולחים לפעולה בליסינר שמציג את הגנים אם ריק מציג מערך ריק
                     } else {
                         Log.d(TAG, "User doesn't have favorites document yet");
                         listener.onFavoritesLoaded(new ArrayList<>());

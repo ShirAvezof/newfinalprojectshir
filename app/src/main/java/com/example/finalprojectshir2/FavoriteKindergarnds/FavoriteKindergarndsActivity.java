@@ -211,7 +211,8 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
         }
         return false;
     }
-
+//המתודה onResume() מבטיחה שכאשר המשתמש חוזר למסך הזה – ואם הוא מחובר – תיטען מחדש רשימת הגנים המועדפים שלו.
+//ככה תמיד יוצגו נתונים עדכניים אחרי חזרה למסך.
     @Override
     protected void onResume() {
         super.onResume();
@@ -221,6 +222,7 @@ public class FavoriteKindergarndsActivity extends AppCompatActivity implements
         }
     }
 
+    //מסירה את הגן מרשימת מועדפים בתצוגה ומהפיירסטור זה ברפוזיטורי
     public void removeFromFavoritesList(KinderGarten kindergarten) {
         favoriteKindergartens.remove(kindergarten);
         adapter.updateData(favoriteKindergartens);
